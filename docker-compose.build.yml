@@ -1,0 +1,9 @@
+version: "3.3"
+services:
+  rest:
+    build:
+      dockerfile: docker/rest/Dockerfile
+      context: .
+    ports:
+      - "8080:80"
+    tty: true
