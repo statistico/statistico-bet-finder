@@ -24,7 +24,7 @@ paths:
                     example: 560194
       responses:
         200:
-          description: Suggested prices and bookmaker prices based on provided fixtures
+          description: Statistico prices and bookmaker prices based on provided fixtures
           content:
             application/json:
               schema:
