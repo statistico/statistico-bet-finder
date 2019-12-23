@@ -1,0 +1,213 @@
+openapi: 3.0.0
+info:
+  title: Statistico Bet Finder API
+  version: 1.0.0
+servers:
+  - url: https://bet-finder.statisitco.io/api/v1
+paths:
+  /market-book:
+    post:
+      tags:
+        - Proposed
+      description: Get statistico and bookmaker prices for provided fixtures
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fixtureIds:
+                  type: array
+                  items:
+                    type: integer
+                    example: 560194
+      responses:
+        200:
+          description: Statistico prices and bookmaker prices based on provided fixtures
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'success'
+                  data:
+                    type: object
+                    properties:
+                      book:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            fixtureId:
+                              type: integer
+                              example: 560194
+                            market:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  type:
+                                    type: string
+                                    enum:
+                                      - OVER_UNDER_25
+                                  prices:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        bet:
+                                          $ref: '#/components/schemas/Bet'
+                                        statistico:
+                                          $ref: '#/components/schemas/StatisticoPrice'
+                                        bookmakers:
+                                          type: array
+                                          items:
+                                            $ref: '#/components/schemas/BookmakerPrice'
+        default:
+          description: Default non 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardResponse'
+
+  /tips:
+    post:
+      tags:
+        - Proposed
+      description: Get suggested bets for Fixture IDs provided
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fixtureIds:
+                  type: array
+                  items:
+                    type: integer
+                    example: 560194
+      responses:
+        200:
+          description: An array of suggested bets for Fixture IDs provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'success'
+                  data:
+                    type: object
+                    properties:
+                      bets:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            fixtureId:
+                              type: integer
+                              example: 560194
+                            type:
+                              type: string
+                              enum:
+                                - OVER_UNDER_25
+                            bet:
+                              $ref: '#/components/schemas/Bet'
+                            statistico:
+                              $ref: '#/components/schemas/StatisticoPrice'
+                            bookmakers:
+                              type: array
+                              items:
+                                $ref: '#/components/schemas/BookmakerPrice'
+        default:
+          description: Default non 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardResponse'
+
+components:
+  schemas:
+    StatisticoPrice:
+      type: object
+      properties:
+        price:
+          type: number
+          example: 1.89
+
+    BookmakerPrice:
+      type: object
+      properties:
+        name:
+          type: string
+          enum:
+            - betfair
+        price:
+          type: number
+          example: 2.45
+        marketId:
+          type: string
+          example: '13458726'
+        selectionId:
+          type: string
+          example: "1567910"
+
+    Bet:
+      type: object
+      properties:
+        selection:
+          type: string
+          enum:
+            - OVER
+        side:
+          type: string
+          enum:
+            - BACK
+            - LAY
+        size:
+          type: number
+          example: 10.00
+          description: The amount to bet in pounds sterling
+          nullable: true
+
+    StandardResponse:
+      type: object
+      required:
+        - status
+        - data
+      properties:
+        status:
+          type: string
+          example: fail
+          enum:
+            - error
+            - fail
+        data:
+          type: object
+          properties:
+            errors:
+              type: array
+              items:
+                $ref: '#/components/schemas/Error'
+
+    Error:
+      type: object
+      required:
+        - message
+        - code
+      properties:
+        message:
+          type: string
+          example: Something went wrong
+          description: A human-readable description of the error
+        code:
+          type: integer
+          example: 1
+          description: >
+            A code to identify the error. "1" is used when no specific error
+            code has been defined for this error
