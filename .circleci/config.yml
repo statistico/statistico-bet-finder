@@ -1,0 +1,15 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/go/src/github.com/statistico/statistico-bet-finder
+    machine: true
+    environment:
+      GOPATH: /home/circleci/go
+
+    steps:
+      - checkout
+
+      - run:
+          name: Build Release Image
+          command: |
+            docker-compose -f docker-compose.build.yml up -d --build
