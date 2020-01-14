@@ -3,13 +3,13 @@ info:
   title: Statistico Bet Finder API
   version: 1.0.0
 servers:
-  - url: https://bet-finder.statisitco.io/api/v1
+  - url: https://bet-finder.statistico.io/api/v1
 paths:
   /market-book:
     post:
       tags:
         - Proposed
-      description: Get statistico and bookmaker prices for provided fixtures
+      description: Get Statistico and bookmaker prices for provided fixtures
       requestBody:
         required: true
         content:
@@ -36,7 +36,7 @@ paths:
                   data:
                     type: object
                     properties:
-                      book:
+                      books:
                         type: array
                         items:
                           type: object
@@ -47,25 +47,7 @@ paths:
                             market:
                               type: array
                               items:
-                                type: object
-                                properties:
-                                  type:
-                                    type: string
-                                    enum:
-                                      - OVER_UNDER_25
-                                  prices:
-                                    type: array
-                                    items:
-                                      type: object
-                                      properties:
-                                        bet:
-                                          $ref: '#/components/schemas/Bet'
-                                        statistico:
-                                          $ref: '#/components/schemas/StatisticoPrice'
-                                        bookmakers:
-                                          type: array
-                                          items:
-                                            $ref: '#/components/schemas/BookmakerPrice'
+                                $ref: '#/components/schemas/Book'
         default:
           description: Default non 200 response
           content:
@@ -133,6 +115,33 @@ paths:
 
 components:
   schemas:
+    Book:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - OVER_UNDER_25
+        selections:
+          type: array
+          items:
+            $ref: '#/components/schemas/Market'
+
+    Market:
+      type: object
+      properties:
+        selection:
+          type: string
+          enum:
+            - OVER
+            - UNDER
+        statistico:
+            $ref: '#/components/schemas/StatisticoPrice'
+        bookmakers:
+            type: array
+            items:
+              $ref: '#/components/schemas/BookmakerPrice'
+
     StatisticoPrice:
       type: object
       properties:
