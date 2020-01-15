@@ -11,8 +11,8 @@ type MarketBuilder struct {
 
 func (m MarketBuilder) Build(c *bfClient.MarketCatalogue) (*bookmaker.Market, error) {
 	market := bookmaker.Market{
-		ID:      c.MarketID,
-		Name:    c.MarketName,
+		ID:   c.MarketID,
+		Name: c.MarketName,
 	}
 
 	for _, run := range c.Runners {

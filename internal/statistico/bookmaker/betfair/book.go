@@ -9,16 +9,11 @@ import (
 
 type BookCreator struct {
 	Client *bfClient.Client
-	MarketBuilder
+	RunnerCreator
 }
 
-func (b BookCreator) CreateForFixture(fix statistico.Fixture, types []string) (*bookmaker.Book, error) {
-	book := bookmaker.Book{
-		FixtureID: fix.ID,
-		Bookmaker: "Betfair",
-	}
-
-	request := buildMarketCatalogueRequest(fix, types)
+func (b BookCreator) FixtureAndBetType(fix statistico.Fixture, betType string) (*bookmaker.Market, error) {
+	request := buildMarketCatalogueRequest(fix, []string{betType})
 
 	catalogue, err := b.Client.ListMarketCatalogue(context.Background(), request)
 
@@ -26,25 +21,37 @@ func (b BookCreator) CreateForFixture(fix statistico.Fixture, types []string) (*
 		return nil, err
 	}
 
-	for _, market := range catalogue {
-		// Sanity check catalogue Event matches fixture here - ensure home and away team names match
-		m, err := b.MarketBuilder.Build(&market)
-
-		if err != nil {
-			return nil, err
-		}
-
-		book.Markets = append(book.Markets, *m)
+	if len(catalogue) == 0 {
+		return nil, nil
 	}
 
-	return &book, nil
+	market := catalogue[0]
+
+	m := bookmaker.Market{
+		ID:        market.MarketID,
+		FixtureID: fix.ID,
+		Bookmaker: "Betfair",
+		Name:      market.MarketName,
+		BetType:   betType,
+		Runners:   nil,
+	}
+
+	runners, err := b.RunnerCreator.Create(market.Runners, market.MarketID, []string{"EX_BEST_OFFERS"})
+
+	if err != nil {
+		return nil, err
+	}
+
+	m.Runners = runners
+
+	return &m, nil
 }
 
-func buildMarketCatalogueRequest(fix statistico.Fixture, types []string) bfClient.ListMarketCatalogueRequest {
+func buildMarketCatalogueRequest(fix statistico.Fixture, betTypes []string) bfClient.ListMarketCatalogueRequest {
 	filter := bfClient.MarketFilter{
 		CompetitionIDs:  []string{"10932509"},
 		TextQuery:       fix.HomeTeam,
-		MarketTypeCodes: types,
+		MarketTypeCodes: betTypes,
 	}
 
 	request := bfClient.ListMarketCatalogueRequest{
