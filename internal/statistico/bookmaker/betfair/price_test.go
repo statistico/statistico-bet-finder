@@ -1,9 +1,9 @@
 package betfair
 
 import (
+	bfClient "github.com/statistico/statistico-betfair-go-client"
 	"github.com/stretchr/testify/assert"
 	"testing"
-	bfClient "github.com/statistico/statistico-betfair-go-client"
 )
 
 func Test_buildPrices(t *testing.T) {
