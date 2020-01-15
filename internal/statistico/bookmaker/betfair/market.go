@@ -10,7 +10,7 @@ import (
 const betfair = "Betfair"
 
 type MarketFactory struct {
-	Client *bfClient.Client
+	Client  *bfClient.Client
 	factory RunnerFactory
 }
 

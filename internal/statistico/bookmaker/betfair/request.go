@@ -29,8 +29,8 @@ func buildRunnerBookRequest(marketID string, selectionID uint64, priceData []str
 	}
 
 	request := bfClient.ListRunnerBookRequest{
-		MarketID:    marketID,
-		SelectionID: selectionID,
+		MarketID:        marketID,
+		SelectionID:     selectionID,
 		PriceProjection: projection,
 	}
 
