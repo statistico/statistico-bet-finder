@@ -15,7 +15,7 @@ func buildMarketCatalogueRequest(fix statistico.Fixture, betTypes []string) (*bf
 
 	filter := bfClient.MarketFilter{
 		CompetitionIDs:  []string{compID},
-		TextQuery:       fix.HomeTeam,
+		TextQuery:       teamMapping(fix.HomeTeam),
 		MarketTypeCodes: betTypes,
 	}
 
@@ -45,7 +45,7 @@ func buildRunnerBookRequest(marketID string, selectionID uint64, priceData []str
 
 func competitionMapping(id uint64) (string, error) {
 	competitions := map[uint64]string{
-		12968: "10932509",
+		16036: "10932509",
 	}
 
 	if val, ok := competitions[id]; ok {
@@ -53,4 +53,26 @@ func competitionMapping(id uint64) (string, error) {
 	}
 
 	return "", fmt.Errorf("competition ID %d is not supported", id)
+}
+
+func teamMapping(team string) string {
+	teams := map[string]string{
+		"AFC Bournemouth": "Bournemouth",
+		"Brighton & Hove Albion": "Brighton",
+		"Leicester City": "Leicester",
+		"Manchester City": "Man City",
+		"Manchester United": "Man Utd",
+		"Newcastle United": "Newcastle",
+		"Norwich City": "Norwich",
+		"Sheffield United": "Sheff Utd",
+		"Tottenham Hotspur": "Tottenham",
+		"West Ham United": "West Ham",
+		"Wolverhampton Wanderers": "Wolves",
+	}
+
+	if val, ok := teams[team]; ok {
+		return val
+	}
+
+	return team
 }
