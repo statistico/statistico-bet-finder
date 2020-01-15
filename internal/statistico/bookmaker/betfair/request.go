@@ -1,14 +1,20 @@
 package betfair
 
 import (
+	"fmt"
 	"github.com/statistico/statistico-bet-finder/internal/statistico"
 	bfClient "github.com/statistico/statistico-betfair-go-client"
 )
 
-func buildMarketCatalogueRequest(fix statistico.Fixture, betTypes []string) (bfClient.ListMarketCatalogueRequest, error) {
-	// ToDo map Fixture Competition ID to associated Competition ID mapping
+func buildMarketCatalogueRequest(fix statistico.Fixture, betTypes []string) (*bfClient.ListMarketCatalogueRequest, error) {
+	compID, err := competitionMapping(fix.CompetitionID)
+
+	if err != nil {
+		return nil, err
+	}
+
 	filter := bfClient.MarketFilter{
-		CompetitionIDs:  []string{"10932509"},
+		CompetitionIDs:  []string{compID},
 		TextQuery:       fix.HomeTeam,
 		MarketTypeCodes: betTypes,
 	}
@@ -16,11 +22,11 @@ func buildMarketCatalogueRequest(fix statistico.Fixture, betTypes []string) (bfC
 	request := bfClient.ListMarketCatalogueRequest{
 		Filter:           filter,
 		MarketProjection: []string{"EVENT", "RUNNER_DESCRIPTION"},
-		MaxResults:       1,
+		MaxResults:       len(betTypes),
 		Sort:             "FIRST_TO_START",
 	}
 
-	return request, nil
+	return &request, nil
 }
 
 func buildRunnerBookRequest(marketID string, selectionID uint64, priceData []string) bfClient.ListRunnerBookRequest {
@@ -35,4 +41,16 @@ func buildRunnerBookRequest(marketID string, selectionID uint64, priceData []str
 	}
 
 	return request
+}
+
+func competitionMapping(id uint64) (string, error) {
+	competitions := map[uint64]string{
+		12968: "10932509",
+	}
+
+	if val, ok := competitions[id]; ok {
+		return val, nil
+	}
+
+	return "", fmt.Errorf("competition ID %d is not supported", id)
 }
