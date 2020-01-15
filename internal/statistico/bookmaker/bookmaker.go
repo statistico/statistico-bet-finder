@@ -2,19 +2,13 @@ package bookmaker
 
 import "github.com/statistico/statistico-bet-finder/internal/statistico"
 
-type Service interface {
-	Markets(query ServiceQuery) <-chan *Market
+type MarketFactory interface {
+	FixtureAndBetType(fix statistico.Fixture, betType string) (*Market, error)
 }
 
-type ServiceQuery struct {
-	BetTypes []string
-	Fixtures []statistico.Fixture
-}
-
-//type Book struct {
-//	FixtureID uint64   `json:"fixture_id"`
-//	Bookmaker string   `json:"bookmaker"`
-//	Markets   Market   `json:"markets"`
+//type ServiceQuery struct {
+//	BetTypes []string
+//	Fixtures []statistico.Fixture
 //}
 
 type Market struct {

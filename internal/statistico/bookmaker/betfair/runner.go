@@ -7,44 +7,49 @@ import (
 	bfClient "github.com/statistico/statistico-betfair-go-client"
 )
 
-type RunnerCreator struct {
+type RunnerFactory struct {
 	Client *bfClient.Client
 }
 
-func (r RunnerCreator) Create(runners []bfClient.RunnerCatalogue, marketID string, data []string) ([]bookmaker.Runner, error) {
-	var x []bookmaker.Runner
+func (f RunnerFactory) Create(runners []bfClient.RunnerCatalogue, marketID string) ([]bookmaker.Runner, error) {
+	var run []bookmaker.Runner
 
 	for _, runner := range runners {
-		request := bfClient.ListRunnerBookRequest{
-			MarketID:    marketID,
-			SelectionID: runner.SelectionID,
-			PriceProjection: bfClient.PriceProjection{
-				PriceData: data,
-			},
-		}
+		request := buildRunnerBookRequest(marketID, runner.SelectionID, []string{"EX_BEST_OFFERS"})
 
-		book, err := r.Client.ListRunnerBook(context.Background(), request)
+		y, err := f.parseRunner(request)
 
 		if err != nil {
 			return nil, err
 		}
 
-		if len(book) == 0 || len(book[0].Runners) == 0 {
-			return nil, fmt.Errorf("runner book does not exist for Market %s and Selection %d", marketID, runner.SelectionID)
-		}
-
-		y := book[0].Runners[0]
-
-		run := bookmaker.Runner{
+		r := bookmaker.Runner{
 			Name:        runner.RunnerName,
 			Back:        buildPrices(y.EX.AvailableToBack),
 			Lay:         buildPrices(y.EX.AvailableToLay),
 			SelectionID: runner.SelectionID,
 		}
 
-		x = append(x, run)
+		run = append(run, r)
 	}
 
+	return run, nil
+}
 
-	return x, nil
+func (f RunnerFactory) parseRunner(req bfClient.ListRunnerBookRequest) (*bfClient.Runner, error) {
+	book, err := f.Client.ListRunnerBook(context.Background(), req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if len(book) == 0 || len(book[0].Runners) == 0 {
+		return nil, fmt.Errorf(
+			"runner book does not exist for Market %s and Selection %d",
+			req.MarketID,
+			req.SelectionID,
+		)
+	}
+
+	return &book[0].Runners[0], nil
 }
