@@ -17,6 +17,7 @@ type MarketFactory struct {
 func (b MarketFactory) FixtureAndBetType(fix statistico.Fixture, betType string) (*bookmaker.Market, error) {
 	request, _ := buildMarketCatalogueRequest(fix, []string{betType})
 
+	// Todo parse correct market using event returned against fixture
 	market, err := b.parseMarket(request)
 
 	if err != nil {
