@@ -43,8 +43,8 @@ func (b MarketFactory) FixtureAndBetType(fix statistico.Fixture, betType string)
 	return &m, nil
 }
 
-func (b MarketFactory) parseMarket(req bfClient.ListMarketCatalogueRequest) (*bfClient.MarketCatalogue, error) {
-	catalogue, err := b.Client.ListMarketCatalogue(context.Background(), req)
+func (b MarketFactory) parseMarket(req *bfClient.ListMarketCatalogueRequest) (*bfClient.MarketCatalogue, error) {
+	catalogue, err := b.Client.ListMarketCatalogue(context.Background(), *req)
 
 	if err != nil {
 		return nil, err
