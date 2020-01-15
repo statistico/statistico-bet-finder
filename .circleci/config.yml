@@ -13,3 +13,8 @@ jobs:
           name: Build Release Image
           command: |
             docker-compose -f docker-compose.build.yml up -d --build
+
+      - run:
+          name: Test Release Image
+          command: |
+            docker-compose -f docker-compose.build.yml run test gotestsum -f short-verbose
