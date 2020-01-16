@@ -2,6 +2,7 @@ package betfair
 
 import (
 	"bytes"
+	"github.com/statistico/statistico-bet-finder/internal/statistico/bookmaker"
 	"github.com/statistico/statistico-bet-finder/internal/statistico/mock"
 	bfClient "github.com/statistico/statistico-betfair-go-client"
 	"github.com/stretchr/testify/assert"
@@ -40,7 +41,45 @@ func Test_createRunners(t *testing.T) {
 			t.Fatalf("Error creating runners expected nil got %s", err)
 		}
 
+		back := []bookmaker.Price{
+			{
+				Price: 1.86,
+				Size: 19.16,
+			},
+			{
+				Price: 1.85,
+				Size: 87.82,
+			},
+			{
+				Price: 1.81,
+				Size: 247.25,
+			},
+		}
+
+		lay := []bookmaker.Price{
+			{
+				Price: 1.98,
+				Size: 21.6,
+			},
+			{
+				Price: 2.0,
+				Size: 10.6,
+			},
+			{
+				Price: 2.04,
+				Size: 33.97,
+			},
+		}
+
 		assert.Equal(t, 2, len(fetched))
+		assert.Equal(t, "Under 2.5 Goals", fetched[0].Name)
+		assert.Equal(t, uint64(47973), fetched[0].SelectionID)
+		assert.Equal(t, back, fetched[0].Back)
+		assert.Equal(t, lay, fetched[0].Lay)
+		assert.Equal(t, "Over 2.5 Goals", fetched[1].Name)
+		assert.Equal(t, uint64(45766), fetched[1].SelectionID)
+		assert.Equal(t, back, fetched[1].Back)
+		assert.Equal(t, lay, fetched[1].Lay)
 	})
 }
 
