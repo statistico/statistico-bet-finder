@@ -2,6 +2,7 @@ package betfair
 
 import (
 	"context"
+	"fmt"
 	"github.com/statistico/statistico-bet-finder/internal/statistico"
 	"github.com/statistico/statistico-bet-finder/internal/statistico/bookmaker"
 	bfClient "github.com/statistico/statistico-betfair-go-client"
@@ -15,13 +16,20 @@ type MarketFactory struct {
 }
 
 func (b MarketFactory) FixtureAndBetType(fix statistico.Fixture, betType string) (*bookmaker.Market, error) {
-	request, _ := buildMarketCatalogueRequest(fix, []string{betType})
+	request, err := buildMarketCatalogueRequest(fix, []string{betType})
 
-	// Todo parse correct market using event returned against fixture
+	if err != nil {
+		return nil, err
+	}
+
 	market, err := b.parseMarket(request)
 
 	if err != nil {
 		return nil, err
+	}
+
+	if !fixtureMatchesEvent(fix, market.Event) {
+		return nil, fmt.Errorf("rvent %+v returned by betfair client does not match fixture %+v", market.Event, fix)
 	}
 
 	m := bookmaker.Market{
