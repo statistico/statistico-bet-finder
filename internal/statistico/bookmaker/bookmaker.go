@@ -6,6 +6,10 @@ type MarketFactory interface {
 	FixtureAndBetType(fix statistico.Fixture, betType string) (*Market, error)
 }
 
+type RunnerFactory interface {
+	CreateRunner(selectionID uint64, marketID, name string) (*Runner, error)
+}
+
 //type ServiceQuery struct {
 //	BetTypes []string
 //	Fixtures []statistico.Fixture

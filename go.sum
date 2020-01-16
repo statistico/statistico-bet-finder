@@ -10,6 +10,8 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/statistico/statistico-betfair-go-client v0.0.0-20200114200613-67c1eec9eb11 h1:kuyE1jFHVHuYnWA48H+BtU+hpqh0zNpjnNamFG+5xUo=
 github.com/statistico/statistico-betfair-go-client v0.0.0-20200114200613-67c1eec9eb11/go.mod h1:PxFoHm36FOkMDZzpbQBL6/zvO9uYfvbahyrQ6kMbk2s=
+github.com/statistico/statistico-betfair-go-client v0.0.0-20200116164258-5c5d0061a5bb h1:sQrEWDaTznMqqsEoxijURQunAIYrQQesD/kgFD5yepA=
+github.com/statistico/statistico-betfair-go-client v0.0.0-20200116164258-5c5d0061a5bb/go.mod h1:PxFoHm36FOkMDZzpbQBL6/zvO9uYfvbahyrQ6kMbk2s=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.2.0 h1:Hbg2NidpLE8veEBkEZTL3CvlkUIVzuU9jDplZO54c48=
 github.com/stretchr/objx v0.2.0/go.mod h1:qt09Ya8vawLte6SNmTgCsAVtYtaKzEcn8ATUoHMkEqE=
