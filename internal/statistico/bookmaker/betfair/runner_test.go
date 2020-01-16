@@ -17,7 +17,7 @@ func TestRunnerFactory_CreateRunner(t *testing.T) {
 
 		factory := RunnerFactory{client:client}
 
-		fetched, err := factory.CreateRunner(47973, "Under 2.5 Goals", "1.567278")
+		fetched, err := factory.CreateRunner(47973, "1.567278", "Under 2.5 Goals")
 
 		if err != nil {
 			t.Fatalf("Error creating runners expected nil got %s", err)
@@ -69,7 +69,7 @@ func TestRunnerFactory_CreateRunner(t *testing.T) {
 
 		factory := RunnerFactory{client:client}
 
-		fetched, err := factory.CreateRunner(47973, "Under 2.5 Goals", "1.567278")
+		fetched, err := factory.CreateRunner(47973, "1.567278", "Under 2.5 Goals")
 
 		if err == nil {
 			t.Fatal("Error expected got nil")
@@ -91,7 +91,7 @@ func TestRunnerFactory_CreateRunner(t *testing.T) {
 
 		factory := RunnerFactory{client:client}
 
-		fetched, err := factory.CreateRunner(47973, "Under 2.5 Goals", "1.567278")
+		fetched, err := factory.CreateRunner(47973, "1.567278", "Under 2.5 Goals")
 
 		if err == nil {
 			t.Fatal("Error expected got nil")
@@ -112,7 +112,7 @@ func TestRunnerFactory_CreateRunner(t *testing.T) {
 
 		factory := RunnerFactory{client:client}
 
-		fetched, err := factory.CreateRunner(47973, "Under 2.5 Goals", "1.567278")
+		fetched, err := factory.CreateRunner(47973, "1.567278", "Under 2.5 Goals")
 
 		if err == nil {
 			t.Fatal("Error expected got nil")

@@ -34,7 +34,7 @@ func (b MarketFactory) FixtureAndBetType(fix statistico.Fixture, betType string)
 	}
 
 	for _, runner := range market.Runners {
-		run, err := b.CreateRunner(runner.SelectionID, runner.RunnerName, market.MarketID)
+		run, err := b.CreateRunner(runner.SelectionID, market.MarketID, runner.RunnerName)
 
 		if err != nil {
 			return nil, err

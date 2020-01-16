@@ -7,11 +7,15 @@ import (
 	bfClient "github.com/statistico/statistico-betfair-go-client"
 )
 
+// RunnerFactory is a wrapper around the BetFair API Client that is responsible for creating new
+// bookmaker.Runner struct
 type RunnerFactory struct {
 	client  *bfClient.Client
 }
 
-func (r RunnerFactory) CreateRunner(selectionID uint64, name, marketID string) (*bookmaker.Runner, error) {
+// CreateRunner uses the arguments provided to call the BetFair API and parse the response into a
+// bookmaker.Runner struct
+func (r RunnerFactory) CreateRunner(selectionID uint64, marketID, name string) (*bookmaker.Runner, error) {
 	request := buildRunnerBookRequest(marketID, selectionID, []string{"EX_BEST_OFFERS"})
 
 	run, err := r.parseRunner(request)
