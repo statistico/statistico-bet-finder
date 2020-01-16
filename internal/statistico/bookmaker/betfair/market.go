@@ -10,11 +10,13 @@ import (
 
 const betfair = "Betfair"
 
+// MarketFactory populates BetFair markets meeting specific critera
 type MarketFactory struct {
 	Client  *bfClient.Client
 	RunnerFactory
 }
 
+// FixtureAndBetType creates a BetFair bookmaker.Market struct for a specific Fixture and Bet Type
 func (b MarketFactory) FixtureAndBetType(fix statistico.Fixture, betType string) (*bookmaker.Market, error) {
 	request, err := buildMarketCatalogueRequest(fix, []string{betType})
 
@@ -29,7 +31,7 @@ func (b MarketFactory) FixtureAndBetType(fix statistico.Fixture, betType string)
 	}
 
 	if !fixtureMatchesEvent(fix, market.Event) {
-		return nil, fmt.Errorf("rvent %+v returned by betfair client does not match fixture %+v", market.Event, fix)
+		return nil, fmt.Errorf("event %+v returned by betfair client does not match fixture %+v", market.Event, fix)
 	}
 
 	m := bookmaker.Market{
