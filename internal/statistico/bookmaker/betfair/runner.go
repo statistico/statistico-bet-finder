@@ -7,17 +7,14 @@ import (
 	bfClient "github.com/statistico/statistico-betfair-go-client"
 )
 
-type RunnerFactory struct {
-	Client *bfClient.Client
-}
 
-func (f RunnerFactory) Create(runners []bfClient.RunnerCatalogue, marketID string) ([]bookmaker.Runner, error) {
+func createRunners(client *bfClient.Client, runners []bfClient.RunnerCatalogue, marketID string) ([]bookmaker.Runner, error) {
 	var run []bookmaker.Runner
 
 	for _, runner := range runners {
 		request := buildRunnerBookRequest(marketID, runner.SelectionID, []string{"EX_BEST_OFFERS"})
 
-		y, err := f.parseRunner(request)
+		y, err := parseRunner(client, request)
 
 		if err != nil {
 			return nil, err
@@ -36,8 +33,8 @@ func (f RunnerFactory) Create(runners []bfClient.RunnerCatalogue, marketID strin
 	return run, nil
 }
 
-func (f RunnerFactory) parseRunner(req bfClient.ListRunnerBookRequest) (*bfClient.Runner, error) {
-	book, err := f.Client.ListRunnerBook(context.Background(), req)
+func parseRunner(client *bfClient.Client, req bfClient.ListRunnerBookRequest) (*bfClient.Runner, error) {
+	book, err := client.ListRunnerBook(context.Background(), req)
 
 	if err != nil {
 		return nil, err
