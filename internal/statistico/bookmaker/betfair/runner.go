@@ -7,37 +7,35 @@ import (
 	bfClient "github.com/statistico/statistico-betfair-go-client"
 )
 
+// RunnerFactory is a wrapper around the BetFair API Client that is responsible for creating new
+// bookmaker.Runner struct
 type RunnerFactory struct {
-	Client *bfClient.Client
+	client  *bfClient.Client
 }
 
-func (f RunnerFactory) Create(runners []bfClient.RunnerCatalogue, marketID string) ([]bookmaker.Runner, error) {
-	var run []bookmaker.Runner
+// CreateRunner uses the arguments provided to call the BetFair API and parse the response into a
+// bookmaker.Runner struct
+func (r RunnerFactory) CreateRunner(selectionID uint64, marketID, name string) (*bookmaker.Runner, error) {
+	request := buildRunnerBookRequest(marketID, selectionID, []string{"EX_BEST_OFFERS"})
 
-	for _, runner := range runners {
-		request := buildRunnerBookRequest(marketID, runner.SelectionID, []string{"EX_BEST_OFFERS"})
+	run, err := r.parseRunner(request)
 
-		y, err := f.parseRunner(request)
-
-		if err != nil {
-			return nil, err
-		}
-
-		r := bookmaker.Runner{
-			Name:        runner.RunnerName,
-			Back:        buildPrices(y.EX.AvailableToBack),
-			Lay:         buildPrices(y.EX.AvailableToLay),
-			SelectionID: runner.SelectionID,
-		}
-
-		run = append(run, r)
+	if err != nil {
+		return nil, err
 	}
 
-	return run, nil
+	runner := bookmaker.Runner{
+		Name:        name,
+		Back:        buildPrices(run.EX.AvailableToBack),
+		Lay:         buildPrices(run.EX.AvailableToLay),
+		SelectionID: selectionID,
+	}
+
+	return &runner, nil
 }
 
-func (f RunnerFactory) parseRunner(req bfClient.ListRunnerBookRequest) (*bfClient.Runner, error) {
-	book, err := f.Client.ListRunnerBook(context.Background(), req)
+func (r RunnerFactory) parseRunner(req bfClient.ListRunnerBookRequest) (*bfClient.Runner, error) {
+	book, err := r.client.ListRunnerBook(context.Background(), req)
 
 	if err != nil {
 		return nil, err
@@ -45,11 +43,15 @@ func (f RunnerFactory) parseRunner(req bfClient.ListRunnerBookRequest) (*bfClien
 
 	if len(book) == 0 || len(book[0].Runners) == 0 {
 		return nil, fmt.Errorf(
-			"runner book does not exist for Market %s and Selection %d",
+			"runner book does not exist for Market '%s' and Selection '%d'",
 			req.MarketID,
 			req.SelectionID,
 		)
 	}
 
 	return &book[0].Runners[0], nil
+}
+
+func NewRunnerFactory(c *bfClient.Client) *RunnerFactory {
+	return &RunnerFactory{client:c}
 }

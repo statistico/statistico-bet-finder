@@ -11,7 +11,7 @@ const betfair = "Betfair"
 
 type MarketFactory struct {
 	Client  *bfClient.Client
-	factory RunnerFactory
+	RunnerFactory
 }
 
 func (b MarketFactory) FixtureAndBetType(fix statistico.Fixture, betType string) (*bookmaker.Market, error) {
@@ -33,13 +33,15 @@ func (b MarketFactory) FixtureAndBetType(fix statistico.Fixture, betType string)
 		Runners:   nil,
 	}
 
-	runners, err := b.factory.Create(market.Runners, market.MarketID)
+	for _, runner := range market.Runners {
+		run, err := b.CreateRunner(runner.SelectionID, market.MarketID, runner.RunnerName)
 
-	if err != nil {
-		return nil, err
+		if err != nil {
+			return nil, err
+		}
+
+		m.Runners = append(m.Runners, *run)
 	}
-
-	m.Runners = runners
 
 	return &m, nil
 }
