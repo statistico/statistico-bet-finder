@@ -5,14 +5,14 @@ import (
 	"net/http"
 )
 
-func BetfairClient(client *http.Client) bfClient.Client {
+func BetfairClient(client *http.Client) *bfClient.Client {
 	creds := bfClient.InteractiveCredentials{Token:"token"}
 
 	base := bfClient.BaseURLs{
-		Betting:  "https://api.betfair.com/exchange/betting/rest/v1.0",
+		Betting:  "https://api.betfair.com/test",
 	}
 
-	return bfClient.Client{
+	return &bfClient.Client{
 		HTTPClient:  client,
 		Credentials: creds,
 		BaseURLs:    base,

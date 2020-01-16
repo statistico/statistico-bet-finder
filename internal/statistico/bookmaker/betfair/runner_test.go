@@ -1,41 +1,23 @@
 package betfair
 
 import (
-	"bytes"
 	"github.com/statistico/statistico-bet-finder/internal/statistico/bookmaker"
 	"github.com/statistico/statistico-bet-finder/internal/statistico/mock"
-	bfClient "github.com/statistico/statistico-betfair-go-client"
 	"github.com/stretchr/testify/assert"
-	"io/ioutil"
-	"net/http"
 	"testing"
 )
 
-func Test_createRunners(t *testing.T) {
+func TestRunnerFactory_CreateRunner(t *testing.T) {
 	t.Run("returns hydrated runners based on runner catalogue and market", func(t *testing.T) {
 		t.Helper()
 
-		server := mock.HttpClient(func(req *http.Request) (*http.Response, error) {
-			return &http.Response{
-				StatusCode: 200,
-				Body:       ioutil.NopCloser(bytes.NewBufferString(runnersResponse)),
-			}, nil
-		})
+		server := mock.ResponseServer(t, runnersResponse, 200, "https://api.betfair.com/test/listRunnerBook/")
 
 		client := mock.BetfairClient(server)
 
-		runners := []bfClient.RunnerCatalogue{
-			{
-				SelectionID:  47973,
-				RunnerName:   "Under 2.5 Goals",
-			},
-			{
-				SelectionID:  45766,
-				RunnerName:   "Over 2.5 Goals",
-			},
-		}
+		factory := RunnerFactory{client:client}
 
-		fetched, err := createRunners(&client, runners, "1.567278")
+		fetched, err := factory.CreateRunner(47973, "Under 2.5 Goals", "1.567278")
 
 		if err != nil {
 			t.Fatalf("Error creating runners expected nil got %s", err)
@@ -71,15 +53,76 @@ func Test_createRunners(t *testing.T) {
 			},
 		}
 
-		assert.Equal(t, 2, len(fetched))
-		assert.Equal(t, "Under 2.5 Goals", fetched[0].Name)
-		assert.Equal(t, uint64(47973), fetched[0].SelectionID)
-		assert.Equal(t, back, fetched[0].Back)
-		assert.Equal(t, lay, fetched[0].Lay)
-		assert.Equal(t, "Over 2.5 Goals", fetched[1].Name)
-		assert.Equal(t, uint64(45766), fetched[1].SelectionID)
-		assert.Equal(t, back, fetched[1].Back)
-		assert.Equal(t, lay, fetched[1].Lay)
+		assert.Equal(t, "Under 2.5 Goals", fetched.Name)
+		assert.Equal(t, uint64(47973), fetched.SelectionID)
+		assert.Equal(t, back, fetched.Back)
+		assert.Equal(t, lay, fetched.Lay)
+	})
+
+	t.Run("returns error if runner does not exist for market and selection", func(t *testing.T) {
+		t.Helper()
+
+		server := mock.ResponseServer(t, `[]`, 200, "https://api.betfair.com/test/listRunnerBook/")
+
+
+		client := mock.BetfairClient(server)
+
+		factory := RunnerFactory{client:client}
+
+		fetched, err := factory.CreateRunner(47973, "Under 2.5 Goals", "1.567278")
+
+		if err == nil {
+			t.Fatal("Error expected got nil")
+		}
+
+		if fetched != nil {
+			t.Fatalf("Expected nil got %+v", fetched)
+		}
+
+		assert.Equal(t, "runner book does not exist for Market '1.567278' and Selection '47973'", err.Error())
+	})
+
+	t.Run("returns error if error returned from betfair client", func(t *testing.T) {
+		t.Helper()
+
+		server := mock.ResponseServer(t, `Error occurred`, 400, "https://api.betfair.com/test/listRunnerBook/")
+
+		client := mock.BetfairClient(server)
+
+		factory := RunnerFactory{client:client}
+
+		fetched, err := factory.CreateRunner(47973, "Under 2.5 Goals", "1.567278")
+
+		if err == nil {
+			t.Fatal("Error expected got nil")
+		}
+
+		if fetched != nil {
+			t.Fatalf("Expected nil got %+v", fetched)
+		}
+	})
+
+	t.Run("returns error if response does not return any runnes", func(t *testing.T) {
+		t.Helper()
+
+		server := mock.ResponseServer(t, emptyRunnerResponse, 200, "https://api.betfair.com/test/listRunnerBook/")
+
+
+		client := mock.BetfairClient(server)
+
+		factory := RunnerFactory{client:client}
+
+		fetched, err := factory.CreateRunner(47973, "Under 2.5 Goals", "1.567278")
+
+		if err == nil {
+			t.Fatal("Error expected got nil")
+		}
+
+		if fetched != nil {
+			t.Fatalf("Expected nil got %+v", fetched)
+		}
+
+		assert.Equal(t, "runner book does not exist for Market '1.567278' and Selection '47973'", err.Error())
 	})
 }
 
@@ -141,5 +184,27 @@ var runnersResponse = `[
         }
       }
     ]
+  }
+]`
+
+var emptyRunnerResponse = `[
+  {
+    "marketId": "1.167019437",
+    "isMarketDataDelayed": true,
+    "status": "OPEN",
+    "betDelay": 0,
+    "bspReconciled": false,
+    "complete": true,
+    "inplay": false,
+    "numberOfWinners": 1,
+    "numberOfRunners": 2,
+    "numberOfActiveRunners": 2,
+    "lastMatchTime": "2020-01-16T11:30:52.965Z",
+    "totalMatched": 863.62,
+    "totalAvailable": 63875.59,
+    "crossMatching": true,
+    "runnersVoidable": false,
+    "version": 3116445978,
+    "runners": []
   }
 ]`

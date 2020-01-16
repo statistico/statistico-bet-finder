@@ -7,34 +7,31 @@ import (
 	bfClient "github.com/statistico/statistico-betfair-go-client"
 )
 
-
-func createRunners(client *bfClient.Client, runners []bfClient.RunnerCatalogue, marketID string) ([]bookmaker.Runner, error) {
-	var run []bookmaker.Runner
-
-	for _, runner := range runners {
-		request := buildRunnerBookRequest(marketID, runner.SelectionID, []string{"EX_BEST_OFFERS"})
-
-		y, err := parseRunner(client, request)
-
-		if err != nil {
-			return nil, err
-		}
-
-		r := bookmaker.Runner{
-			Name:        runner.RunnerName,
-			Back:        buildPrices(y.EX.AvailableToBack),
-			Lay:         buildPrices(y.EX.AvailableToLay),
-			SelectionID: runner.SelectionID,
-		}
-
-		run = append(run, r)
-	}
-
-	return run, nil
+type RunnerFactory struct {
+	client  *bfClient.Client
 }
 
-func parseRunner(client *bfClient.Client, req bfClient.ListRunnerBookRequest) (*bfClient.Runner, error) {
-	book, err := client.ListRunnerBook(context.Background(), req)
+func (r RunnerFactory) CreateRunner(selectionID uint64, name, marketID string) (*bookmaker.Runner, error) {
+	request := buildRunnerBookRequest(marketID, selectionID, []string{"EX_BEST_OFFERS"})
+
+	run, err := r.parseRunner(request)
+
+	if err != nil {
+		return nil, err
+	}
+
+	runner := bookmaker.Runner{
+		Name:        name,
+		Back:        buildPrices(run.EX.AvailableToBack),
+		Lay:         buildPrices(run.EX.AvailableToLay),
+		SelectionID: selectionID,
+	}
+
+	return &runner, nil
+}
+
+func (r RunnerFactory) parseRunner(req bfClient.ListRunnerBookRequest) (*bfClient.Runner, error) {
+	book, err := r.client.ListRunnerBook(context.Background(), req)
 
 	if err != nil {
 		return nil, err
@@ -42,11 +39,15 @@ func parseRunner(client *bfClient.Client, req bfClient.ListRunnerBookRequest) (*
 
 	if len(book) == 0 || len(book[0].Runners) == 0 {
 		return nil, fmt.Errorf(
-			"runner book does not exist for Market %s and Selection %d",
+			"runner book does not exist for Market '%s' and Selection '%d'",
 			req.MarketID,
 			req.SelectionID,
 		)
 	}
 
 	return &book[0].Runners[0], nil
+}
+
+func NewRunnerFactory(c *bfClient.Client) *RunnerFactory {
+	return &RunnerFactory{client:c}
 }
