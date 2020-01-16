@@ -18,3 +18,4 @@ func BetfairClient(client *http.Client) *bfClient.Client {
 		BaseURLs:    base,
 	}
 }
+
