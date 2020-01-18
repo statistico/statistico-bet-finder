@@ -1,7 +1,7 @@
 package mock
 
 import (
-	"github.com/statistico/statistico-bet-finder/internal/statistico/bookmaker"
+	"github.com/statistico/statistico-bet-finder/internal/app/bookmaker"
 	"github.com/stretchr/testify/mock"
 )
 
