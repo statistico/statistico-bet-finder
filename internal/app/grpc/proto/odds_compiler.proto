@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package proto;
+
+service OddsCompilerService {
+    // Returns a Over/Under goals odds for a given fixture
+    rpc GetOverUnderGoalsForFixture(OverUnderRequest) returns (OverUnderGoalsResponse) {}
+}
+
+message OverUnderRequest {
+    uint64 fixture_id = 1;
+    string market = 2;
+}
+
+message OverUnderGoalsResponse {
+    uint64 fixture_id = 1;
+    string market = 2;
+    repeated Odds odds = 3;
+}
+
+message Odds {
+    float price = 1;
+    string selection = 2;
+}

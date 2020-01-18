@@ -3,7 +3,7 @@ package betfair
 import (
 	"context"
 	"fmt"
-	"github.com/statistico/statistico-bet-finder/internal/statistico/bookmaker"
+	"github.com/statistico/statistico-bet-finder/internal/app/bookmaker"
 	bfClient "github.com/statistico/statistico-betfair-go-client"
 )
 
