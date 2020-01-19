@@ -9,6 +9,7 @@ require (
 	github.com/cncf/udpa/go v0.0.0-20191230090109-edbea6a78f6d // indirect
 	github.com/creack/pty v1.1.9 // indirect
 	github.com/envoyproxy/go-control-plane v0.9.2 // indirect
+	github.com/golang/protobuf v1.3.2
 	github.com/google/go-cmp v0.4.0 // indirect
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/kr/pretty v0.2.0 // indirect
@@ -27,4 +28,5 @@ require (
 	golang.org/x/time v0.0.0-20191024005414-555d28b269f0 // indirect
 	golang.org/x/tools v0.0.0-20200117220505-0cba7a3a9ee9 // indirect
 	google.golang.org/genproto v0.0.0-20200117163144-32f20d992d24 // indirect
+	google.golang.org/grpc v1.26.0
 )

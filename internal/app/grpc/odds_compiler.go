@@ -6,10 +6,12 @@ import (
 	"github.com/statistico/statistico-bet-finder/internal/app/grpc/proto"
 )
 
+// OddsCompilerClient is a wrapper around the Statistico Odds Compiler service
 type OddsCompilerClient struct {
 	client proto.OddsCompilerServiceClient
 }
 
+// GetOverUnderGoalsForFixture returns a market struct containing data for the requested fixture and market
 func (o OddsCompilerClient) GetOverUnderGoalsForFixture(fixtureID uint64, market string) (*app.Market, error) {
 	request := proto.OverUnderRequest{
 		FixtureId:            fixtureID,
