@@ -1,4 +1,4 @@
-package grpc
+package statistico
 
 import (
 	"context"
@@ -15,7 +15,7 @@ func TestFixtureClient_FixtureByID(t *testing.T) {
 		t.Helper()
 
 		mockClient := new(mock.FixtureServiceClient)
-		fixtureClient := FixtureClient{client: mockClient}
+		fixtureClient := GRPCFixtureClient{client: mockClient}
 		request := proto.FixtureRequest{FixtureId: 14562}
 
 		fix := proto.Fixture{
@@ -46,7 +46,7 @@ func TestFixtureClient_FixtureByID(t *testing.T) {
 		t.Helper()
 
 		mockClient := new(mock.FixtureServiceClient)
-		fixtureClient := FixtureClient{client: mockClient}
+		fixtureClient := GRPCFixtureClient{client: mockClient}
 		request := proto.FixtureRequest{FixtureId: 14562}
 
 		mockClient.On("FixtureByID", context.Background(), &request, []grpc.CallOption(nil)).Return(&proto.Fixture{}, errors.New("client error"))
