@@ -15,7 +15,7 @@ func TestOddsCompilerClient_GetOverUnderGoalsForFixture(t *testing.T) {
 		t.Helper()
 
 		mockClient := new(mock.OddsCompilerServiceClient)
-		oddsClient := GRPCOddsCompilerClient{client: mockClient}
+		oddsClient := NewGRPCOddsCompilerClient(mockClient)
 		request := proto.OverUnderRequest{Market: "OVER_UNDER_15", FixtureId: 145261}
 
 		oddsOne := proto.Odds{Price: 1.67, Selection: "OVER"}
@@ -50,7 +50,7 @@ func TestOddsCompilerClient_GetOverUnderGoalsForFixture(t *testing.T) {
 		t.Helper()
 
 		mockClient := new(mock.OddsCompilerServiceClient)
-		oddsClient := GRPCOddsCompilerClient{client: mockClient}
+		oddsClient := NewGRPCOddsCompilerClient(mockClient)
 		request := proto.OverUnderRequest{Market: "OVER_UNDER_15", FixtureId: 145261}
 
 		mockClient.On("GetOverUnderGoalsForFixture", context.Background(), &request, []grpc.CallOption(nil)).Return(

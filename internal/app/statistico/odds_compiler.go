@@ -7,12 +7,16 @@ import (
 )
 
 // GRPCOddsCompilerClient is a wrapper around the Statistico Odds Compiler service
-type GRPCOddsCompilerClient struct {
+type GRPCOddsCompilerClient interface {
+	// GetOverUnderGoalsForFixture returns a market struct containing data for the requested fixture and market
+	GetOverUnderGoalsForFixture(fixtureID uint64, market string) (*app.Market, error)
+}
+
+type gRPCOddsCompilerClient struct {
 	client proto.OddsCompilerServiceClient
 }
 
-// GetOverUnderGoalsForFixture returns a market struct containing data for the requested fixture and market
-func (o GRPCOddsCompilerClient) GetOverUnderGoalsForFixture(fixtureID uint64, market string) (*app.Market, error) {
+func (o gRPCOddsCompilerClient) GetOverUnderGoalsForFixture(fixtureID uint64, market string) (*app.Market, error) {
 	request := proto.OverUnderRequest{
 		FixtureId: fixtureID,
 		Market:    market,
@@ -43,4 +47,8 @@ func convertResponseToMarket(resp *proto.OverUnderGoalsResponse) *app.Market {
 	}
 
 	return &market
+}
+
+func NewGRPCOddsCompilerClient(c proto.OddsCompilerServiceClient) GRPCOddsCompilerClient {
+	return &gRPCOddsCompilerClient{client:c}
 }
