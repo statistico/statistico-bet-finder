@@ -7,13 +7,17 @@ import (
 	"time"
 )
 
+type GRPCFixtureClient interface {
+	FixtureByID(id uint64) (*app.Fixture, error)
+}
+
 // GRPCFixtureClient is a wrapper around the Statistico Data service.
-type GRPCFixtureClient struct {
+type gRPCFixtureClient struct {
 	client proto.FixtureServiceClient
 }
 
 // FixtureByID returns a fixture struct parsed from the Statistico data service.
-func (d GRPCFixtureClient) FixtureByID(id uint64) (*app.Fixture, error) {
+func (d gRPCFixtureClient) FixtureByID(id uint64) (*app.Fixture, error) {
 	request := proto.FixtureRequest{FixtureId: id}
 
 	response, err := d.client.FixtureByID(context.Background(), &request)
@@ -35,4 +39,8 @@ func convertResponseToFixture(resp *proto.Fixture) *app.Fixture {
 	}
 
 	return &fixture
+}
+
+func NewGRPCFixtureClient(c proto.FixtureServiceClient) GRPCFixtureClient {
+	return &gRPCFixtureClient{client:c}
 }
