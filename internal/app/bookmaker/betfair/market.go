@@ -12,8 +12,8 @@ const betfair = "Betfair"
 
 // MarketFactory populates BetFair markets meeting specific criteria
 type MarketFactory struct {
-	client  *bfClient.Client
-	runner  bookmaker.RunnerFactory
+	client *bfClient.Client
+	runner bookmaker.RunnerFactory
 }
 
 // FixtureAndBetType creates a BetFair bookmaker.Market struct for a specific Fixture and Market

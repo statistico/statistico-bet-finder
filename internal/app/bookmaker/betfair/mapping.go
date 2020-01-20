@@ -20,16 +20,16 @@ func parseCompetitionMapping(id uint64) (string, error) {
 
 func parseTeamMapping(team string) string {
 	teams := map[string]string{
-		"AFC Bournemouth": "Bournemouth",
-		"Brighton & Hove Albion": "Brighton",
-		"Leicester City": "Leicester",
-		"Manchester City": "Man City",
-		"Manchester United": "Man Utd",
-		"Newcastle United": "Newcastle",
-		"Norwich City": "Norwich",
-		"Sheffield United": "Sheff Utd",
-		"Tottenham Hotspur": "Tottenham",
-		"West Ham United": "West Ham",
+		"AFC Bournemouth":         "Bournemouth",
+		"Brighton & Hove Albion":  "Brighton",
+		"Leicester City":          "Leicester",
+		"Manchester City":         "Man City",
+		"Manchester United":       "Man Utd",
+		"Newcastle United":        "Newcastle",
+		"Norwich City":            "Norwich",
+		"Sheffield United":        "Sheff Utd",
+		"Tottenham Hotspur":       "Tottenham",
+		"West Ham United":         "West Ham",
 		"Wolverhampton Wanderers": "Wolves",
 	}
 

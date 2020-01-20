@@ -19,8 +19,8 @@ func TestMarketFactory_FixtureAndBetType(t *testing.T) {
 		runners := new(mock.RunnerFactory)
 
 		factory := MarketFactory{
-			client:        client,
-			runner: 		runners,
+			client: client,
+			runner: runners,
 		}
 
 		fixture := newStatisticoFixture("Liverpool", "Manchester United", 148270, 16036)
@@ -55,8 +55,8 @@ func TestMarketFactory_FixtureAndBetType(t *testing.T) {
 		runners := new(mock.RunnerFactory)
 
 		factory := MarketFactory{
-			client:        client,
-			runner: 		runners,
+			client: client,
+			runner: runners,
 		}
 
 		fixture := newStatisticoFixture("Liverpool", "Manchester United", 148270, 44)
@@ -83,8 +83,8 @@ func TestMarketFactory_FixtureAndBetType(t *testing.T) {
 		runners := new(mock.RunnerFactory)
 
 		factory := MarketFactory{
-			client:        client,
-			runner: 		runners,
+			client: client,
+			runner: runners,
 		}
 
 		fixture := newStatisticoFixture("Liverpool", "Manchester United", 148270, 16036)
@@ -111,8 +111,8 @@ func TestMarketFactory_FixtureAndBetType(t *testing.T) {
 		runners := new(mock.RunnerFactory)
 
 		factory := MarketFactory{
-			client:        client,
-			runner: 		runners,
+			client: client,
+			runner: runners,
 		}
 
 		fixture := newStatisticoFixture("Liverpool", "Manchester City", 148270, 16036)
@@ -143,8 +143,8 @@ func TestMarketFactory_FixtureAndBetType(t *testing.T) {
 		runners := new(mock.RunnerFactory)
 
 		factory := MarketFactory{
-			client:        client,
-			runner: 		runners,
+			client: client,
+			runner: runners,
 		}
 
 		fixture := newStatisticoFixture("Liverpool", "Manchester United", 148270, 16036)
@@ -201,10 +201,10 @@ var marketCatalogueResponse = `[
 
 func newStatisticoFixture(home, away string, fixtureID, competitionID uint64) app.Fixture {
 	return app.Fixture{
-		ID: fixtureID,
+		ID:            fixtureID,
 		CompetitionID: competitionID,
-		HomeTeam: home,
-		AwayTeam: away,
+		HomeTeam:      home,
+		AwayTeam:      away,
 	}
 }
 

@@ -14,8 +14,8 @@ type OddsCompilerClient struct {
 // GetOverUnderGoalsForFixture returns a market struct containing data for the requested fixture and market
 func (o OddsCompilerClient) GetOverUnderGoalsForFixture(fixtureID uint64, market string) (*app.Market, error) {
 	request := proto.OverUnderRequest{
-		FixtureId:            fixtureID,
-		Market:               market,
+		FixtureId: fixtureID,
+		Market:    market,
 	}
 
 	response, err := o.client.GetOverUnderGoalsForFixture(context.Background(), &request)

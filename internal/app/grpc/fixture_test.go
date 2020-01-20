@@ -15,15 +15,15 @@ func TestFixtureClient_FixtureByID(t *testing.T) {
 		t.Helper()
 
 		mockClient := new(mock.FixtureServiceClient)
-		fixtureClient := FixtureClient{client:mockClient}
-		request := proto.FixtureRequest{FixtureId:14562}
+		fixtureClient := FixtureClient{client: mockClient}
+		request := proto.FixtureRequest{FixtureId: 14562}
 
 		fix := proto.Fixture{
-			Id:                   14562,
-			Competition:          &proto.Competition{Id:42},
-			HomeTeam:             &proto.Team{Name:"West Ham United"},
-			AwayTeam:             &proto.Team{Name:"Arsenal"},
-			DateTime:             &proto.Date{Utc:1579536616},
+			Id:          14562,
+			Competition: &proto.Competition{Id: 42},
+			HomeTeam:    &proto.Team{Name: "West Ham United"},
+			AwayTeam:    &proto.Team{Name: "Arsenal"},
+			DateTime:    &proto.Date{Utc: 1579536616},
 		}
 
 		mockClient.On("FixtureByID", context.Background(), &request, []grpc.CallOption(nil)).Return(&fix, nil)
@@ -46,8 +46,8 @@ func TestFixtureClient_FixtureByID(t *testing.T) {
 		t.Helper()
 
 		mockClient := new(mock.FixtureServiceClient)
-		fixtureClient := FixtureClient{client:mockClient}
-		request := proto.FixtureRequest{FixtureId:14562}
+		fixtureClient := FixtureClient{client: mockClient}
+		request := proto.FixtureRequest{FixtureId: 14562}
 
 		mockClient.On("FixtureByID", context.Background(), &request, []grpc.CallOption(nil)).Return(&proto.Fixture{}, errors.New("client error"))
 

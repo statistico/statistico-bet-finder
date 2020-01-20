@@ -15,7 +15,7 @@ func TestRunnerFactory_CreateRunner(t *testing.T) {
 
 		client := mock.BetfairClient(server)
 
-		factory := RunnerFactory{client:client}
+		factory := RunnerFactory{client: client}
 
 		fetched, err := factory.CreateRunner(47973, "1.567278", "Under 2.5 Goals")
 
@@ -26,30 +26,30 @@ func TestRunnerFactory_CreateRunner(t *testing.T) {
 		back := []bookmaker.Price{
 			{
 				Price: 1.86,
-				Size: 19.16,
+				Size:  19.16,
 			},
 			{
 				Price: 1.85,
-				Size: 87.82,
+				Size:  87.82,
 			},
 			{
 				Price: 1.81,
-				Size: 247.25,
+				Size:  247.25,
 			},
 		}
 
 		lay := []bookmaker.Price{
 			{
 				Price: 1.98,
-				Size: 21.6,
+				Size:  21.6,
 			},
 			{
 				Price: 2.0,
-				Size: 10.6,
+				Size:  10.6,
 			},
 			{
 				Price: 2.04,
-				Size: 33.97,
+				Size:  33.97,
 			},
 		}
 
@@ -64,10 +64,9 @@ func TestRunnerFactory_CreateRunner(t *testing.T) {
 
 		server := mock.ResponseServer(t, `[]`, 200, "https://api.betfair.com/test/listRunnerBook/")
 
-
 		client := mock.BetfairClient(server)
 
-		factory := RunnerFactory{client:client}
+		factory := RunnerFactory{client: client}
 
 		fetched, err := factory.CreateRunner(47973, "1.567278", "Under 2.5 Goals")
 
@@ -89,7 +88,7 @@ func TestRunnerFactory_CreateRunner(t *testing.T) {
 
 		client := mock.BetfairClient(server)
 
-		factory := RunnerFactory{client:client}
+		factory := RunnerFactory{client: client}
 
 		fetched, err := factory.CreateRunner(47973, "1.567278", "Under 2.5 Goals")
 
@@ -107,10 +106,9 @@ func TestRunnerFactory_CreateRunner(t *testing.T) {
 
 		server := mock.ResponseServer(t, emptyRunnerResponse, 200, "https://api.betfair.com/test/listRunnerBook/")
 
-
 		client := mock.BetfairClient(server)
 
-		factory := RunnerFactory{client:client}
+		factory := RunnerFactory{client: client}
 
 		fetched, err := factory.CreateRunner(47973, "1.567278", "Under 2.5 Goals")
 
