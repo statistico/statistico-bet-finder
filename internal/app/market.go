@@ -1,14 +1,50 @@
 package app
 
-// Market is a struct containing Statistico calculated odds for a fixture
-type Market struct {
-	FixtureID uint64   `json:"fixture_id"`
-	Name      string   `json:"name"`
-	Runners []Runner   `json:"runners"`
+import (
+	"github.com/statistico/statistico-bet-finder/internal/app/bookmaker"
+	"github.com/statistico/statistico-bet-finder/internal/app/grpc"
+)
+
+type MarketBuilder interface {
+	FixtureAndBetType(f *Fixture, bet string) *Market
 }
 
-// Runner is a struct containing individual runner information
-type Runner struct {
-	Name        string  `json:"name"`
-	Price       float32 `json:"price"`
+// MarketBuilder builds markets from Statistico and associated bookmakers.
+type marketBuilder struct {
+	oddsClient grpc.OddsCompilerClient
+	bookmakers []bookmaker.MarketFactory
+}
+
+// FixtureAndBetType creates a Market struct for a given Fixture and bet type.
+func (m marketBuilder) FixtureAndBetType(f *Fixture, bet string) *Market {
+	market := Market{
+		FixtureID:  f.ID,
+		Name:       bet,
+	}
+
+	odds, err := m.oddsClient.GetOverUnderGoalsForFixture(f.ID, bet)
+
+	if err != nil {
+		// Log error here
+		return nil
+	}
+
+	market.Statistico = odds
+
+	for _, bookie := range m.bookmakers {
+		m, err := bookie.FixtureAndBetType(*f, bet)
+
+		if err != nil {
+			// Log error here
+			continue
+		}
+
+		market.Bookmaker = append(market.Bookmaker, m)
+	}
+
+	return &market
+}
+
+func NewMarketBuilder(odds grpc.OddsCompilerClient, book []bookmaker.MarketFactory) MarketBuilder {
+	return &marketBuilder{oddsClient: odds, bookmakers: book}
 }
