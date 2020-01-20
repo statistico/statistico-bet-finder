@@ -12,7 +12,7 @@ type FixtureClient struct {
 }
 
 func (d FixtureClient) FixtureByID(id uint64) (*app.Fixture, error) {
-	request := proto.FixtureRequest{FixtureId:id}
+	request := proto.FixtureRequest{FixtureId: id}
 
 	response, err := d.client.FixtureByID(context.Background(), &request)
 

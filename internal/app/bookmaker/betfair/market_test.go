@@ -19,8 +19,8 @@ func TestMarketFactory_FixtureAndBetType(t *testing.T) {
 		runners := new(mock.RunnerFactory)
 
 		factory := MarketFactory{
-			client:        client,
-			runner: 		runners,
+			client: client,
+			runner: runners,
 		}
 
 		fixture := newStatisticoFixture("Liverpool", "Manchester United", 148270, 16036)
@@ -31,7 +31,7 @@ func TestMarketFactory_FixtureAndBetType(t *testing.T) {
 		runners.On("CreateRunner", uint64(47972), "1.167019590", "Under 2.5 Goals").Return(runnerOne, nil)
 		runners.On("CreateRunner", uint64(47973), "1.167019590", "Over 2.5 Goals").Return(runnerTwo, nil)
 
-		market, err := factory.FixtureAndBetType(fixture, "OVER_UNDER_25")
+		market, err := factory.FixtureAndMarket(fixture, "OVER_UNDER_25")
 
 		if err != nil {
 			t.Fatalf("Error creating market expected nil got %s", err)
@@ -42,8 +42,7 @@ func TestMarketFactory_FixtureAndBetType(t *testing.T) {
 		assert.Equal(t, "1.167019590", market.ID)
 		assert.Equal(t, uint64(148270), market.FixtureID)
 		assert.Equal(t, "Betfair", market.Bookmaker)
-		assert.Equal(t, "Over/Under 2.5 Goals", market.Name)
-		assert.Equal(t, "OVER_UNDER_25", market.BetType)
+		assert.Equal(t, "OVER_UNDER_25", market.Name)
 		assert.Equal(t, 2, len(market.Runners))
 	})
 
@@ -56,13 +55,13 @@ func TestMarketFactory_FixtureAndBetType(t *testing.T) {
 		runners := new(mock.RunnerFactory)
 
 		factory := MarketFactory{
-			client:        client,
-			runner: 		runners,
+			client: client,
+			runner: runners,
 		}
 
 		fixture := newStatisticoFixture("Liverpool", "Manchester United", 148270, 44)
 
-		market, err := factory.FixtureAndBetType(fixture, "OVER_UNDER_25")
+		market, err := factory.FixtureAndMarket(fixture, "OVER_UNDER_25")
 
 		if market != nil {
 			t.Fatalf("Error expected nil got %+v", market)
@@ -84,13 +83,13 @@ func TestMarketFactory_FixtureAndBetType(t *testing.T) {
 		runners := new(mock.RunnerFactory)
 
 		factory := MarketFactory{
-			client:        client,
-			runner: 		runners,
+			client: client,
+			runner: runners,
 		}
 
 		fixture := newStatisticoFixture("Liverpool", "Manchester United", 148270, 16036)
 
-		market, err := factory.FixtureAndBetType(fixture, "OVER_UNDER_25")
+		market, err := factory.FixtureAndMarket(fixture, "OVER_UNDER_25")
 
 		if market != nil {
 			t.Fatalf("Error expected nil got %+v", market)
@@ -112,13 +111,13 @@ func TestMarketFactory_FixtureAndBetType(t *testing.T) {
 		runners := new(mock.RunnerFactory)
 
 		factory := MarketFactory{
-			client:        client,
-			runner: 		runners,
+			client: client,
+			runner: runners,
 		}
 
 		fixture := newStatisticoFixture("Liverpool", "Manchester City", 148270, 16036)
 
-		market, err := factory.FixtureAndBetType(fixture, "OVER_UNDER_25")
+		market, err := factory.FixtureAndMarket(fixture, "OVER_UNDER_25")
 
 		if market != nil {
 			t.Fatalf("Error expected nil got %+v", market)
@@ -144,8 +143,8 @@ func TestMarketFactory_FixtureAndBetType(t *testing.T) {
 		runners := new(mock.RunnerFactory)
 
 		factory := MarketFactory{
-			client:        client,
-			runner: 		runners,
+			client: client,
+			runner: runners,
 		}
 
 		fixture := newStatisticoFixture("Liverpool", "Manchester United", 148270, 16036)
@@ -155,7 +154,7 @@ func TestMarketFactory_FixtureAndBetType(t *testing.T) {
 		runners.On("CreateRunner", uint64(47972), "1.167019590", "Under 2.5 Goals").Return(runnerOne, nil)
 		runners.On("CreateRunner", uint64(47973), "1.167019590", "Over 2.5 Goals").Return(&bookmaker.Runner{}, errors.New("oh no"))
 
-		market, err := factory.FixtureAndBetType(fixture, "OVER_UNDER_25")
+		market, err := factory.FixtureAndMarket(fixture, "OVER_UNDER_25")
 
 		if market != nil {
 			t.Fatalf("Error expected nil got %+v", market)
@@ -202,10 +201,10 @@ var marketCatalogueResponse = `[
 
 func newStatisticoFixture(home, away string, fixtureID, competitionID uint64) app.Fixture {
 	return app.Fixture{
-		ID: fixtureID,
+		ID:            fixtureID,
 		CompetitionID: competitionID,
-		HomeTeam: home,
-		AwayTeam: away,
+		HomeTeam:      home,
+		AwayTeam:      away,
 	}
 }
 

@@ -10,7 +10,7 @@ import (
 // RunnerFactory is a wrapper around the BetFair API Client that is responsible for creating new
 // bookmaker.Runner struct
 type RunnerFactory struct {
-	client  *bfClient.Client
+	client *bfClient.Client
 }
 
 // CreateRunner uses the arguments provided to call the BetFair API and parse the response into a
@@ -53,5 +53,5 @@ func (r RunnerFactory) parseRunner(req bfClient.ListRunnerBookRequest) (*bfClien
 }
 
 func NewRunnerFactory(c *bfClient.Client) *RunnerFactory {
-	return &RunnerFactory{client:c}
+	return &RunnerFactory{client: c}
 }

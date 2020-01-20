@@ -12,12 +12,12 @@ func Test_fixtureMatchesEvent(t *testing.T) {
 		t.Helper()
 
 		fixture := app.Fixture{
-			HomeTeam:      "West Ham United",
-			AwayTeam:      "AFC Bournemouth",
+			HomeTeam: "West Ham United",
+			AwayTeam: "AFC Bournemouth",
 		}
 
 		event := bfClient.Event{
-			Name:        "West Ham v Bournemouth",
+			Name: "West Ham v Bournemouth",
 		}
 
 		assert.True(t, fixtureMatchesEvent(fixture, event))
@@ -27,12 +27,12 @@ func Test_fixtureMatchesEvent(t *testing.T) {
 		t.Helper()
 
 		fixture := app.Fixture{
-			HomeTeam:      "West Ham United",
-			AwayTeam:      "Chelsea",
+			HomeTeam: "West Ham United",
+			AwayTeam: "Chelsea",
 		}
 
 		event := bfClient.Event{
-			Name:        "West Ham v Bournemouth",
+			Name: "West Ham v Bournemouth",
 		}
 
 		assert.False(t, fixtureMatchesEvent(fixture, event))
