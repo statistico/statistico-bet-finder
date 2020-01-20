@@ -1,7 +1,7 @@
 package app
 
 import (
-	"github.com/statistico/statistico-bet-finder/internal/app/grpc"
+	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
 )
 
 type BookQuery struct {
@@ -10,7 +10,7 @@ type BookQuery struct {
 }
 
 type BookFactory struct {
-	fixtureClient grpc.FixtureClient
+	fixtureClient statistico.FixtureClient
 	builder MarketBuilder
 	// Add clock implementation here
 }

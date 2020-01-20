@@ -1,10 +1,11 @@
-package grpc
+package statistico_test
 
 import (
 	"context"
 	"errors"
 	"github.com/statistico/statistico-bet-finder/internal/app/grpc/proto"
 	"github.com/statistico/statistico-bet-finder/internal/app/mock"
+	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc"
 	"testing"
@@ -15,15 +16,15 @@ func TestFixtureClient_FixtureByID(t *testing.T) {
 		t.Helper()
 
 		mockClient := new(mock.FixtureServiceClient)
-		fixtureClient := FixtureClient{client:mockClient}
-		request := proto.FixtureRequest{FixtureId:14562}
+		fixtureClient := statistico.NewGRPCFixtureClient(mockClient)
+		request := proto.FixtureRequest{FixtureId: 14562}
 
 		fix := proto.Fixture{
-			Id:                   14562,
-			Competition:          &proto.Competition{Id:42},
-			HomeTeam:             &proto.Team{Name:"West Ham United"},
-			AwayTeam:             &proto.Team{Name:"Arsenal"},
-			DateTime:             &proto.Date{Utc:1579536616},
+			Id:          14562,
+			Competition: &proto.Competition{Id: 42},
+			HomeTeam:    &proto.Team{Name: "West Ham United"},
+			AwayTeam:    &proto.Team{Name: "Arsenal"},
+			DateTime:    &proto.Date{Utc: 1579536616},
 		}
 
 		mockClient.On("FixtureByID", context.Background(), &request, []grpc.CallOption(nil)).Return(&fix, nil)
@@ -46,8 +47,8 @@ func TestFixtureClient_FixtureByID(t *testing.T) {
 		t.Helper()
 
 		mockClient := new(mock.FixtureServiceClient)
-		fixtureClient := FixtureClient{client:mockClient}
-		request := proto.FixtureRequest{FixtureId:14562}
+		fixtureClient := statistico.NewGRPCFixtureClient(mockClient)
+		request := proto.FixtureRequest{FixtureId: 14562}
 
 		mockClient.On("FixtureByID", context.Background(), &request, []grpc.CallOption(nil)).Return(&proto.Fixture{}, errors.New("client error"))
 

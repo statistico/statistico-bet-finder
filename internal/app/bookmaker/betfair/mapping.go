@@ -2,7 +2,7 @@ package betfair
 
 import (
 	"fmt"
-	"github.com/statistico/statistico-bet-finder/internal/app"
+	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
 	bfClient "github.com/statistico/statistico-betfair-go-client"
 )
 
@@ -20,16 +20,16 @@ func parseCompetitionMapping(id uint64) (string, error) {
 
 func parseTeamMapping(team string) string {
 	teams := map[string]string{
-		"AFC Bournemouth": "Bournemouth",
-		"Brighton & Hove Albion": "Brighton",
-		"Leicester City": "Leicester",
-		"Manchester City": "Man City",
-		"Manchester United": "Man Utd",
-		"Newcastle United": "Newcastle",
-		"Norwich City": "Norwich",
-		"Sheffield United": "Sheff Utd",
-		"Tottenham Hotspur": "Tottenham",
-		"West Ham United": "West Ham",
+		"AFC Bournemouth":         "Bournemouth",
+		"Brighton & Hove Albion":  "Brighton",
+		"Leicester City":          "Leicester",
+		"Manchester City":         "Man City",
+		"Manchester United":       "Man Utd",
+		"Newcastle United":        "Newcastle",
+		"Norwich City":            "Norwich",
+		"Sheffield United":        "Sheff Utd",
+		"Tottenham Hotspur":       "Tottenham",
+		"West Ham United":         "West Ham",
 		"Wolverhampton Wanderers": "Wolves",
 	}
 
@@ -40,7 +40,7 @@ func parseTeamMapping(team string) string {
 	return team
 }
 
-func fixtureMatchesEvent(fix app.Fixture, event bfClient.Event) bool {
+func fixtureMatchesEvent(fix statistico.Fixture, event bfClient.Event) bool {
 	home := parseTeamMapping(fix.HomeTeam)
 	away := parseTeamMapping(fix.AwayTeam)
 

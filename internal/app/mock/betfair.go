@@ -6,10 +6,10 @@ import (
 )
 
 func BetfairClient(client *http.Client) *bfClient.Client {
-	creds := bfClient.InteractiveCredentials{Token:"token"}
+	creds := bfClient.InteractiveCredentials{Token: "token"}
 
 	base := bfClient.BaseURLs{
-		Betting:  "https://api.betfair.com/test",
+		Betting: "https://api.betfair.com/test",
 	}
 
 	return &bfClient.Client{
@@ -18,4 +18,3 @@ func BetfairClient(client *http.Client) *bfClient.Client {
 		BaseURLs:    base,
 	}
 }
-

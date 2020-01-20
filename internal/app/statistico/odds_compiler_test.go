@@ -1,10 +1,11 @@
-package grpc
+package statistico_test
 
 import (
 	"context"
 	"errors"
 	"github.com/statistico/statistico-bet-finder/internal/app/grpc/proto"
 	"github.com/statistico/statistico-bet-finder/internal/app/mock"
+	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc"
 	"testing"
@@ -15,15 +16,15 @@ func TestOddsCompilerClient_GetOverUnderGoalsForFixture(t *testing.T) {
 		t.Helper()
 
 		mockClient := new(mock.OddsCompilerServiceClient)
-		oddsClient := NewOddsCompilerClient(mockClient)
-		request := proto.OverUnderRequest{Market:"OVER_UNDER_15",FixtureId:145261}
+		oddsClient := statistico.NewGRPCOddsCompilerClient(mockClient)
+		request := proto.OverUnderRequest{Market: "OVER_UNDER_15", FixtureId: 145261}
 
 		oddsOne := proto.Odds{Price: 1.67, Selection: "OVER"}
 		oddsTwo := proto.Odds{Price: 4.62, Selection: "UNDER"}
 
 		response := proto.OverUnderGoalsResponse{
-			FixtureId:            145261,
-			Market:               "OVER_UNDER_15",
+			FixtureId: 145261,
+			Market:    "OVER_UNDER_15",
 		}
 
 		response.Odds = append(response.Odds, &oddsOne)
@@ -50,8 +51,8 @@ func TestOddsCompilerClient_GetOverUnderGoalsForFixture(t *testing.T) {
 		t.Helper()
 
 		mockClient := new(mock.OddsCompilerServiceClient)
-		oddsClient := NewOddsCompilerClient(mockClient)
-		request := proto.OverUnderRequest{Market:"OVER_UNDER_15",FixtureId:145261}
+		oddsClient := statistico.NewGRPCOddsCompilerClient(mockClient)
+		request := proto.OverUnderRequest{Market: "OVER_UNDER_15", FixtureId: 145261}
 
 		mockClient.On("GetOverUnderGoalsForFixture", context.Background(), &request, []grpc.CallOption(nil)).Return(
 			&proto.OverUnderGoalsResponse{},

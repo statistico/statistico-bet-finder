@@ -1,8 +1,10 @@
-package app
+package app_test
 
 import (
+	"github.com/statistico/statistico-bet-finder/internal/app"
 	"github.com/statistico/statistico-bet-finder/internal/app/bookmaker"
 	"github.com/statistico/statistico-bet-finder/internal/app/mock"
+	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -15,16 +17,16 @@ func TestMarketBuilder_FixtureAndBetType(t *testing.T) {
 		factory := new(mock.MarketFactory)
 		books := []bookmaker.MarketFactory{factory}
 
-		builder := NewMarketBuilder(oddsClient, books)
+		builder := app.NewMarketBuilder(oddsClient, books)
 
-		fixture := Fixture{
+		fixture := statistico.Fixture{
 			ID:            45381,
 			CompetitionID: 42,
 		}
 
-		odds := StatisticoMarket{
+		odds := statistico.Market{
 			FixtureID:45381,
-			Runners: []Runner{
+			Runners: []statistico.Runner{
 				{
 					Name:  "OVER",
 					Price: 1.59,
@@ -36,8 +38,7 @@ func TestMarketBuilder_FixtureAndBetType(t *testing.T) {
 			ID:        "1.14567",
 			FixtureID: 45381,
 			Bookmaker: "Betfair",
-			Name:      "Over/Under 2.5 Goals",
-			BetType:   "OVER_UNDER_25",
+			Name:      "OVER_UNDER_25",
 			Runners:   []bookmaker.Runner{
 				{
 					Name:        "OVER",
@@ -52,8 +53,8 @@ func TestMarketBuilder_FixtureAndBetType(t *testing.T) {
 			},
 		}
 
-		oddsClient.On("GetOverUnderGoalsForFixture", 45381, "OVER_UNDER_25").Return(odds, nil)
-		factory.On("FixtureAndBetType", &fixture, "OVER_UNDER_25").Return(&m, nil)
+		oddsClient.On("GetOverUnderGoalsForFixture", uint64(45381), "OVER_UNDER_25").Return(&odds, nil)
+		factory.On("FixtureAndMarket", fixture, "OVER_UNDER_25").Return(&m, nil)
 
 		market := builder.FixtureAndBetType(&fixture, "OVER_UNDER_25")
 

@@ -2,21 +2,21 @@ package app
 
 import (
 	"github.com/statistico/statistico-bet-finder/internal/app/bookmaker"
-	"github.com/statistico/statistico-bet-finder/internal/app/grpc"
+	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
 )
 
 type MarketBuilder interface {
-	FixtureAndBetType(f *Fixture, bet string) *Market
+	FixtureAndBetType(f *statistico.Fixture, bet string) *Market
 }
 
 // MarketBuilder builds markets from Statistico and associated bookmakers.
 type marketBuilder struct {
-	oddsClient grpc.OddsCompilerClient
+	oddsClient statistico.OddsCompilerClient
 	bookmakers []bookmaker.MarketFactory
 }
 
 // FixtureAndBetType creates a Market struct for a given Fixture and bet type.
-func (m marketBuilder) FixtureAndBetType(f *Fixture, bet string) *Market {
+func (m marketBuilder) FixtureAndBetType(f *statistico.Fixture, bet string) *Market {
 	market := Market{
 		FixtureID:  f.ID,
 		Name:       bet,
@@ -32,7 +32,7 @@ func (m marketBuilder) FixtureAndBetType(f *Fixture, bet string) *Market {
 	market.Statistico = odds
 
 	for _, bookie := range m.bookmakers {
-		m, err := bookie.FixtureAndBetType(*f, bet)
+		m, err := bookie.FixtureAndMarket(*f, bet)
 
 		if err != nil {
 			// Log error here
@@ -45,6 +45,6 @@ func (m marketBuilder) FixtureAndBetType(f *Fixture, bet string) *Market {
 	return &market
 }
 
-func NewMarketBuilder(odds grpc.OddsCompilerClient, book []bookmaker.MarketFactory) MarketBuilder {
+func NewMarketBuilder(odds statistico.OddsCompilerClient, book []bookmaker.MarketFactory) MarketBuilder {
 	return &marketBuilder{oddsClient: odds, bookmakers: book}
 }
