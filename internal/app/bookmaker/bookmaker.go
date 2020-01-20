@@ -3,7 +3,7 @@ package bookmaker
 import "github.com/statistico/statistico-bet-finder/internal/app"
 
 type MarketFactory interface {
-	FixtureAndBetType(fix app.Fixture, betType string) (*Market, error)
+	FixtureAndMarket(fix app.Fixture, market string) (*Market, error)
 }
 
 type RunnerFactory interface {
