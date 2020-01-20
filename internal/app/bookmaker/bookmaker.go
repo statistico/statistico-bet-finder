@@ -10,17 +10,11 @@ type RunnerFactory interface {
 	CreateRunner(selectionID uint64, marketID, name string) (*Runner, error)
 }
 
-//type ServiceQuery struct {
-//	BetTypes []string
-//	Fixtures []app.Fixture
-//}
-
 type Market struct {
 	ID        string   `json:"id"`
 	FixtureID uint64   `json:"fixture_id"`
-	Bookmaker string   `json:"bookmaker"`
 	Name      string   `json:"name"`
-	BetType   string   `json:"bet_type"`
+	Bookmaker string   `json:"bookmaker"`
 	Runners   []Runner `json:"book"`
 }
 
