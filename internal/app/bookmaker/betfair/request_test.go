@@ -1,7 +1,7 @@
 package betfair
 
 import (
-	"github.com/statistico/statistico-bet-finder/internal/app"
+	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
@@ -9,7 +9,7 @@ import (
 
 func Test_buildMarketCatalogueRequest(t *testing.T) {
 	t.Run("returns new betfair market catalogue request", func(t *testing.T) {
-		fix := app.Fixture{
+		fix := statistico.Fixture{
 			ID:            99,
 			CompetitionID: 16036,
 			HomeTeam:      "West Ham United",

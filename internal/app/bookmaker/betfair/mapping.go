@@ -2,7 +2,7 @@ package betfair
 
 import (
 	"fmt"
-	"github.com/statistico/statistico-bet-finder/internal/app"
+	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
 	bfClient "github.com/statistico/statistico-betfair-go-client"
 )
 
@@ -40,7 +40,7 @@ func parseTeamMapping(team string) string {
 	return team
 }
 
-func fixtureMatchesEvent(fix app.Fixture, event bfClient.Event) bool {
+func fixtureMatchesEvent(fix statistico.Fixture, event bfClient.Event) bool {
 	home := parseTeamMapping(fix.HomeTeam)
 	away := parseTeamMapping(fix.AwayTeam)
 

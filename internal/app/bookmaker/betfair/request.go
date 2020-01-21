@@ -1,11 +1,11 @@
 package betfair
 
 import (
-	"github.com/statistico/statistico-bet-finder/internal/app"
+	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
 	bfClient "github.com/statistico/statistico-betfair-go-client"
 )
 
-func buildMarketCatalogueRequest(fix app.Fixture, betTypes []string) (*bfClient.ListMarketCatalogueRequest, error) {
+func buildMarketCatalogueRequest(fix statistico.Fixture, betTypes []string) (*bfClient.ListMarketCatalogueRequest, error) {
 	compID, err := parseCompetitionMapping(fix.CompetitionID)
 
 	if err != nil {

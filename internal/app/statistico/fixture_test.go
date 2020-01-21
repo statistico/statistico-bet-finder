@@ -1,10 +1,11 @@
-package statistico
+package statistico_test
 
 import (
 	"context"
 	"errors"
 	"github.com/statistico/statistico-bet-finder/internal/app/grpc/proto"
 	"github.com/statistico/statistico-bet-finder/internal/app/mock"
+	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc"
 	"testing"
@@ -15,7 +16,7 @@ func TestFixtureClient_FixtureByID(t *testing.T) {
 		t.Helper()
 
 		mockClient := new(mock.FixtureServiceClient)
-		fixtureClient := NewGRPCFixtureClient(mockClient)
+		fixtureClient := statistico.NewGRPCFixtureClient(mockClient)
 		request := proto.FixtureRequest{FixtureId: 14562}
 
 		fix := proto.Fixture{
@@ -46,7 +47,7 @@ func TestFixtureClient_FixtureByID(t *testing.T) {
 		t.Helper()
 
 		mockClient := new(mock.FixtureServiceClient)
-		fixtureClient := NewGRPCFixtureClient(mockClient)
+		fixtureClient := statistico.NewGRPCFixtureClient(mockClient)
 		request := proto.FixtureRequest{FixtureId: 14562}
 
 		mockClient.On("FixtureByID", context.Background(), &request, []grpc.CallOption(nil)).Return(&proto.Fixture{}, errors.New("client error"))

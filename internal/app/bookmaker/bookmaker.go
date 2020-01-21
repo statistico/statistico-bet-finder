@@ -1,9 +1,11 @@
 package bookmaker
 
-import "github.com/statistico/statistico-bet-finder/internal/app"
+import (
+	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
+)
 
 type MarketFactory interface {
-	FixtureAndMarket(fix app.Fixture, market string) (*Market, error)
+	FixtureAndMarket(fix statistico.Fixture, market string) (*Market, error)
 }
 
 type RunnerFactory interface {

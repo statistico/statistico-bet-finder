@@ -2,22 +2,21 @@ package statistico
 
 import (
 	"context"
-	"github.com/statistico/statistico-bet-finder/internal/app"
 	"github.com/statistico/statistico-bet-finder/internal/app/grpc/proto"
 	"time"
 )
 
-type GRPCFixtureClient interface {
-	FixtureByID(id uint64) (*app.Fixture, error)
+// FixtureClient is a wrapper around the Statistico Data service.
+type FixtureClient interface {
+	FixtureByID(id uint64) (*Fixture, error)
 }
 
-// GRPCFixtureClient is a wrapper around the Statistico Data service.
 type gRPCFixtureClient struct {
 	client proto.FixtureServiceClient
 }
 
 // FixtureByID returns a fixture struct parsed from the Statistico data service.
-func (d gRPCFixtureClient) FixtureByID(id uint64) (*app.Fixture, error) {
+func (d gRPCFixtureClient) FixtureByID(id uint64) (*Fixture, error) {
 	request := proto.FixtureRequest{FixtureId: id}
 
 	response, err := d.client.FixtureByID(context.Background(), &request)
@@ -29,8 +28,8 @@ func (d gRPCFixtureClient) FixtureByID(id uint64) (*app.Fixture, error) {
 	return convertResponseToFixture(response), err
 }
 
-func convertResponseToFixture(resp *proto.Fixture) *app.Fixture {
-	fixture := app.Fixture{
+func convertResponseToFixture(resp *proto.Fixture) *Fixture {
+	fixture := Fixture{
 		ID:            uint64(resp.Id),
 		CompetitionID: uint64(resp.Competition.Id),
 		HomeTeam:      resp.HomeTeam.Name,
@@ -41,6 +40,6 @@ func convertResponseToFixture(resp *proto.Fixture) *app.Fixture {
 	return &fixture
 }
 
-func NewGRPCFixtureClient(c proto.FixtureServiceClient) GRPCFixtureClient {
+func NewGRPCFixtureClient(c proto.FixtureServiceClient) FixtureClient {
 	return &gRPCFixtureClient{client:c}
 }

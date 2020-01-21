@@ -2,21 +2,20 @@ package statistico
 
 import (
 	"context"
-	"github.com/statistico/statistico-bet-finder/internal/app"
 	"github.com/statistico/statistico-bet-finder/internal/app/grpc/proto"
 )
 
-// GRPCOddsCompilerClient is a wrapper around the Statistico Odds Compiler service
-type GRPCOddsCompilerClient interface {
-	// GetOverUnderGoalsForFixture returns a market struct containing data for the requested fixture and market
-	GetOverUnderGoalsForFixture(fixtureID uint64, market string) (*app.Market, error)
+// OddsCompilerClient is a wrapper around the Statistico Odds Compiler service
+type OddsCompilerClient interface {
+	GetOverUnderGoalsForFixture(fixtureID uint64, market string) (*Market, error)
 }
 
 type gRPCOddsCompilerClient struct {
 	client proto.OddsCompilerServiceClient
 }
 
-func (o gRPCOddsCompilerClient) GetOverUnderGoalsForFixture(fixtureID uint64, market string) (*app.Market, error) {
+// GetOverUnderGoalsForFixture returns a market struct containing data for the requested fixture and market
+func (o gRPCOddsCompilerClient) GetOverUnderGoalsForFixture(fixtureID uint64, market string) (*Market, error) {
 	request := proto.OverUnderRequest{
 		FixtureId: fixtureID,
 		Market:    market,
@@ -31,14 +30,14 @@ func (o gRPCOddsCompilerClient) GetOverUnderGoalsForFixture(fixtureID uint64, ma
 	return convertResponseToMarket(response), nil
 }
 
-func convertResponseToMarket(resp *proto.OverUnderGoalsResponse) *app.Market {
-	market := app.Market{
+func convertResponseToMarket(resp *proto.OverUnderGoalsResponse) *Market {
+	market := Market{
 		FixtureID: resp.FixtureId,
 		Name:      resp.Market,
 	}
 
 	for _, odds := range resp.Odds {
-		run := app.Runner{
+		run := Runner{
 			Name:  odds.Selection,
 			Price: odds.Price,
 		}
@@ -49,6 +48,6 @@ func convertResponseToMarket(resp *proto.OverUnderGoalsResponse) *app.Market {
 	return &market
 }
 
-func NewGRPCOddsCompilerClient(c proto.OddsCompilerServiceClient) GRPCOddsCompilerClient {
+func NewGRPCOddsCompilerClient(c proto.OddsCompilerServiceClient) OddsCompilerClient {
 	return &gRPCOddsCompilerClient{client:c}
 }

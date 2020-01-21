@@ -2,9 +2,9 @@ package betfair
 
 import (
 	"errors"
-	"github.com/statistico/statistico-bet-finder/internal/app"
 	"github.com/statistico/statistico-bet-finder/internal/app/bookmaker"
 	"github.com/statistico/statistico-bet-finder/internal/app/mock"
+	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -199,8 +199,8 @@ var marketCatalogueResponse = `[
   }
 ]`
 
-func newStatisticoFixture(home, away string, fixtureID, competitionID uint64) app.Fixture {
-	return app.Fixture{
+func newStatisticoFixture(home, away string, fixtureID, competitionID uint64) statistico.Fixture {
+	return statistico.Fixture{
 		ID:            fixtureID,
 		CompetitionID: competitionID,
 		HomeTeam:      home,
