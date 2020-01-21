@@ -1,13 +1,14 @@
 package app
 
 import (
+	"fmt"
 	"github.com/sirupsen/logrus"
 	"github.com/statistico/statistico-bet-finder/internal/app/bookmaker"
 	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
 )
 
 type MarketBuilder interface {
-	FixtureAndMarket(f *statistico.Fixture, bet string) *Market
+	FixtureAndMarket(f *statistico.Fixture, bet string) (*Market, error)
 }
 
 // MarketBuilder builds markets for Statistico and associated bookmakers.
@@ -18,7 +19,7 @@ type marketBuilder struct {
 }
 
 // FixtureAndBetType creates a Market struct for a given Fixture and Market i.e. OVER_UNDER_25.
-func (m marketBuilder) FixtureAndMarket(f *statistico.Fixture, market string) *Market {
+func (m marketBuilder) FixtureAndMarket(f *statistico.Fixture, market string) (*Market, error) {
 	mark := Market{
 		FixtureID:  f.ID,
 		Name:       market,
@@ -27,8 +28,12 @@ func (m marketBuilder) FixtureAndMarket(f *statistico.Fixture, market string) *M
 	odds, err := m.oddsClient.GetOverUnderGoalsForFixture(f.ID, market)
 
 	if err != nil {
-		m.logger.Warnf("Error '%s' building statistico odds for fixture '%d' and market '%s'", err.Error(), f.ID, market)
-		return nil
+		return nil, fmt.Errorf(
+			"error '%s' building statistico odds for fixture '%d' and market '%s'",
+			err.Error(),
+			f.ID,
+			market,
+		)
 	}
 
 	mark.Statistico = odds
@@ -37,14 +42,19 @@ func (m marketBuilder) FixtureAndMarket(f *statistico.Fixture, market string) *M
 		mk, err := bookie.FixtureAndMarket(*f, market)
 
 		if err != nil {
-			m.logger.Warnf("Error '%s' building bookmaker odds for fixture '%d' and market '%s'", err.Error(), f.ID, market)
-			return nil
+			m.logger.Warnf(
+				"Error '%s' building bookmaker odds for fixture '%d' and market '%s'",
+				err.Error(),
+				f.ID,
+				market,
+			)
+			continue
 		}
 
 		mark.Bookmaker = append(mark.Bookmaker, mk)
 	}
 
-	return &mark
+	return &mark, nil
 }
 
 func NewMarketBuilder(odds statistico.OddsCompilerClient, book []bookmaker.MarketFactory, log *logrus.Logger) MarketBuilder {

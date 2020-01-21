@@ -28,9 +28,10 @@ func (b BookFactory) CreateBook(q BookQuery) *Book {
 		}
 
 		for _, t := range q.BetTypes {
-			market := b.builder.FixtureAndMarket(fixture, t)
+			market, err := b.builder.FixtureAndMarket(fixture, t)
 
-			if market == nil {
+			if err != nil {
+				// Log error here
 				continue
 			}
 
