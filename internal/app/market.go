@@ -1,6 +1,7 @@
 package app
 
 import (
+	"github.com/sirupsen/logrus"
 	"github.com/statistico/statistico-bet-finder/internal/app/bookmaker"
 	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
 )
@@ -9,10 +10,11 @@ type MarketBuilder interface {
 	FixtureAndBetType(f *statistico.Fixture, bet string) *Market
 }
 
-// MarketBuilder builds markets from Statistico and associated bookmakers.
+// MarketBuilder builds markets for Statistico and associated bookmakers.
 type marketBuilder struct {
 	oddsClient statistico.OddsCompilerClient
 	bookmakers []bookmaker.MarketFactory
+	logger     *logrus.Logger
 }
 
 // FixtureAndBetType creates a Market struct for a given Fixture and bet type.
@@ -45,6 +47,6 @@ func (m marketBuilder) FixtureAndBetType(f *statistico.Fixture, bet string) *Mar
 	return &market
 }
 
-func NewMarketBuilder(odds statistico.OddsCompilerClient, book []bookmaker.MarketFactory) MarketBuilder {
-	return &marketBuilder{oddsClient: odds, bookmakers: book}
+func NewMarketBuilder(odds statistico.OddsCompilerClient, book []bookmaker.MarketFactory, log *logrus.Logger) MarketBuilder {
+	return &marketBuilder{oddsClient: odds, bookmakers: book, logger: log}
 }
