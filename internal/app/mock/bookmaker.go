@@ -20,7 +20,7 @@ type MarketFactory struct {
 	mock.Mock
 }
 
-func (m MarketFactory) FixtureAndMarket(fix statistico.Fixture, betType string) (*bookmaker.Market, error) {
-	args := m.Called(fix, betType)
+func (m MarketFactory) FixtureAndMarket(fix statistico.Fixture, market string) (*bookmaker.Market, error) {
+	args := m.Called(fix, market)
 	return args.Get(0).(*bookmaker.Market), args.Error(1)
 }
