@@ -15,6 +15,7 @@ type Runner struct {
 	Price       float32 `json:"price"`
 }
 
+// Fixture is a struct containing fixture specific information
 type Fixture struct {
 	ID            uint64    `json:"id"`
 	CompetitionID uint64    `json:"competition_id"`
