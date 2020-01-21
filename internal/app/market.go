@@ -17,7 +17,7 @@ type marketBuilder struct {
 	logger     *logrus.Logger
 }
 
-// FixtureAndBetType creates a Market struct for a given Fixture and market.
+// FixtureAndBetType creates a Market struct for a given Fixture and Market i.e. OVER_UNDER_25.
 func (m marketBuilder) FixtureAndMarket(f *statistico.Fixture, market string) *Market {
 	mark := Market{
 		FixtureID:  f.ID,
