@@ -28,7 +28,7 @@ func (b BookFactory) CreateBook(q BookQuery) *Book {
 		}
 
 		for _, t := range q.BetTypes {
-			market := b.builder.FixtureAndBetType(fixture, t)
+			market := b.builder.FixtureAndMarket(fixture, t)
 
 			if market == nil {
 				continue

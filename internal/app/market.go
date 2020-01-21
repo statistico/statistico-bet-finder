@@ -7,7 +7,7 @@ import (
 )
 
 type MarketBuilder interface {
-	FixtureAndBetType(f *statistico.Fixture, bet string) *Market
+	FixtureAndMarket(f *statistico.Fixture, bet string) *Market
 }
 
 // MarketBuilder builds markets for Statistico and associated bookmakers.
@@ -17,34 +17,34 @@ type marketBuilder struct {
 	logger     *logrus.Logger
 }
 
-// FixtureAndBetType creates a Market struct for a given Fixture and bet type.
-func (m marketBuilder) FixtureAndBetType(f *statistico.Fixture, bet string) *Market {
-	market := Market{
+// FixtureAndBetType creates a Market struct for a given Fixture and market.
+func (m marketBuilder) FixtureAndMarket(f *statistico.Fixture, market string) *Market {
+	mark := Market{
 		FixtureID:  f.ID,
-		Name:       bet,
+		Name:       market,
 	}
 
-	odds, err := m.oddsClient.GetOverUnderGoalsForFixture(f.ID, bet)
+	odds, err := m.oddsClient.GetOverUnderGoalsForFixture(f.ID, market)
 
 	if err != nil {
-		// Log error here
+		m.logger.Warnf("Error '%s' building statistico odds for fixture '%d' and market '%s'", err.Error(), f.ID, market)
 		return nil
 	}
 
-	market.Statistico = odds
+	mark.Statistico = odds
 
 	for _, bookie := range m.bookmakers {
-		m, err := bookie.FixtureAndMarket(*f, bet)
+		mk, err := bookie.FixtureAndMarket(*f, market)
 
 		if err != nil {
-			// Log error here
-			continue
+			m.logger.Warnf("Error '%s' building bookmaker odds for fixture '%d' and market '%s'", err.Error(), f.ID, market)
+			return nil
 		}
 
-		market.Bookmaker = append(market.Bookmaker, m)
+		mark.Bookmaker = append(mark.Bookmaker, mk)
 	}
 
-	return &market
+	return &mark
 }
 
 func NewMarketBuilder(odds statistico.OddsCompilerClient, book []bookmaker.MarketFactory, log *logrus.Logger) MarketBuilder {

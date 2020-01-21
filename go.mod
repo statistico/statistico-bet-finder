@@ -17,7 +17,7 @@ require (
 	github.com/kr/pty v1.1.8 // indirect
 	github.com/prometheus/client_model v0.2.0 // indirect
 	github.com/rogpeppe/go-internal v1.5.2 // indirect
-	github.com/sirupsen/logrus v1.4.2 // indirect
+	github.com/sirupsen/logrus v1.4.2
 	github.com/statistico/statistico-betfair-go-client v0.0.0-20200116164258-5c5d0061a5bb
 	github.com/stretchr/testify v1.4.0
 	golang.org/x/crypto v0.0.0-20200117160349-530e935923ad // indirect
