@@ -10,7 +10,7 @@ type MarketBuilder struct {
 	mock.Mock
 }
 
-func (m MarketBuilder) FixtureAndBetType(f *statistico.Fixture, bet string) *app.Market {
-	args := m.Called(f, bet)
+func (m MarketBuilder) FixtureAndMarket(f *statistico.Fixture, market string) *app.Market {
+	args := m.Called(f, market)
 	return args.Get(0).(*app.Market)
 }
