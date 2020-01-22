@@ -146,7 +146,7 @@ func TestMarketBuilder_FixtureAndBetType(t *testing.T) {
 
 		oddsClient.AssertExpectations(t)
 		factory.AssertExpectations(t)
-		assert.Equal(t, 0, len(market.Bookmaker))
+		assert.Equal(t, 0, len(market.Bookmakers))
 		assert.Equal(t, 1, len(hook.Entries))
 		assert.Equal(t, logrus.WarnLevel, hook.LastEntry().Level)
 		assert.Equal(
