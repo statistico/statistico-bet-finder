@@ -27,7 +27,7 @@ func (b BookHandler) CreateBook(w http.ResponseWriter, r *http.Request) {
 
 func parseBookQuery(r *http.Request) (*app.BookQuery, error) {
 	body := struct {
-		FixtureIDs []uint64 `json:"fixtureIds"`
+		FixtureIDs []uint64 `json:"fixture_ids"`
 		Markets []string `json:"markets"`
 	}{}
 
@@ -43,4 +43,8 @@ func parseBookQuery(r *http.Request) (*app.BookQuery, error) {
 	}
 
 	return &query, nil
+}
+
+func NewBookHandler(b app.BookMaker) BookHandler {
+	return BookHandler{bookmaker:b}
 }

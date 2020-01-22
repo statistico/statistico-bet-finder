@@ -51,7 +51,7 @@ func (m marketBuilder) FixtureAndMarket(f *statistico.Fixture, market string) (*
 			continue
 		}
 
-		mark.Bookmaker = append(mark.Bookmaker, mk)
+		mark.Bookmakers = append(mark.Bookmakers, mk)
 	}
 
 	return &mark, nil

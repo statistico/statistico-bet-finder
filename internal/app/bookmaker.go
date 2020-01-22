@@ -26,6 +26,7 @@ type bookMaker struct {
 // CreateBook creates a Book struct of Statistico and Bookmaker markets.
 func (b bookMaker) CreateBook(q *BookQuery) *Book {
 	book := Book{
+		Markets: []*Market{},
 		CreatedAt: b.clock.Now(),
 	}
 
