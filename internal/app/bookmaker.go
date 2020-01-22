@@ -6,13 +6,17 @@ import (
 	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
 )
 
+type BookMaker interface {
+	CreateBook(q *BookQuery) *Book
+}
+
 type BookQuery struct {
 	Markets []string
 	FixtureIDs []uint64
 }
 
 // BookMaker is responsible for creating a Book struct of Statistico and Bookmaker markets.
-type BookMaker struct {
+type bookMaker struct {
 	fixtureClient statistico.FixtureClient
 	builder MarketBuilder
 	clock   clockwork.Clock
@@ -20,8 +24,9 @@ type BookMaker struct {
 }
 
 // CreateBook creates a Book struct of Statistico and Bookmaker markets.
-func (b BookMaker) CreateBook(q *BookQuery) *Book {
+func (b bookMaker) CreateBook(q *BookQuery) *Book {
 	book := Book{
+		Markets: []*Market{},
 		CreatedAt: b.clock.Now(),
 	}
 
@@ -48,8 +53,8 @@ func (b BookMaker) CreateBook(q *BookQuery) *Book {
 	return &book
 }
 
-func NewBookMaker(f statistico.FixtureClient, b MarketBuilder, c clockwork.Clock, l *logrus.Logger) *BookMaker {
-	return &BookMaker{
+func NewBookMaker(f statistico.FixtureClient, b MarketBuilder, c clockwork.Clock, l *logrus.Logger) BookMaker {
+	return &bookMaker{
 		fixtureClient: f,
 		builder:       b,
 		clock:         c,

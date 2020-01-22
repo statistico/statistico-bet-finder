@@ -15,6 +15,6 @@ type Book struct {
 type Market struct {
 	FixtureID uint64   `json:"fixture_id"`
 	Name      string   `json:"name"`
-	Statistico *statistico.Market `json:"statistico_market"`
-	Bookmaker  []*bookmaker.Market `json:"bookmaker_market"`
+	Statistico *statistico.Market `json:"statistico"`
+	Bookmakers  []*bookmaker.Market `json:"bookmakers"`
 }
