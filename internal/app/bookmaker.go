@@ -29,18 +29,19 @@ func (b BookMaker) CreateBook(q *BookQuery) *Book {
 		fixture, err := b.fixtureClient.FixtureByID(id)
 
 		if err != nil {
-			b.logger.Warnf("Error fetching fixture '%s' when creating a book", id)
+			b.logger.Warnf("Error fetching fixture '%d' when creating a book", id)
 			continue
 		}
 
 		for _, m := range q.Markets {
-			market := b.builder.FixtureAndMarket(fixture, m)
+			market, err := b.builder.FixtureAndMarket(fixture, m)
 
-			if market == nil {
+			if err != nil {
+				b.logger.Warn(err.Error())
 				continue
 			}
 
-			book.Market = append(book.Market, market)
+			book.Markets = append(book.Markets, market)
 		}
 	}
 
