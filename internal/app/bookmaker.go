@@ -11,22 +11,22 @@ type BookMaker interface {
 }
 
 type BookQuery struct {
-	Markets []string
+	Markets    []string
 	FixtureIDs []uint64
 }
 
 // BookMaker is responsible for creating a Book struct of Statistico and Bookmaker markets.
 type bookMaker struct {
 	fixtureClient statistico.FixtureClient
-	builder MarketBuilder
-	clock   clockwork.Clock
-	logger  *logrus.Logger
+	builder       MarketBuilder
+	clock         clockwork.Clock
+	logger        *logrus.Logger
 }
 
 // CreateBook creates a Book struct of Statistico and Bookmaker markets.
 func (b bookMaker) CreateBook(q *BookQuery) *Book {
 	book := Book{
-		Markets: []*Market{},
+		Markets:   []*Market{},
 		CreatedAt: b.clock.Now(),
 	}
 

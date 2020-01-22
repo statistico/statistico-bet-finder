@@ -27,29 +27,29 @@ func TestBookHandler_CreateBook(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		
+
 		query := app.BookQuery{
-			FixtureIDs:    []uint64{18279, 17289},
-			Markets: []string{"OVER_UNDER_15", "OVER_UNDER_25"},
+			FixtureIDs: []uint64{18279, 17289},
+			Markets:    []string{"OVER_UNDER_15", "OVER_UNDER_25"},
 		}
-		
+
 		book := app.Book{
 			Markets: []*app.Market{
 				&app.Market{
 					FixtureID:  18279,
 					Name:       "OVER_UNDER_25",
 					Statistico: nil,
-					Bookmakers:  nil,
+					Bookmakers: nil,
 				},
 			},
 			CreatedAt: time.Date(2019, 01, 14, 11, 25, 00, 00, time.UTC),
 		}
-		
+
 		bookmaker.On("CreateBook", &query).Return(&book)
 
 		response := httptest.NewRecorder()
 		handler := http.HandlerFunc(bookHandler.PostBook)
-		
+
 		handler.ServeHTTP(response, request)
 
 		expected := `{"status":"success","data":{"book":{"markets":[{"fixture_id":18279,"name":"OVER_UNDER_25","statistico":null,"bookmakers":null}],"created_at":"2019-01-14T11:25:00Z"}}}`
@@ -92,7 +92,6 @@ func TestBookHandler_CreateBook(t *testing.T) {
 		var body = `{"fixture_ids": ["18279"", 17289], "markets": ["OVER_UNDER_15", "OVER_UNDER_25"]}`
 
 		request, err := http.NewRequest("POST", "/book", ioutil.NopCloser(bytes.NewBufferString(body)))
-
 
 		if err != nil {
 			t.Fatal(err)

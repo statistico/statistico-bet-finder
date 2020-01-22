@@ -29,7 +29,7 @@ func TestMarketBuilder_FixtureAndBetType(t *testing.T) {
 		}
 
 		odds := statistico.Market{
-			FixtureID:45381,
+			FixtureID: 45381,
 			Runners: []statistico.Runner{
 				{
 					Name:  "OVER",
@@ -43,11 +43,11 @@ func TestMarketBuilder_FixtureAndBetType(t *testing.T) {
 			FixtureID: 45381,
 			Bookmaker: "Betfair",
 			Name:      "OVER_UNDER_25",
-			Runners:   []bookmaker.Runner{
+			Runners: []bookmaker.Runner{
 				{
 					Name:        "OVER",
 					SelectionID: 13459,
-					Back:        []bookmaker.Price{
+					Back: []bookmaker.Price{
 						{
 							Size:  145.41,
 							Price: 1.79,
@@ -92,7 +92,7 @@ func TestMarketBuilder_FixtureAndBetType(t *testing.T) {
 			CompetitionID: 42,
 		}
 
-		oddsClient.On("GetOverUnderGoalsForFixture", uint64(45381), "OVER_UNDER_25").Return(&statistico.Market{},errors.New("error occurred"))
+		oddsClient.On("GetOverUnderGoalsForFixture", uint64(45381), "OVER_UNDER_25").Return(&statistico.Market{}, errors.New("error occurred"))
 		factory.AssertNotCalled(t, "FixtureAndMarket", fixture, "OVER_UNDER_25")
 
 		_, err := builder.FixtureAndMarket(&fixture, "OVER_UNDER_25")
@@ -126,7 +126,7 @@ func TestMarketBuilder_FixtureAndBetType(t *testing.T) {
 		}
 
 		odds := statistico.Market{
-			FixtureID:45381,
+			FixtureID: 45381,
 			Runners: []statistico.Runner{
 				{
 					Name:  "OVER",

@@ -8,7 +8,7 @@ import (
 
 type response struct {
 	Status string      `json:"status"`
-	Data    interface{} `json:"data"`
+	Data   interface{} `json:"data"`
 }
 
 type errorMessage struct {
@@ -27,7 +27,7 @@ func jsonResponse(w http.ResponseWriter, status int, payload interface{}) {
 func successResponse(w http.ResponseWriter, status int, payload interface{}) {
 	response := response{
 		Status: "success",
-		Data:    payload,
+		Data:   payload,
 	}
 
 	jsonResponse(w, status, response)

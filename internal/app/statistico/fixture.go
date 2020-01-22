@@ -41,5 +41,5 @@ func convertResponseToFixture(resp *proto.Fixture) *Fixture {
 }
 
 func NewGRPCFixtureClient(c proto.FixtureServiceClient) FixtureClient {
-	return &gRPCFixtureClient{client:c}
+	return &gRPCFixtureClient{client: c}
 }
