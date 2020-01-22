@@ -21,8 +21,8 @@ type marketBuilder struct {
 // FixtureAndBetType creates a Market struct for a given Fixture and Market i.e. OVER_UNDER_25.
 func (m marketBuilder) FixtureAndMarket(f *statistico.Fixture, market string) (*Market, error) {
 	mark := Market{
-		FixtureID:  f.ID,
-		Name:       market,
+		FixtureID: f.ID,
+		Name:      market,
 	}
 
 	odds, err := m.oddsClient.GetOverUnderGoalsForFixture(f.ID, market)

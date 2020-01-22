@@ -20,7 +20,7 @@ func (b BookHandler) PostBook(w http.ResponseWriter, r *http.Request) {
 
 	book := b.bookmaker.CreateBook(query)
 
-	response := bookResponse{Book:book}
+	response := bookResponse{Book: book}
 
 	successResponse(w, http.StatusOK, response)
 }
@@ -28,7 +28,7 @@ func (b BookHandler) PostBook(w http.ResponseWriter, r *http.Request) {
 func parseBookQuery(r *http.Request) (*app.BookQuery, error) {
 	body := struct {
 		FixtureIDs []uint64 `json:"fixture_ids"`
-		Markets []string `json:"markets"`
+		Markets    []string `json:"markets"`
 	}{}
 
 	err := json.NewDecoder(r.Body).Decode(&body)
@@ -46,5 +46,5 @@ func parseBookQuery(r *http.Request) (*app.BookQuery, error) {
 }
 
 func NewBookHandler(b app.BookMaker) BookHandler {
-	return BookHandler{bookmaker:b}
+	return BookHandler{bookmaker: b}
 }

@@ -22,11 +22,11 @@ func TestBookMaker_CreateBook(t *testing.T) {
 		bookmaker := app.NewBookMaker(fixtureClient, builder, clock, logger)
 
 		query := app.BookQuery{
-			Markets:   []string{"OVER_UNDER_15", "OVER_UNDER_25"},
+			Markets:    []string{"OVER_UNDER_15", "OVER_UNDER_25"},
 			FixtureIDs: []uint64{1329},
 		}
 
-		fixture := statistico.Fixture{ID:1329}
+		fixture := statistico.Fixture{ID: 1329}
 
 		fixtureClient.On("FixtureByID", uint64(1329)).Return(&fixture, nil)
 		builder.On("FixtureAndMarket", &fixture, "OVER_UNDER_15").Return(&app.Market{}, nil)
@@ -51,7 +51,7 @@ func TestBookMaker_CreateBook(t *testing.T) {
 		logger, hook := test.NewNullLogger()
 
 		query := app.BookQuery{
-			Markets:   []string{"OVER_UNDER_25"},
+			Markets:    []string{"OVER_UNDER_25"},
 			FixtureIDs: []uint64{1329, 45901},
 		}
 
@@ -60,7 +60,7 @@ func TestBookMaker_CreateBook(t *testing.T) {
 		fixtureClient.On("FixtureByID", uint64(1329)).Return(&statistico.Fixture{}, errors.New("error occurred"))
 		builder.AssertNotCalled(t, "FixtureAndMarket", uint64(1329), "OVER_UNDER_25")
 
-		fixture := statistico.Fixture{ID:1329}
+		fixture := statistico.Fixture{ID: 1329}
 
 		fixtureClient.On("FixtureByID", uint64(45901)).Return(&fixture, nil)
 		builder.On("FixtureAndMarket", &fixture, "OVER_UNDER_25").Return(&app.Market{}, nil)
@@ -86,11 +86,11 @@ func TestBookMaker_CreateBook(t *testing.T) {
 		bookmaker := app.NewBookMaker(fixtureClient, builder, clock, logger)
 
 		query := app.BookQuery{
-			Markets:   []string{"OVER_UNDER_15", "OVER_UNDER_25"},
+			Markets:    []string{"OVER_UNDER_15", "OVER_UNDER_25"},
 			FixtureIDs: []uint64{1329},
 		}
 
-		fixture := statistico.Fixture{ID:1329}
+		fixture := statistico.Fixture{ID: 1329}
 
 		fixtureClient.On("FixtureByID", uint64(1329)).Return(&fixture, nil)
 		builder.On("FixtureAndMarket", &fixture, "OVER_UNDER_15").Return(&app.Market{}, nil)

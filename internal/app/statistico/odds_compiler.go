@@ -49,5 +49,5 @@ func convertResponseToMarket(resp *proto.OverUnderGoalsResponse) *Market {
 }
 
 func NewGRPCOddsCompilerClient(c proto.OddsCompilerServiceClient) OddsCompilerClient {
-	return &gRPCOddsCompilerClient{client:c}
+	return &gRPCOddsCompilerClient{client: c}
 }
