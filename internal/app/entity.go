@@ -7,7 +7,7 @@ import (
 )
 
 type Book struct {
-	Market []*Market `json:"markets"`
+	Markets []*Market `json:"markets"`
 	CreatedAt time.Time `json:"created_at"`
 }
 
