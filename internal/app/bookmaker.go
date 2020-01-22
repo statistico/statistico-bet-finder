@@ -29,7 +29,7 @@ func (b BookMaker) CreateBook(q *BookQuery) *Book {
 		fixture, err := b.fixtureClient.FixtureByID(id)
 
 		if err != nil {
-			b.logger.Warnf("Error fetching fixture '%d' when creating a book", id)
+			b.logger.Warnf("Error '%s' fetching fixture '%d' when creating a book", err.Error(), id)
 			continue
 		}
 
