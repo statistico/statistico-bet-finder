@@ -10,7 +10,7 @@ type BookHandler struct {
 	bookmaker app.BookMaker
 }
 
-func (b BookHandler) CreateBook(w http.ResponseWriter, r *http.Request) {
+func (b BookHandler) PostBook(w http.ResponseWriter, r *http.Request) {
 	query, err := parseBookQuery(r)
 
 	if err != nil {

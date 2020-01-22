@@ -48,7 +48,7 @@ func TestBookHandler_CreateBook(t *testing.T) {
 		bookmaker.On("CreateBook", &query).Return(&book)
 
 		response := httptest.NewRecorder()
-		handler := http.HandlerFunc(bookHandler.CreateBook)
+		handler := http.HandlerFunc(bookHandler.PostBook)
 		
 		handler.ServeHTTP(response, request)
 
@@ -73,7 +73,7 @@ func TestBookHandler_CreateBook(t *testing.T) {
 		bookmaker.AssertNotCalled(t, "CreateBook")
 
 		response := httptest.NewRecorder()
-		handler := http.HandlerFunc(bookHandler.CreateBook)
+		handler := http.HandlerFunc(bookHandler.PostBook)
 
 		handler.ServeHTTP(response, request)
 
@@ -101,7 +101,7 @@ func TestBookHandler_CreateBook(t *testing.T) {
 		bookmaker.AssertNotCalled(t, "CreateBook")
 
 		response := httptest.NewRecorder()
-		handler := http.HandlerFunc(bookHandler.CreateBook)
+		handler := http.HandlerFunc(bookHandler.PostBook)
 
 		handler.ServeHTTP(response, request)
 
