@@ -72,3 +72,7 @@ func (b MarketFactory) parseMarketCatalogue(req *bfClient.ListMarketCatalogueReq
 
 	return &catalogue[0], nil
 }
+
+func NewMarketFactory(c *bfClient.Client, r bookmaker.RunnerFactory) *MarketFactory {
+	return &MarketFactory{client: c, runner: r}
+}
