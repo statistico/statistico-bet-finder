@@ -45,6 +45,6 @@ func parseBookQuery(r *http.Request) (*app.BookQuery, error) {
 	return &query, nil
 }
 
-func NewBookHandler(b app.BookMaker) BookHandler {
-	return BookHandler{bookmaker: b}
+func NewBookHandler(b app.BookMaker) *BookHandler {
+	return &BookHandler{bookmaker: b}
 }
