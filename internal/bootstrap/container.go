@@ -1,6 +1,7 @@
 package bootstrap
 
 import (
+	"fmt"
 	"github.com/jonboulle/clockwork"
 	"github.com/sirupsen/logrus"
 	"github.com/statistico/statistico-bet-finder/internal/app/grpc/proto"
@@ -56,9 +57,9 @@ func betFairClient(config *Config) *bfClient.Client {
 			Key:      config.BetFair.Key,
 		},
 		BaseURLs: bfClient.BaseURLs{
-			Accounts: "https://api.betfair.com/exchange/account/rest/v1.0/",
-			Betting:  "https://api.betfair.com/exchange/betting/rest/v1.0/",
-			Login:    "https://identitysso.betfair.com/api/login",
+			Accounts: bfClient.AccountsURL,
+			Betting:  bfClient.BettingURL,
+			Login:    bfClient.LoginURL,
 		},
 	}
 
@@ -66,13 +67,13 @@ func betFairClient(config *Config) *bfClient.Client {
 }
 
 func fixtureClient(config *Config) proto.FixtureServiceClient {
-	conn, err := grpc.Dial(config.DataService.Host+":"+config.DataService.Port, grpc.WithInsecure())
+	host := fmt.Sprintf("%s:%s", config.DataService.Host, config.DataService.Port)
+
+	conn, err := grpc.Dial(host, grpc.WithInsecure())
 
 	if err != nil {
 		panic(err)
 	}
-
-	defer conn.Close()
 
 	return proto.NewFixtureServiceClient(conn)
 }
@@ -85,13 +86,13 @@ func logger() *logrus.Logger {
 }
 
 func oddsCompilerClient(config *Config) proto.OddsCompilerServiceClient {
-	conn, err := grpc.Dial(config.OddsCompilerService.Host+":"+config.OddsCompilerService.Port, grpc.WithInsecure())
+	host := fmt.Sprintf("%s:%s", config.OddsCompilerService.Host, config.OddsCompilerService.Port)
+
+	conn, err := grpc.Dial(host, grpc.WithInsecure())
 
 	if err != nil {
 		panic(err)
 	}
-
-	defer conn.Close()
 
 	return proto.NewOddsCompilerServiceClient(conn)
 }

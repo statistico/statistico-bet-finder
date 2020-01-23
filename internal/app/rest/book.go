@@ -2,6 +2,7 @@ package rest
 
 import (
 	"encoding/json"
+	"github.com/julienschmidt/httprouter"
 	"github.com/statistico/statistico-bet-finder/internal/app"
 	"net/http"
 )
@@ -10,7 +11,7 @@ type BookHandler struct {
 	bookmaker app.BookMaker
 }
 
-func (b BookHandler) PostBook(w http.ResponseWriter, r *http.Request) {
+func (b BookHandler) PostBook(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	query, err := parseBookQuery(r)
 
 	if err != nil {
