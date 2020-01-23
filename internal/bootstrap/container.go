@@ -13,11 +13,11 @@ import (
 )
 
 type Container struct {
-	BetFairClient    *bfClient.Client
-	Clock            clockwork.Clock
-	Config           *Config
-	FixtureClient    proto.FixtureServiceClient
-	Logger           *logrus.Logger
+	BetFairClient      *bfClient.Client
+	Clock              clockwork.Clock
+	Config             *Config
+	FixtureClient      proto.FixtureServiceClient
+	Logger             *logrus.Logger
 	OddsCompilerClient proto.OddsCompilerServiceClient
 }
 
@@ -49,16 +49,16 @@ func betFairClient(config *Config) *bfClient.Client {
 	}
 
 	betfair := bfClient.Client{
-		HTTPClient:  client,
+		HTTPClient: client,
 		Credentials: bfClient.InteractiveCredentials{
 			Username: config.BetFair.Username,
 			Password: config.BetFair.Password,
-			Key: config.BetFair.Key,
+			Key:      config.BetFair.Key,
 		},
-		BaseURLs:    bfClient.BaseURLs{
-			Accounts:  "https://api.betfair.com/exchange/account/rest/v1.0/",
-			Betting:   "https://api.betfair.com/exchange/betting/rest/v1.0/",
-			Login:     "https://identitysso.betfair.com/api/login",
+		BaseURLs: bfClient.BaseURLs{
+			Accounts: "https://api.betfair.com/exchange/account/rest/v1.0/",
+			Betting:  "https://api.betfair.com/exchange/betting/rest/v1.0/",
+			Login:    "https://identitysso.betfair.com/api/login",
 		},
 	}
 
@@ -66,7 +66,7 @@ func betFairClient(config *Config) *bfClient.Client {
 }
 
 func fixtureClient(config *Config) proto.FixtureServiceClient {
-	conn, err := grpc.Dial(config.DataService.Host + ":" + config.DataService.Port, grpc.WithInsecure())
+	conn, err := grpc.Dial(config.DataService.Host+":"+config.DataService.Port, grpc.WithInsecure())
 
 	if err != nil {
 		panic(err)
@@ -85,7 +85,7 @@ func logger() *logrus.Logger {
 }
 
 func oddsCompilerClient(config *Config) proto.OddsCompilerServiceClient {
-	conn, err := grpc.Dial(config.OddsCompilerService.Host + ":" + config.OddsCompilerService.Port, grpc.WithInsecure())
+	conn, err := grpc.Dial(config.OddsCompilerService.Host+":"+config.OddsCompilerService.Port, grpc.WithInsecure())
 
 	if err != nil {
 		panic(err)

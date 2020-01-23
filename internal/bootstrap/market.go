@@ -12,4 +12,3 @@ func (c Container) MarketBuilder() app.MarketBuilder {
 
 	return app.NewMarketBuilder(c.StatisticoOddsCompilerClient(), bookmakers, c.Logger)
 }
-

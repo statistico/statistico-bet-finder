@@ -11,7 +11,7 @@ type Config struct {
 type BetFair struct {
 	Username string
 	Password string
-	Key string
+	Key      string
 }
 
 type DataService struct {
