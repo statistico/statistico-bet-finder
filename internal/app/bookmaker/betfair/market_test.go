@@ -23,7 +23,7 @@ func TestMarketFactory_FixtureAndBetType(t *testing.T) {
 			runner: runners,
 		}
 
-		fixture := newStatisticoFixture("Liverpool", "Manchester United", 148270, 16036)
+		fixture := newStatisticoFixture("Liverpool", "Manchester United", 148270, 8)
 
 		runnerOne := newBookmakerRunner("Under 2.5 Goals", 47972)
 		runnerTwo := newBookmakerRunner("Under 2.5 Goals", 47973)
@@ -87,7 +87,7 @@ func TestMarketFactory_FixtureAndBetType(t *testing.T) {
 			runner: runners,
 		}
 
-		fixture := newStatisticoFixture("Liverpool", "Manchester United", 148270, 16036)
+		fixture := newStatisticoFixture("Liverpool", "Manchester United", 148270, 8)
 
 		market, err := factory.FixtureAndMarket(fixture, "OVER_UNDER_25")
 
@@ -115,7 +115,7 @@ func TestMarketFactory_FixtureAndBetType(t *testing.T) {
 			runner: runners,
 		}
 
-		fixture := newStatisticoFixture("Liverpool", "Manchester City", 148270, 16036)
+		fixture := newStatisticoFixture("Liverpool", "Manchester City", 148270, 8)
 
 		market, err := factory.FixtureAndMarket(fixture, "OVER_UNDER_25")
 
@@ -147,7 +147,7 @@ func TestMarketFactory_FixtureAndBetType(t *testing.T) {
 			runner: runners,
 		}
 
-		fixture := newStatisticoFixture("Liverpool", "Manchester United", 148270, 16036)
+		fixture := newStatisticoFixture("Liverpool", "Manchester United", 148270, 8)
 
 		runnerOne := newBookmakerRunner("Under 2.5 Goals", 47972)
 

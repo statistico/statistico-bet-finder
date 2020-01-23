@@ -11,7 +11,7 @@ func Test_buildMarketCatalogueRequest(t *testing.T) {
 	t.Run("returns new betfair market catalogue request", func(t *testing.T) {
 		fix := statistico.Fixture{
 			ID:            99,
-			CompetitionID: 16036,
+			CompetitionID: 8,
 			HomeTeam:      "West Ham United",
 			AwayTeam:      "Chelsea",
 			Date:          time.Time{},

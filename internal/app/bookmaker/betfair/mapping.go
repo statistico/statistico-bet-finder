@@ -8,7 +8,7 @@ import (
 
 func parseCompetitionMapping(id uint64) (string, error) {
 	competitions := map[uint64]string{
-		16036: "10932509",
+		8: "10932509",
 	}
 
 	if val, ok := competitions[id]; ok {
