@@ -1,3 +1,3 @@
-# Statistico Bet Finder
+# Statistico Price Finder
 
-This application provides suggested bets and market prices for sports events.
+This application provides suggested prices and market prices for sports events.
