@@ -1,0 +1,16 @@
+version: "3.5"
+services:
+
+  rest:
+    image: joesweeny/statisticopricefinder_rest:$RELEASE
+    environment:
+      BETFAIR_USERNAME: $BETFAIR_USERNAME
+      BETFAIR_PASSWORD: $BETFAIR_PASSWORD
+      BETFAIR_KEY: $BETFAIR_KEY
+      DATA_SERVICE_HOST: $DATA_SERVICE_HOST
+      DATA_SERVICE_PORT: $DATA_SERVICE_PORT
+      ODDS_COMPILER_SERVICE_HOST: $ODDS_COMPILER_SERVICE_HOST
+      ODDS_COMPILER_SERVICE_PORT: $ODDS_COMPILER_SERVICE_PORT
+    ports:
+      - "8080:80"
+    tty: true
