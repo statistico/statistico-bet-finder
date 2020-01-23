@@ -2,6 +2,7 @@ package rest_test
 
 import (
 	"bytes"
+	"github.com/julienschmidt/httprouter"
 	"github.com/statistico/statistico-bet-finder/internal/app"
 	"github.com/statistico/statistico-bet-finder/internal/app/mock"
 	"github.com/statistico/statistico-bet-finder/internal/app/rest"
@@ -48,8 +49,9 @@ func TestBookHandler_CreateBook(t *testing.T) {
 		bookmaker.On("CreateBook", &query).Return(&book)
 
 		response := httptest.NewRecorder()
-		handler := http.HandlerFunc(bookHandler.PostBook)
-
+		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			bookHandler.PostBook(w, r, httprouter.Params{})
+		})
 		handler.ServeHTTP(response, request)
 
 		expected := `{"status":"success","data":{"book":{"markets":[{"fixture_id":18279,"name":"OVER_UNDER_25","statistico":null,"bookmakers":null}],"created_at":"2019-01-14T11:25:00Z"}}}`
@@ -73,7 +75,9 @@ func TestBookHandler_CreateBook(t *testing.T) {
 		bookmaker.AssertNotCalled(t, "CreateBook")
 
 		response := httptest.NewRecorder()
-		handler := http.HandlerFunc(bookHandler.PostBook)
+		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			bookHandler.PostBook(w, r, httprouter.Params{})
+		})
 
 		handler.ServeHTTP(response, request)
 
@@ -100,7 +104,9 @@ func TestBookHandler_CreateBook(t *testing.T) {
 		bookmaker.AssertNotCalled(t, "CreateBook")
 
 		response := httptest.NewRecorder()
-		handler := http.HandlerFunc(bookHandler.PostBook)
+		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			bookHandler.PostBook(w, r, httprouter.Params{})
+		})
 
 		handler.ServeHTTP(response, request)
 

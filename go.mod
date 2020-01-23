@@ -6,7 +6,7 @@ require (
 	github.com/golang/protobuf v1.3.2
 	github.com/google/go-cmp v0.4.0 // indirect
 	github.com/jonboulle/clockwork v0.1.0
-	github.com/julienschmidt/httprouter v1.3.0 // indirect
+	github.com/julienschmidt/httprouter v1.3.0
 	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
 	github.com/kr/pretty v0.2.0 // indirect
 	github.com/sirupsen/logrus v1.4.2
