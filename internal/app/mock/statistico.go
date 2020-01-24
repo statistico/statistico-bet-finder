@@ -5,15 +5,6 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-type OddsCompilerClient struct {
-	mock.Mock
-}
-
-func (o OddsCompilerClient) GetOverUnderGoalsForFixture(fixtureID uint64, market string) (*statistico.Market, error) {
-	args := o.Called(fixtureID, market)
-	return args.Get(0).(*statistico.Market), args.Error(1)
-}
-
 type FixtureClient struct {
 	mock.Mock
 }

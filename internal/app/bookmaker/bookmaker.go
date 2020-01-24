@@ -14,7 +14,6 @@ type RunnerFactory interface {
 
 type Market struct {
 	ID        string   `json:"id"`
-	FixtureID uint64   `json:"fixture_id"`
 	Name      string   `json:"name"`
 	Bookmaker string   `json:"bookmaker"`
 	Runners   []Runner `json:"book"`

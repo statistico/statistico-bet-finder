@@ -19,7 +19,6 @@ type Container struct {
 	Config             *Config
 	FixtureClient      proto.FixtureServiceClient
 	Logger             *logrus.Logger
-	OddsCompilerClient proto.OddsCompilerServiceClient
 }
 
 func BuildContainer(config *Config) *Container {
@@ -31,7 +30,6 @@ func BuildContainer(config *Config) *Container {
 	c.Clock = clock()
 	c.FixtureClient = fixtureClient(config)
 	c.Logger = logger()
-	c.OddsCompilerClient = oddsCompilerClient(config)
 
 	return &c
 }
@@ -83,18 +81,6 @@ func logger() *logrus.Logger {
 	logger.SetFormatter(&logrus.JSONFormatter{})
 	logger.SetOutput(os.Stdout)
 	return logger
-}
-
-func oddsCompilerClient(config *Config) proto.OddsCompilerServiceClient {
-	host := fmt.Sprintf("%s:%s", config.OddsCompilerService.Host, config.OddsCompilerService.Port)
-
-	conn, err := grpc.Dial(host, grpc.WithInsecure())
-
-	if err != nil {
-		panic(err)
-	}
-
-	return proto.NewOddsCompilerServiceClient(conn)
 }
 
 func clock() clockwork.Clock {
