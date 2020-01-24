@@ -9,6 +9,10 @@ jobs:
     steps:
       - checkout
 
+      - add_ssh_keys:
+          fingerprints:
+            - "0e:f3:6d:07:cc:94:89:43:a2:39:52:6c:83:93:8c:c8"
+
       - run:
           name: Build Release Image
           command: |
