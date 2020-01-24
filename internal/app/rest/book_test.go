@@ -23,7 +23,7 @@ func TestBookHandler_CreateBook(t *testing.T) {
 
 		var body = `{"fixture_ids": [18279, 17289], "markets": ["OVER_UNDER_15", "OVER_UNDER_25"]}`
 
-		request, err := http.NewRequest("POST", "/book", ioutil.NopCloser(bytes.NewBufferString(body)))
+		request, err := http.NewRequest("POST", "/api/v1/book", ioutil.NopCloser(bytes.NewBufferString(body)))
 
 		if err != nil {
 			t.Fatal(err)
@@ -39,7 +39,6 @@ func TestBookHandler_CreateBook(t *testing.T) {
 				&app.Market{
 					FixtureID:  18279,
 					Name:       "OVER_UNDER_25",
-					Statistico: nil,
 					Bookmakers: nil,
 				},
 			},
@@ -54,7 +53,7 @@ func TestBookHandler_CreateBook(t *testing.T) {
 		})
 		handler.ServeHTTP(response, request)
 
-		expected := `{"status":"success","data":{"book":{"markets":[{"fixture_id":18279,"name":"OVER_UNDER_25","statistico":null,"bookmakers":null}],"created_at":"2019-01-14T11:25:00Z"}}}`
+		expected := `{"status":"success","data":{"book":{"markets":[{"fixture_id":18279,"name":"OVER_UNDER_25","bookmakers":null}],"created_at":"2019-01-14T11:25:00Z"}}}`
 
 		assert.Equal(t, 200, response.Code)
 		assert.Equal(t, expected, response.Body.String())
@@ -66,7 +65,7 @@ func TestBookHandler_CreateBook(t *testing.T) {
 		bookmaker := new(mock.Bookmaker)
 		bookHandler := rest.NewBookHandler(bookmaker)
 
-		request, err := http.NewRequest("POST", "/book", ioutil.NopCloser(bytes.NewBufferString(`[]`)))
+		request, err := http.NewRequest("POST", "/api/v1/book", ioutil.NopCloser(bytes.NewBufferString(`[]`)))
 
 		if err != nil {
 			t.Fatal(err)
@@ -95,7 +94,7 @@ func TestBookHandler_CreateBook(t *testing.T) {
 
 		var body = `{"fixture_ids": ["18279"", 17289], "markets": ["OVER_UNDER_15", "OVER_UNDER_25"]}`
 
-		request, err := http.NewRequest("POST", "/book", ioutil.NopCloser(bytes.NewBufferString(body)))
+		request, err := http.NewRequest("POST", "/api/v1/book", ioutil.NopCloser(bytes.NewBufferString(body)))
 
 		if err != nil {
 			t.Fatal(err)
