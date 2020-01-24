@@ -24,18 +24,16 @@ func (b MarketFactory) FixtureAndMarket(fix statistico.Fixture, market string) (
 		return nil, err
 	}
 
-	catalogue, err := b.parseMarketCatalogue(request, fix.ID, market)
+	catalogues, err := b.parseMarketCatalogue(request, fix.ID, market)
 
 	if err != nil {
 		return nil, err
 	}
 
-	if !fixtureMatchesEvent(fix, catalogue.Event) {
-		return nil, fmt.Errorf(
-			"event '%s' returned by betfair client does not match fixture '%s'",
-			catalogue.Event.Name,
-			fmt.Sprintf("%s v %s", fix.HomeTeam, fix.AwayTeam),
-		)
+	catalogue, err := parseCatalogue(catalogues, &fix)
+
+	if err != nil {
+		return nil, err
 	}
 
 	m := bookmaker.Market{
@@ -58,7 +56,7 @@ func (b MarketFactory) FixtureAndMarket(fix statistico.Fixture, market string) (
 	return &m, nil
 }
 
-func (b MarketFactory) parseMarketCatalogue(req *bfClient.ListMarketCatalogueRequest, fixID uint64, betType string) (*bfClient.MarketCatalogue, error) {
+func (b MarketFactory) parseMarketCatalogue(req *bfClient.ListMarketCatalogueRequest, fixID uint64, betType string) ([]bfClient.MarketCatalogue, error) {
 	catalogue, err := b.client.ListMarketCatalogue(context.Background(), *req)
 
 	if err != nil {
@@ -69,7 +67,7 @@ func (b MarketFactory) parseMarketCatalogue(req *bfClient.ListMarketCatalogueReq
 		return nil, fmt.Errorf("no market returned for fixture %d and bet type %s", fixID, betType)
 	}
 
-	return &catalogue[0], nil
+	return catalogue, nil
 }
 
 func NewMarketFactory(c *bfClient.Client, r bookmaker.RunnerFactory) *MarketFactory {

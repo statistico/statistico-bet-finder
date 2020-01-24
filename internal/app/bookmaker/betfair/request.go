@@ -21,7 +21,7 @@ func buildMarketCatalogueRequest(fix statistico.Fixture, betTypes []string) (*bf
 	request := bfClient.ListMarketCatalogueRequest{
 		Filter:           filter,
 		MarketProjection: []string{"EVENT", "RUNNER_DESCRIPTION"},
-		MaxResults:       len(betTypes),
+		MaxResults:       10,
 		Sort:             "FIRST_TO_START",
 	}
 
