@@ -20,7 +20,7 @@ func Test_fixtureMatchesEvent(t *testing.T) {
 			Name: "West Ham v Bournemouth",
 		}
 
-		assert.True(t, fixtureMatchesEvent(fixture, event))
+		assert.True(t, fixtureMatchesEvent(&fixture, event))
 	})
 
 	t.Run("returns false if fixture does not match event", func(t *testing.T) {
@@ -35,6 +35,6 @@ func Test_fixtureMatchesEvent(t *testing.T) {
 			Name: "West Ham v Bournemouth",
 		}
 
-		assert.False(t, fixtureMatchesEvent(fixture, event))
+		assert.False(t, fixtureMatchesEvent(&fixture, event))
 	})
 }

@@ -31,7 +31,7 @@ func Test_buildMarketCatalogueRequest(t *testing.T) {
 		assert.Equal(t, "West Ham", filter.TextQuery)
 		assert.Equal(t, types, filter.MarketTypeCodes)
 		assert.Equal(t, []string{"EVENT", "RUNNER_DESCRIPTION"}, request.MarketProjection)
-		assert.Equal(t, 1, request.MaxResults)
+		assert.Equal(t, 10, request.MaxResults)
 		assert.Equal(t, "FIRST_TO_START", request.Sort)
 	})
 }

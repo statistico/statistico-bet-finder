@@ -128,7 +128,7 @@ func TestMarketFactory_FixtureAndBetType(t *testing.T) {
 
 		assert.Equal(
 			t,
-			"event 'Liverpool v Man Utd' returned by betfair client does not match fixture 'Liverpool v Manchester City'",
+			"unable to parse event from betfair market catalogues for fixture 148270",
 			err.Error(),
 		)
 	})

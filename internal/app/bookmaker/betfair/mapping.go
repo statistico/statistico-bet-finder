@@ -40,7 +40,17 @@ func parseTeamMapping(team string) string {
 	return team
 }
 
-func fixtureMatchesEvent(fix statistico.Fixture, event bfClient.Event) bool {
+func parseCatalogue(cat []bfClient.MarketCatalogue, fix *statistico.Fixture) (*bfClient.MarketCatalogue, error) {
+	for _, c := range cat {
+		if fixtureMatchesEvent(fix, c.Event) {
+			return &c, nil
+		}
+	}
+
+	return nil, fmt.Errorf("unable to parse event from betfair market catalogues for fixture %d", fix.ID)
+}
+
+func fixtureMatchesEvent(fix *statistico.Fixture, event bfClient.Event) bool {
 	home := parseTeamMapping(fix.HomeTeam)
 	away := parseTeamMapping(fix.AwayTeam)
 
