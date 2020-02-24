@@ -1,15 +1,23 @@
 openapi: 3.0.0
 info:
-  title: Statistico Bet Finder API
+  title: Statistico Bookmaker API
   version: 1.0.0
 servers:
-  - url: https://bet-finder.statistico.io/api/v1
+  - url: https://bookmaker.statistico.io/api/v1
 paths:
-  /market-book:
+  /event/{id}/book:
     post:
       tags:
-        - Proposed
-      description: Get Statistico and bookmaker prices for provided fixtures
+        - Bookmaker
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the event
+          schema:
+            type: integer
+            example: 234571
+      description: Get bookmaker prices for provided fixtures and markets
       requestBody:
         required: true
         content:
@@ -17,14 +25,16 @@ paths:
             schema:
               type: object
               properties:
-                fixtureIds:
+                markets:
                   type: array
                   items:
-                    type: integer
-                    example: 560194
+                    type: string
+                    enum:
+                      - "OVER_UNDER_25"
+                      - "OVER_UNDER_35"
       responses:
         200:
-          description: Statistico prices and bookmaker prices based on provided fixtures
+          description: Bookmaker prices based on provided fixtures and markets
           content:
             application/json:
               schema:
@@ -36,76 +46,8 @@ paths:
                   data:
                     type: object
                     properties:
-                      books:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            fixtureId:
-                              type: integer
-                              example: 560194
-                            market:
-                              type: array
-                              items:
-                                $ref: '#/components/schemas/Book'
-        default:
-          description: Default non 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StandardResponse'
-
-  /tips:
-    post:
-      tags:
-        - Proposed
-      description: Get suggested bets for Fixture IDs provided
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                fixtureIds:
-                  type: array
-                  items:
-                    type: integer
-                    example: 560194
-      responses:
-        200:
-          description: An array of suggested bets for Fixture IDs provided
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: 'success'
-                  data:
-                    type: object
-                    properties:
-                      bets:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            fixtureId:
-                              type: integer
-                              example: 560194
-                            type:
-                              type: string
-                              enum:
-                                - OVER_UNDER_25
-                            bet:
-                              $ref: '#/components/schemas/Bet'
-                            statistico:
-                              $ref: '#/components/schemas/StatisticoPrice'
-                            bookmakers:
-                              type: array
-                              items:
-                                $ref: '#/components/schemas/BookmakerPrice'
+                      book:
+                        $ref: '#/components/schemas/Book'
         default:
           description: Default non 200 response
           content:
@@ -118,72 +60,74 @@ components:
     Book:
       type: object
       properties:
-        type:
-          type: string
-          enum:
-            - OVER_UNDER_25
-        selections:
+        eventId:
+          type: integer
+          example: 234571
+        createdAt:
+          $ref: '#/components/schemas/DateTime'
+        markets:
           type: array
           items:
             $ref: '#/components/schemas/Market'
-
     Market:
-      type: object
-      properties:
-        selection:
-          type: string
-          enum:
-            - OVER
-            - UNDER
-        statistico:
-            $ref: '#/components/schemas/StatisticoPrice'
-        bookmakers:
-            type: array
-            items:
-              $ref: '#/components/schemas/BookmakerPrice'
-
-    StatisticoPrice:
-      type: object
-      properties:
-        price:
-          type: number
-          example: 1.89
-
-    BookmakerPrice:
       type: object
       properties:
         name:
           type: string
           enum:
-            - betfair
-        price:
-          type: number
-          example: 2.45
-        marketId:
-          type: string
-          example: '13458726'
-        selectionId:
-          type: string
-          example: "1567910"
-
-    Bet:
+            - OVER_UNDER_25
+            - OVER_UNDER_35
+        bookmakers:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookmakerMarket'
+    BookmakerMarket:
       type: object
       properties:
-        selection:
+        bookmaker:
           type: string
           enum:
-            - OVER
-        side:
+            - betfair
+        marketId:
           type: string
-          enum:
-            - BACK
-            - LAY
+          example: "123456101"
+          description: The bookmaker specific market ID
+        runners:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookmakerRunner'
+    BookmakerRunner:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 'Over 2.5 Goals'
+          description: The descriptive name of the runner
+        selectionId:
+          type: string
+          example: "1.247691"
+          description: The bookmaker specific selection ID
+        back:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookmakerPrice'
+        lay:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookmakerPrice'
+    BookmakerPrice:
+      type: object
+      properties:
+        value:
+          type: integer
+          example: 1.89
         size:
-          type: number
-          example: 10.00
-          description: The amount to bet in pounds sterling
-          nullable: true
-
+          type: integer
+          example: 560.90
+    DateTime:
+      type: string
+      description: "An RFC-3339 valid datetime"
+      example: '2018-01-24T20:21:44+00:00'
     StandardResponse:
       type: object
       required:

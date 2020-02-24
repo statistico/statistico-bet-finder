@@ -13,20 +13,19 @@ type RunnerFactory interface {
 }
 
 type Market struct {
-	ID        string   `json:"id"`
-	Name      string   `json:"name"`
+	ID        string   `json:"marketId"`
 	Bookmaker string   `json:"bookmaker"`
 	Runners   []Runner `json:"book"`
 }
 
 type Runner struct {
 	Name        string  `json:"name"`
-	SelectionID uint64  `json:"selection_id"`
+	SelectionID uint64  `json:"selectionId"`
 	Back        []Price `json:"back"`
 	Lay         []Price `json:"lay"`
 }
 
 type Price struct {
-	Price float32 `json:"price"`
+	Value float32 `json:"value"`
 	Size  float32 `json:"size"`
 }
