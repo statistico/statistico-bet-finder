@@ -45,7 +45,7 @@ func TestBookHandler_CreateBook(t *testing.T) {
 			CreatedAt: time.Date(2019, 01, 14, 11, 25, 00, 00, time.UTC),
 		}
 
-		bookmaker.On("CreateBook", &query).Return(&book)
+		bookmaker.On("CreateBook", &query).Return(&book, nil)
 
 		response := httptest.NewRecorder()
 		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

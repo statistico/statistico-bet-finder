@@ -32,7 +32,11 @@ func TestBookMaker_CreateBook(t *testing.T) {
 		builder.On("FixtureAndMarket", &fixture, "OVER_UNDER_15").Return(&app.Market{}, nil)
 		builder.On("FixtureAndMarket", &fixture, "OVER_UNDER_25").Return(&app.Market{}, nil)
 
-		book := bookmaker.CreateBook(&query)
+		book, err := bookmaker.CreateBook(&query)
+
+		if err != nil {
+			t.Fatalf("Expected nil got %s", err.Error())
+		}
 
 		fixtureClient.AssertExpectations(t)
 		builder.AssertExpectations(t)
@@ -42,13 +46,13 @@ func TestBookMaker_CreateBook(t *testing.T) {
 		assert.Nil(t, hook.LastEntry())
 	})
 
-	t.Run("logs error and returns empty book if error fetching fixture via fixture client", func(t *testing.T) {
+	t.Run("returns error if error fetching fixture via fixture client", func(t *testing.T) {
 		t.Helper()
 
 		fixtureClient := new(mock.FixtureClient)
 		builder := new(mock.MarketBuilder)
 		clock := mock.NewFixedClock()
-		logger, hook := test.NewNullLogger()
+		logger, _ := test.NewNullLogger()
 
 		query := app.BookQuery{
 			Markets:    []string{"OVER_UNDER_25"},
@@ -57,20 +61,20 @@ func TestBookMaker_CreateBook(t *testing.T) {
 
 		bookmaker := app.NewBookMaker(fixtureClient, builder, clock, logger)
 
-		fixtureClient.On("FixtureByID", uint64(1329)).Return(&statistico.Fixture{}, errors.New("error occurred"))
+		fixtureClient.On("FixtureByID", uint64(1329)).Return(&statistico.Fixture{}, errors.New("fixture not found"))
 		builder.AssertNotCalled(t, "FixtureAndMarket", uint64(1329), "OVER_UNDER_25")
 
-		book := bookmaker.CreateBook(&query)
+		_, err := bookmaker.CreateBook(&query)
+
+		if err == nil {
+			t.Fatal("Expected error got nil")
+		}
 
 		fixtureClient.AssertExpectations(t)
 		builder.AssertExpectations(t)
-
-		assert.Equal(t, 0, len(book.Markets))
-		assert.Equal(t, "2019-01-14 11:25:00 +0000 UTC", book.CreatedAt.String())
-		assert.Equal(t, "Error 'error occurred' fetching fixture '1329' when creating a book", hook.LastEntry().Message)
 	})
 
-	t.Run("logs error and continues book creation if error building market", func(t *testing.T) {
+	t.Run("logs warning and continues book creation if error building market", func(t *testing.T) {
 		t.Helper()
 
 		fixtureClient := new(mock.FixtureClient)
@@ -91,13 +95,17 @@ func TestBookMaker_CreateBook(t *testing.T) {
 		builder.On("FixtureAndMarket", &fixture, "OVER_UNDER_15").Return(&app.Market{}, nil)
 		builder.On("FixtureAndMarket", &fixture, "OVER_UNDER_25").Return(&app.Market{}, errors.New("error occurred"))
 
-		book := bookmaker.CreateBook(&query)
+		book, err := bookmaker.CreateBook(&query)
+
+		if err != nil {
+			t.Fatalf("Expected nil got %s", err.Error())
+		}
 
 		fixtureClient.AssertExpectations(t)
 		builder.AssertExpectations(t)
 
 		assert.Equal(t, 1, len(book.Markets))
 		assert.Equal(t, "2019-01-14 11:25:00 +0000 UTC", book.CreatedAt.String())
-		assert.Equal(t, "error occurred", hook.LastEntry().Message)
+		assert.Equal(t, "Error building market for event 1329: error occurred", hook.LastEntry().Message)
 	})
 }

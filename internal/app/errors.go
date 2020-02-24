@@ -2,5 +2,5 @@ package app
 
 import "errors"
 
-var errNotFound = errors.New("requested entity does not exist")
+var ErrNotFound = errors.New("requested entity does not exist")
 

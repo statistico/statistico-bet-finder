@@ -33,14 +33,14 @@ func (b bookMaker) CreateBook(q *BookQuery) (*Book, error) {
 	fixture, err := b.fixtureClient.FixtureByID(q.EventID)
 
 	if err != nil {
-		return &book, errNotFound
+		return &book, ErrNotFound
 	}
 
 	for _, m := range q.Markets {
 		market, err := b.builder.FixtureAndMarket(fixture, m)
 
 		if err != nil {
-			b.logger.Warn(err.Error())
+			b.logger.Warnf("Error building market for event %d: %s", q.EventID, err.Error())
 			continue
 		}
 
