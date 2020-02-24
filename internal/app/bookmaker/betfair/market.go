@@ -39,7 +39,6 @@ func (b MarketFactory) FixtureAndMarket(fix statistico.Fixture, market string) (
 	m := bookmaker.Market{
 		ID:        catalogue.MarketID,
 		Bookmaker: betfair,
-		Name:      market,
 		Runners:   nil,
 	}
 

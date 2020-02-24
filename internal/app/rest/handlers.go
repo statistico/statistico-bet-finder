@@ -3,44 +3,57 @@ package rest
 import (
 	"encoding/json"
 	"github.com/julienschmidt/httprouter"
+	"github.com/sirupsen/logrus"
 	"github.com/statistico/statistico-bet-finder/internal/app"
 	"net/http"
+	"strconv"
 )
 
 type BookHandler struct {
 	bookmaker app.BookMaker
 }
 
-func (b BookHandler) PostBook(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	query, err := parseBookQuery(r)
+func (b BookHandler) PostBook(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	query, err := parseBookQuery(r, ps)
 
 	if err != nil {
 		failResponse(w, http.StatusBadRequest, err)
 		return
 	}
 
-	book := b.bookmaker.CreateBook(query)
+	book, err := b.bookmaker.CreateBook(query)
+
+	if err != nil {
+		failResponse(w, http.StatusNotFound, err)
+		return
+	}
 
 	response := bookResponse{Book: book}
 
 	successResponse(w, http.StatusOK, response)
 }
 
-func parseBookQuery(r *http.Request) (*app.BookQuery, error) {
+func parseBookQuery(r *http.Request, ps httprouter.Params) (*app.BookQuery, error) {
+	id, err := strconv.Atoi(ps.ByName("id"))
+
+	if err != nil {
+		return nil, errBadRequestPath
+	}
+
 	body := struct {
-		FixtureIDs []uint64 `json:"fixture_ids"`
 		Markets    []string `json:"markets"`
 	}{}
 
-	err := json.NewDecoder(r.Body).Decode(&body)
+	err = json.NewDecoder(r.Body).Decode(&body)
 
 	if err != nil {
-		return nil, errBadRequest
+		logrus.Error(err.Error())
+		return nil, errBadRequestBody
 	}
 
 	query := app.BookQuery{
+		EventID:    uint64(id),
 		Markets:    body.Markets,
-		FixtureIDs: body.FixtureIDs,
 	}
 
 	return &query, nil

@@ -30,7 +30,7 @@ type Bookmaker struct {
 	mock.Mock
 }
 
-func (b Bookmaker) CreateBook(q *app.BookQuery) *app.Book {
+func (b Bookmaker) CreateBook(q *app.BookQuery) (*app.Book, error) {
 	args := b.Called(q)
-	return args.Get(0).(*app.Book)
+	return args.Get(0).(*app.Book), args.Error(1)
 }

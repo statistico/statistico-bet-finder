@@ -30,7 +30,6 @@ func TestMarketBuilder_FixtureAndBetType(t *testing.T) {
 		m := bookmaker.Market{
 			ID:        "1.14567",
 			Bookmaker: "Betfair",
-			Name:      "OVER_UNDER_25",
 			Runners: []bookmaker.Runner{
 				{
 					Name:        "OVER",
@@ -58,8 +57,8 @@ func TestMarketBuilder_FixtureAndBetType(t *testing.T) {
 		}
 
 		factory.AssertExpectations(t)
-		assert.Equal(t, uint64(45381), market.FixtureID)
-		assert.Equal(t, uint64(45381), market.FixtureID)
+		assert.Equal(t, "OVER_UNDER_25", market.Name)
+		assert.Equal(t, 1, len(market.Bookmakers))
 		assert.Nil(t, hook.LastEntry())
 	})
 
