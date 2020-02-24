@@ -17,7 +17,7 @@ paths:
           schema:
             type: integer
             example: 234571
-      description: Get bookmaker prices for provided fixtures and markets
+      description: Get bookmaker prices for provided event and market filters
       requestBody:
         required: true
         content:
@@ -34,7 +34,7 @@ paths:
                       - "OVER_UNDER_35"
       responses:
         200:
-          description: Bookmaker prices based on provided fixtures and markets
+          description: Bookmaker prices for provided event and market filters
           content:
             application/json:
               schema:
