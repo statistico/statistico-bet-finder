@@ -11,7 +11,7 @@ func main() {
 	container := bootstrap.BuildContainer(bootstrap.BuildConfig())
 
 	router := httprouter.New()
-	router.POST("/api/v1/book", container.BookHandler().PostBook)
+	router.POST("/api/v1/event/:id/book", container.BookHandler().PostBook)
 
 	log.Fatal(http.ListenAndServe(":80", router))
 }

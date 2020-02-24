@@ -41,7 +41,6 @@ func TestMarketFactory_FixtureAndBetType(t *testing.T) {
 
 		assert.Equal(t, "1.167019590", market.ID)
 		assert.Equal(t, "Betfair", market.Bookmaker)
-		assert.Equal(t, "OVER_UNDER_25", market.Name)
 		assert.Equal(t, 2, len(market.Runners))
 	})
 

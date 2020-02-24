@@ -23,7 +23,7 @@ func TestBookMaker_CreateBook(t *testing.T) {
 
 		query := app.BookQuery{
 			Markets:    []string{"OVER_UNDER_15", "OVER_UNDER_25"},
-			FixtureIDs: []uint64{1329},
+			EventID:    uint64(1329),
 		}
 
 		fixture := statistico.Fixture{ID: 1329}
@@ -42,7 +42,7 @@ func TestBookMaker_CreateBook(t *testing.T) {
 		assert.Nil(t, hook.LastEntry())
 	})
 
-	t.Run("logs error and continues book creation if error fetching fixture via fixture client", func(t *testing.T) {
+	t.Run("logs error and returns empty book if error fetching fixture via fixture client", func(t *testing.T) {
 		t.Helper()
 
 		fixtureClient := new(mock.FixtureClient)
@@ -52,7 +52,7 @@ func TestBookMaker_CreateBook(t *testing.T) {
 
 		query := app.BookQuery{
 			Markets:    []string{"OVER_UNDER_25"},
-			FixtureIDs: []uint64{1329, 45901},
+			EventID:    uint64(1329),
 		}
 
 		bookmaker := app.NewBookMaker(fixtureClient, builder, clock, logger)
@@ -60,17 +60,12 @@ func TestBookMaker_CreateBook(t *testing.T) {
 		fixtureClient.On("FixtureByID", uint64(1329)).Return(&statistico.Fixture{}, errors.New("error occurred"))
 		builder.AssertNotCalled(t, "FixtureAndMarket", uint64(1329), "OVER_UNDER_25")
 
-		fixture := statistico.Fixture{ID: 1329}
-
-		fixtureClient.On("FixtureByID", uint64(45901)).Return(&fixture, nil)
-		builder.On("FixtureAndMarket", &fixture, "OVER_UNDER_25").Return(&app.Market{}, nil)
-
 		book := bookmaker.CreateBook(&query)
 
 		fixtureClient.AssertExpectations(t)
 		builder.AssertExpectations(t)
 
-		assert.Equal(t, 1, len(book.Markets))
+		assert.Equal(t, 0, len(book.Markets))
 		assert.Equal(t, "2019-01-14 11:25:00 +0000 UTC", book.CreatedAt.String())
 		assert.Equal(t, "Error 'error occurred' fetching fixture '1329' when creating a book", hook.LastEntry().Message)
 	})
@@ -87,7 +82,7 @@ func TestBookMaker_CreateBook(t *testing.T) {
 
 		query := app.BookQuery{
 			Markets:    []string{"OVER_UNDER_15", "OVER_UNDER_25"},
-			FixtureIDs: []uint64{1329},
+			EventID:    uint64(1329),
 		}
 
 		fixture := statistico.Fixture{ID: 1329}

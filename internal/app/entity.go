@@ -6,13 +6,13 @@ import (
 )
 
 type Book struct {
+	EventID   uint64    `json:"eventId"`
 	Markets   []*Market `json:"markets"`
-	CreatedAt time.Time `json:"created_at"`
+	CreatedAt time.Time `json:"createdAt"`
 }
 
-// Market is a struct for a given fixture and market name with hydrated Statistico and Bookmaker markets
+// Market is a struct for a given market name with hydrated bookmaker markets
 type Market struct {
-	FixtureID  uint64              `json:"fixture_id"`
 	Name       string              `json:"name"`
 	Bookmakers []*bookmaker.Market `json:"bookmakers"`
 }
