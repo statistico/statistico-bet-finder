@@ -21,7 +21,12 @@ func (b BookHandler) PostBook(w http.ResponseWriter, r *http.Request, ps httprou
 		return
 	}
 
-	book := b.bookmaker.CreateBook(query)
+	book, err := b.bookmaker.CreateBook(query)
+
+	if err != nil {
+		failResponse(w, http.StatusNotFound, err)
+		return
+	}
 
 	response := bookResponse{Book: book}
 

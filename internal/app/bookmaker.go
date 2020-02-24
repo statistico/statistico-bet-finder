@@ -7,7 +7,7 @@ import (
 )
 
 type BookMaker interface {
-	CreateBook(q *BookQuery) *Book
+	CreateBook(q *BookQuery) (*Book, error)
 }
 
 type BookQuery struct {
@@ -24,7 +24,7 @@ type bookMaker struct {
 }
 
 // CreateBook creates a Book struct of Statistico and Bookmaker markets.
-func (b bookMaker) CreateBook(q *BookQuery) *Book {
+func (b bookMaker) CreateBook(q *BookQuery) (*Book, error) {
 	book := Book{
 		EventID:   q.EventID,
 		CreatedAt: b.clock.Now(),
@@ -33,8 +33,7 @@ func (b bookMaker) CreateBook(q *BookQuery) *Book {
 	fixture, err := b.fixtureClient.FixtureByID(q.EventID)
 
 	if err != nil {
-		b.logger.Warnf("Error '%s' fetching fixture '%d' when creating a book", err.Error(), q.EventID)
-		return &book
+		return &book, errNotFound
 	}
 
 	for _, m := range q.Markets {
@@ -48,7 +47,7 @@ func (b bookMaker) CreateBook(q *BookQuery) *Book {
 		book.Markets = append(book.Markets, market)
 	}
 
-	return &book
+	return &book, nil
 }
 
 func NewBookMaker(f statistico.FixtureClient, b MarketBuilder, c clockwork.Clock, l *logrus.Logger) BookMaker {
