@@ -1,9 +1,9 @@
 openapi: 3.0.0
 info:
-  title: Statistico Bookmaker API
+  title: Statistico Price Finder API
   version: 1.0.0
 servers:
-  - url: https://bookmaker.statistico.io/api/v1
+  - url: https://price-finder.statistico.io/api/v1
 paths:
   /event/{id}/book:
     post:
