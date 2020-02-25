@@ -1,11 +1,10 @@
-package rest_test
+package main
 
 import (
 	"bytes"
 	"github.com/julienschmidt/httprouter"
 	"github.com/statistico/statistico-bet-finder/internal/app"
 	"github.com/statistico/statistico-bet-finder/internal/app/mock"
-	"github.com/statistico/statistico-bet-finder/internal/app/rest"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"net/http"
@@ -19,7 +18,7 @@ func TestBookHandler_CreateBook(t *testing.T) {
 		t.Helper()
 
 		bookmaker := new(mock.Bookmaker)
-		bookHandler := rest.NewBookHandler(bookmaker)
+		bookHandler := newBookHandler(bookmaker)
 
 		var body = `{"markets": ["OVER_UNDER_15", "OVER_UNDER_25"]}`
 
@@ -63,7 +62,7 @@ func TestBookHandler_CreateBook(t *testing.T) {
 		t.Helper()
 
 		bookmaker := new(mock.Bookmaker)
-		bookHandler := rest.NewBookHandler(bookmaker)
+		bookHandler := newBookHandler(bookmaker)
 
 		request, err := http.NewRequest("POST", "/api/v1/event/18279book", ioutil.NopCloser(bytes.NewBufferString(`[]`)))
 
@@ -90,7 +89,7 @@ func TestBookHandler_CreateBook(t *testing.T) {
 		t.Helper()
 
 		bookmaker := new(mock.Bookmaker)
-		bookHandler := rest.NewBookHandler(bookmaker)
+		bookHandler := newBookHandler(bookmaker)
 
 		var body = `{"markets": [13986]}`
 

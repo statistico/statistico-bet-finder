@@ -10,8 +10,10 @@ import (
 func main() {
 	container := bootstrap.BuildContainer(bootstrap.BuildConfig())
 
+	handler := newBookHandler(container.BookMaker())
+
 	router := httprouter.New()
-	router.POST("/api/v1/event/:id/book", container.BookHandler().PostBook)
+	router.POST("/api/v1/event/:id/book", handler.PostBook)
 
 	log.Fatal(http.ListenAndServe(":80", router))
 }

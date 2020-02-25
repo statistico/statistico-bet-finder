@@ -1,4 +1,4 @@
-package rest
+package main
 
 import (
 	"encoding/json"
@@ -9,11 +9,11 @@ import (
 	"strconv"
 )
 
-type BookHandler struct {
+type bookHandler struct {
 	bookmaker app.BookMaker
 }
 
-func (b BookHandler) PostBook(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func (b bookHandler) PostBook(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	query, err := parseBookQuery(r, ps)
 
 	if err != nil {
@@ -59,6 +59,6 @@ func parseBookQuery(r *http.Request, ps httprouter.Params) (*app.BookQuery, erro
 	return &query, nil
 }
 
-func NewBookHandler(b app.BookMaker) *BookHandler {
-	return &BookHandler{bookmaker: b}
+func newBookHandler(b app.BookMaker) *bookHandler {
+	return &bookHandler{bookmaker: b}
 }
