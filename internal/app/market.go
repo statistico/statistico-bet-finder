@@ -10,7 +10,7 @@ type MarketBuilder interface {
 	FixtureAndMarket(f *statistico.Fixture, bet string) (*Market, error)
 }
 
-// MarketBuilder builds markets for Statistico and associated bookmakers.
+// MarketBuilder builds markets for bookmakers.
 type marketBuilder struct {
 	bookmakers []bookmaker.MarketFactory
 	logger     *logrus.Logger
