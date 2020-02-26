@@ -1,7 +1,7 @@
 package app
 
 import (
-	"github.com/statistico/statistico-bet-finder/internal/app/bookmaker"
+	"github.com/statistico/statistico-price-finder/internal/app/bookmaker"
 	"time"
 )
 

@@ -1,8 +1,8 @@
 package betfair
 
 import (
-	"github.com/statistico/statistico-bet-finder/internal/app/bookmaker"
 	bfClient "github.com/statistico/statistico-betfair-go-client"
+	"github.com/statistico/statistico-price-finder/internal/app/bookmaker"
 )
 
 func buildPrices(prices []bfClient.PriceSize) []bookmaker.Price {

@@ -3,8 +3,8 @@ package betfair
 import (
 	"context"
 	"fmt"
-	"github.com/statistico/statistico-bet-finder/internal/app/bookmaker"
 	bfClient "github.com/statistico/statistico-betfair-go-client"
+	"github.com/statistico/statistico-price-finder/internal/app/bookmaker"
 )
 
 // RunnerFactory is a wrapper around the BetFair API Client that is responsible for creating new

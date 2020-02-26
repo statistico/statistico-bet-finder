@@ -2,9 +2,9 @@ package betfair
 
 import (
 	"errors"
-	"github.com/statistico/statistico-bet-finder/internal/app/bookmaker"
-	"github.com/statistico/statistico-bet-finder/internal/app/mock"
-	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
+	"github.com/statistico/statistico-price-finder/internal/app/bookmaker"
+	"github.com/statistico/statistico-price-finder/internal/app/grpc/proto"
+	"github.com/statistico/statistico-price-finder/internal/app/mock"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -23,7 +23,7 @@ func TestMarketFactory_FixtureAndBetType(t *testing.T) {
 			runner: runners,
 		}
 
-		fixture := newStatisticoFixture("Liverpool", "Manchester United", 148270, 8)
+		fixture := newProtoFixture("Liverpool", "Manchester United", 148270, 8)
 
 		runnerOne := newBookmakerRunner("Under 2.5 Goals", 47972)
 		runnerTwo := newBookmakerRunner("Under 2.5 Goals", 47973)
@@ -31,7 +31,7 @@ func TestMarketFactory_FixtureAndBetType(t *testing.T) {
 		runners.On("CreateRunner", uint64(47972), "1.167019590", "Under 2.5 Goals").Return(runnerOne, nil)
 		runners.On("CreateRunner", uint64(47973), "1.167019590", "Over 2.5 Goals").Return(runnerTwo, nil)
 
-		market, err := factory.FixtureAndMarket(fixture, "OVER_UNDER_25")
+		market, err := factory.FixtureAndMarket(&fixture, "OVER_UNDER_25")
 
 		if err != nil {
 			t.Fatalf("Error creating market expected nil got %s", err)
@@ -57,9 +57,9 @@ func TestMarketFactory_FixtureAndBetType(t *testing.T) {
 			runner: runners,
 		}
 
-		fixture := newStatisticoFixture("Liverpool", "Manchester United", 148270, 44)
+		fixture := newProtoFixture("Liverpool", "Manchester United", 148270, 44)
 
-		market, err := factory.FixtureAndMarket(fixture, "OVER_UNDER_25")
+		market, err := factory.FixtureAndMarket(&fixture, "OVER_UNDER_25")
 
 		if market != nil {
 			t.Fatalf("Error expected nil got %+v", market)
@@ -85,9 +85,9 @@ func TestMarketFactory_FixtureAndBetType(t *testing.T) {
 			runner: runners,
 		}
 
-		fixture := newStatisticoFixture("Liverpool", "Manchester United", 148270, 8)
+		fixture := newProtoFixture("Liverpool", "Manchester United", 148270, 8)
 
-		market, err := factory.FixtureAndMarket(fixture, "OVER_UNDER_25")
+		market, err := factory.FixtureAndMarket(&fixture, "OVER_UNDER_25")
 
 		if market != nil {
 			t.Fatalf("Error expected nil got %+v", market)
@@ -113,9 +113,9 @@ func TestMarketFactory_FixtureAndBetType(t *testing.T) {
 			runner: runners,
 		}
 
-		fixture := newStatisticoFixture("Liverpool", "Manchester City", 148270, 8)
+		fixture := newProtoFixture("Liverpool", "Manchester City", 148270, 8)
 
-		market, err := factory.FixtureAndMarket(fixture, "OVER_UNDER_25")
+		market, err := factory.FixtureAndMarket(&fixture, "OVER_UNDER_25")
 
 		if market != nil {
 			t.Fatalf("Error expected nil got %+v", market)
@@ -145,14 +145,14 @@ func TestMarketFactory_FixtureAndBetType(t *testing.T) {
 			runner: runners,
 		}
 
-		fixture := newStatisticoFixture("Liverpool", "Manchester United", 148270, 8)
+		fixture := newProtoFixture("Liverpool", "Manchester United", 148270, 8)
 
 		runnerOne := newBookmakerRunner("Under 2.5 Goals", 47972)
 
 		runners.On("CreateRunner", uint64(47972), "1.167019590", "Under 2.5 Goals").Return(runnerOne, nil)
 		runners.On("CreateRunner", uint64(47973), "1.167019590", "Over 2.5 Goals").Return(&bookmaker.Runner{}, errors.New("oh no"))
 
-		market, err := factory.FixtureAndMarket(fixture, "OVER_UNDER_25")
+		market, err := factory.FixtureAndMarket(&fixture, "OVER_UNDER_25")
 
 		if market != nil {
 			t.Fatalf("Error expected nil got %+v", market)
@@ -197,12 +197,12 @@ var marketCatalogueResponse = `[
   }
 ]`
 
-func newStatisticoFixture(home, away string, fixtureID, competitionID uint64) statistico.Fixture {
-	return statistico.Fixture{
-		ID:            fixtureID,
-		CompetitionID: competitionID,
-		HomeTeam:      home,
-		AwayTeam:      away,
+func newProtoFixture(home, away string, fixtureID, competitionID int64) proto.Fixture {
+	return proto.Fixture{
+		Id:          fixtureID,
+		Competition: &proto.Competition{Id: competitionID},
+		HomeTeam:    &proto.Team{Name: home},
+		AwayTeam:    &proto.Team{Name: away},
 	}
 }
 

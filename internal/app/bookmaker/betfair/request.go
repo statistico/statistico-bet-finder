@@ -1,12 +1,12 @@
 package betfair
 
 import (
-	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
 	bfClient "github.com/statistico/statistico-betfair-go-client"
+	"github.com/statistico/statistico-price-finder/internal/app/grpc/proto"
 )
 
-func buildMarketCatalogueRequest(fix statistico.Fixture, betTypes []string) (*bfClient.ListMarketCatalogueRequest, error) {
-	compID, err := parseCompetitionMapping(fix.CompetitionID)
+func buildMarketCatalogueRequest(fix *proto.Fixture, betTypes []string) (*bfClient.ListMarketCatalogueRequest, error) {
+	compID, err := parseCompetitionMapping(uint64(fix.Competition.Id))
 
 	if err != nil {
 		return nil, err
@@ -14,7 +14,7 @@ func buildMarketCatalogueRequest(fix statistico.Fixture, betTypes []string) (*bf
 
 	filter := bfClient.MarketFilter{
 		CompetitionIDs:  []string{compID},
-		TextQuery:       parseTeamMapping(fix.HomeTeam),
+		TextQuery:       parseTeamMapping(fix.HomeTeam.Name),
 		MarketTypeCodes: betTypes,
 	}
 

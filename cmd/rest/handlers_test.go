@@ -3,8 +3,8 @@ package main
 import (
 	"bytes"
 	"github.com/julienschmidt/httprouter"
-	"github.com/statistico/statistico-bet-finder/internal/app"
-	"github.com/statistico/statistico-bet-finder/internal/app/mock"
+	"github.com/statistico/statistico-price-finder/internal/app"
+	"github.com/statistico/statistico-price-finder/internal/app/mock"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"net/http"

@@ -4,10 +4,10 @@ import (
 	"errors"
 	"github.com/sirupsen/logrus"
 	"github.com/sirupsen/logrus/hooks/test"
-	"github.com/statistico/statistico-bet-finder/internal/app"
-	"github.com/statistico/statistico-bet-finder/internal/app/bookmaker"
-	"github.com/statistico/statistico-bet-finder/internal/app/mock"
-	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
+	"github.com/statistico/statistico-price-finder/internal/app"
+	"github.com/statistico/statistico-price-finder/internal/app/bookmaker"
+	"github.com/statistico/statistico-price-finder/internal/app/grpc/proto"
+	"github.com/statistico/statistico-price-finder/internal/app/mock"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -22,9 +22,9 @@ func TestMarketBuilder_FixtureAndBetType(t *testing.T) {
 
 		builder := app.NewMarketBuilder(books, logger)
 
-		fixture := statistico.Fixture{
-			ID:            45381,
-			CompetitionID: 42,
+		fixture := proto.Fixture{
+			Id:          45381,
+			Competition: &proto.Competition{Id: 42},
 		}
 
 		m := bookmaker.Market{
@@ -44,7 +44,7 @@ func TestMarketBuilder_FixtureAndBetType(t *testing.T) {
 			},
 		}
 
-		factory.On("FixtureAndMarket", fixture, "OVER_UNDER_25").Return(&m, nil)
+		factory.On("FixtureAndMarket", &fixture, "OVER_UNDER_25").Return(&m, nil)
 
 		market, err := builder.FixtureAndMarket(&fixture, "OVER_UNDER_25")
 
@@ -71,12 +71,12 @@ func TestMarketBuilder_FixtureAndBetType(t *testing.T) {
 
 		builder := app.NewMarketBuilder(books, logger)
 
-		fixture := statistico.Fixture{
-			ID:            45381,
-			CompetitionID: 42,
+		fixture := proto.Fixture{
+			Id:          45381,
+			Competition: &proto.Competition{Id: 42},
 		}
 
-		factory.On("FixtureAndMarket", fixture, "OVER_UNDER_25").Return(&bookmaker.Market{}, errors.New("error occurred"))
+		factory.On("FixtureAndMarket", &fixture, "OVER_UNDER_25").Return(&bookmaker.Market{}, errors.New("error occurred"))
 
 		market, err := builder.FixtureAndMarket(&fixture, "OVER_UNDER_25")
 

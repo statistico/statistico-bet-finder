@@ -1,9 +1,9 @@
 package mock
 
 import (
-	"github.com/statistico/statistico-bet-finder/internal/app"
-	"github.com/statistico/statistico-bet-finder/internal/app/bookmaker"
-	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
+	"github.com/statistico/statistico-price-finder/internal/app"
+	"github.com/statistico/statistico-price-finder/internal/app/bookmaker"
+	"github.com/statistico/statistico-price-finder/internal/app/grpc/proto"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -21,7 +21,7 @@ type MarketFactory struct {
 	mock.Mock
 }
 
-func (m MarketFactory) FixtureAndMarket(fix statistico.Fixture, market string) (*bookmaker.Market, error) {
+func (m MarketFactory) FixtureAndMarket(fix *proto.Fixture, market string) (*bookmaker.Market, error) {
 	args := m.Called(fix, market)
 	return args.Get(0).(*bookmaker.Market), args.Error(1)
 }

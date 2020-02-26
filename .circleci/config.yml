@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/go/src/github.com/statistico/statistico-bet-finder
+    working_directory: ~/go/src/github.com/statistico/statistico-price-finder
     machine: true
     environment:
       GOPATH: /home/circleci/go
