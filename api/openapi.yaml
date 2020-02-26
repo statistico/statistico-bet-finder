@@ -47,7 +47,7 @@ paths:
                     type: object
                     properties:
                       book:
-                        $ref: '#/components/schemas/BookmakerBook'
+                        $ref: '#/components/schemas/Book'
         default:
           description: Default non 200 response
           content:
@@ -101,7 +101,7 @@ paths:
 
 components:
   schemas:
-    BookmakerBook:
+    Book:
       type: object
       properties:
         eventId:
