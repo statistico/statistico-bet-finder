@@ -1,8 +1,7 @@
-package app
+package bookmaker
 
 import (
 	"github.com/sirupsen/logrus"
-	"github.com/statistico/statistico-price-finder/internal/app/bookmaker"
 	"github.com/statistico/statistico-price-finder/internal/app/grpc/proto"
 )
 
@@ -12,7 +11,7 @@ type MarketBuilder interface {
 
 // MarketBuilder builds markets for bookmakers.
 type marketBuilder struct {
-	bookmakers []bookmaker.MarketFactory
+	bookmakers []MarketFactory
 	logger     *logrus.Logger
 }
 
@@ -41,6 +40,6 @@ func (m marketBuilder) FixtureAndMarket(f *proto.Fixture, market string) (*Marke
 	return &mark, nil
 }
 
-func NewMarketBuilder(book []bookmaker.MarketFactory, log *logrus.Logger) MarketBuilder {
+func NewMarketBuilder(book []MarketFactory, log *logrus.Logger) MarketBuilder {
 	return &marketBuilder{bookmakers: book, logger: log}
 }

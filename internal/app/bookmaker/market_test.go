@@ -1,10 +1,9 @@
-package app_test
+package bookmaker_test
 
 import (
 	"errors"
 	"github.com/sirupsen/logrus"
 	"github.com/sirupsen/logrus/hooks/test"
-	"github.com/statistico/statistico-price-finder/internal/app"
 	"github.com/statistico/statistico-price-finder/internal/app/bookmaker"
 	"github.com/statistico/statistico-price-finder/internal/app/grpc/proto"
 	"github.com/statistico/statistico-price-finder/internal/app/mock"
@@ -20,14 +19,14 @@ func TestMarketBuilder_FixtureAndBetType(t *testing.T) {
 		books := []bookmaker.MarketFactory{factory}
 		logger, hook := test.NewNullLogger()
 
-		builder := app.NewMarketBuilder(books, logger)
+		builder := bookmaker.NewMarketBuilder(books, logger)
 
 		fixture := proto.Fixture{
 			Id:          45381,
 			Competition: &proto.Competition{Id: 42},
 		}
 
-		m := bookmaker.Market{
+		m := bookmaker.SubMarket{
 			ID:        "1.14567",
 			Bookmaker: "Betfair",
 			Runners: []bookmaker.Runner{
@@ -69,14 +68,14 @@ func TestMarketBuilder_FixtureAndBetType(t *testing.T) {
 		books := []bookmaker.MarketFactory{factory}
 		logger, hook := test.NewNullLogger()
 
-		builder := app.NewMarketBuilder(books, logger)
+		builder := bookmaker.NewMarketBuilder(books, logger)
 
 		fixture := proto.Fixture{
 			Id:          45381,
 			Competition: &proto.Competition{Id: 42},
 		}
 
-		factory.On("FixtureAndMarket", &fixture, "OVER_UNDER_25").Return(&bookmaker.Market{}, errors.New("error occurred"))
+		factory.On("FixtureAndMarket", &fixture, "OVER_UNDER_25").Return(&bookmaker.SubMarket{}, errors.New("error occurred"))
 
 		market, err := builder.FixtureAndMarket(&fixture, "OVER_UNDER_25")
 

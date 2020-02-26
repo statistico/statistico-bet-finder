@@ -1,29 +1,61 @@
 package bookmaker
 
-import "github.com/statistico/statistico-price-finder/internal/app/grpc/proto"
+import (
+	"github.com/jonboulle/clockwork"
+	"github.com/sirupsen/logrus"
+	"github.com/statistico/statistico-price-finder/internal/app"
+	"github.com/statistico/statistico-price-finder/internal/app/grpc"
+)
 
-type MarketFactory interface {
-	FixtureAndMarket(fix *proto.Fixture, market string) (*Market, error)
+type BookMaker interface {
+	CreateBook(q *BookQuery) (*Book, error)
 }
 
-type RunnerFactory interface {
-	CreateRunner(selectionID uint64, marketID, name string) (*Runner, error)
+type BookQuery struct {
+	EventID uint64
+	Markets []string
 }
 
-type Market struct {
-	ID        string   `json:"marketId"`
-	Bookmaker string   `json:"bookmaker"`
-	Runners   []Runner `json:"runners"`
+// BookMaker is responsible for creating a Book struct of bookmaker markets.
+type bookMaker struct {
+	fixtureClient grpc.FixtureClient
+	builder       MarketBuilder
+	clock         clockwork.Clock
+	logger        *logrus.Logger
 }
 
-type Runner struct {
-	Name        string  `json:"name"`
-	SelectionID uint64  `json:"selectionId"`
-	Back        []Price `json:"back"`
-	Lay         []Price `json:"lay"`
+// CreateBook creates a Book struct of Statistico and Bookmaker markets.
+func (b bookMaker) CreateBook(q *BookQuery) (*Book, error) {
+	book := Book{
+		EventID:   q.EventID,
+		CreatedAt: b.clock.Now(),
+	}
+
+	fixture, err := b.fixtureClient.FixtureByID(q.EventID)
+
+	if err != nil {
+		return &book, app.ErrNotFound
+	}
+
+	for _, m := range q.Markets {
+		market, err := b.builder.FixtureAndMarket(fixture, m)
+
+		if err != nil {
+			b.logger.Warnf("Error building market for event %d: %s", q.EventID, err.Error())
+			continue
+		}
+
+		book.Markets = append(book.Markets, market)
+	}
+
+	return &book, nil
 }
 
-type Price struct {
-	Price float32 `json:"price"`
-	Size  float32 `json:"size"`
+func NewBookMaker(f grpc.FixtureClient, b MarketBuilder, c clockwork.Clock, l *logrus.Logger) BookMaker {
+	return &bookMaker{
+		fixtureClient: f,
+		builder:       b,
+		clock:         c,
+		logger:        l,
+	}
 }

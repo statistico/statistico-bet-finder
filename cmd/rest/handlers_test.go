@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"github.com/julienschmidt/httprouter"
 	"github.com/statistico/statistico-price-finder/internal/app"
+	bookmaker2 "github.com/statistico/statistico-price-finder/internal/app/bookmaker"
 	"github.com/statistico/statistico-price-finder/internal/app/mock"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
@@ -28,7 +29,7 @@ func TestBookHandler_CreateBook(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		query := app.BookQuery{
+		query := bookmaker2.BookQuery{
 			EventID:    18279,
 			Markets:    []string{"OVER_UNDER_15", "OVER_UNDER_25"},
 		}
