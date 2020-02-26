@@ -28,7 +28,7 @@ func (b bookHandler) BookmakerPostBook(w http.ResponseWriter, r *http.Request, p
 		return
 	}
 
-	response := bookResponse{Book: book}
+	response := bookmakerBookResponse{Book: book}
 
 	successResponse(w, http.StatusOK, response)
 }
