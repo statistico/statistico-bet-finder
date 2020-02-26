@@ -5,10 +5,10 @@ info:
 servers:
   - url: https://price-finder.statistico.io/api/v1
 paths:
-  /event/{id}/book:
+  /event/{id}/book/bookmaker:
     post:
       tags:
-        - Bookmaker
+        - Book
       parameters:
         - name: id
           in: path
@@ -47,7 +47,7 @@ paths:
                     type: object
                     properties:
                       book:
-                        $ref: '#/components/schemas/Book'
+                        $ref: '#/components/schemas/BookmakerBook'
         default:
           description: Default non 200 response
           content:
@@ -55,9 +55,53 @@ paths:
               schema:
                 $ref: '#/components/schemas/StandardResponse'
 
+  /event/{id}/book/statistico:
+    post:
+      tags:
+        - Book
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the event
+          schema:
+            type: integer
+            example: 234571
+      description: Get statistico prices for provided event and market filters
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                markets:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                      - "OVER_UNDER_25"
+                      - "OVER_UNDER_35"
+      responses:
+        200:
+          description: Statistico prices for provided event and market filters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'success'
+                  data:
+                    type: object
+                    properties:
+                      book:
+                        $ref: '#/components/schemas/StatisticoBook'
+
 components:
   schemas:
-    Book:
+    BookmakerBook:
       type: object
       properties:
         eventId:
@@ -124,6 +168,40 @@ components:
         size:
           type: integer
           example: 560.90
+    StatisticoBook:
+      type: object
+      properties:
+        eventId:
+          type: integer
+          example: 235981
+        createdAt:
+          $ref: '#/components/schemas/DateTime'
+        markets:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatisticoMarket'
+    StatisticoMarket:
+      type: object
+      properties:
+        name:
+          type: string
+          enum:
+            - OVER_UNDER_25
+            - OVER_UNDER_35
+        runners:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatisticoRunner'
+    StatisticoRunner:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 'Over 2.5 Goals'
+          description: The descriptive name of the runner
+        price:
+          type: integer
+          example: 1.96
     DateTime:
       type: string
       description: "An RFC-3339 valid datetime"
