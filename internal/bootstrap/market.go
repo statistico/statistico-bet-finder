@@ -1,8 +1,8 @@
 package bootstrap
 
 import (
-	"github.com/statistico/statistico-bet-finder/internal/app"
-	"github.com/statistico/statistico-bet-finder/internal/app/bookmaker"
+	"github.com/statistico/statistico-price-finder/internal/app"
+	"github.com/statistico/statistico-price-finder/internal/app/bookmaker"
 )
 
 func (c Container) MarketBuilder() app.MarketBuilder {

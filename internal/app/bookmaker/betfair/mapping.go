@@ -2,8 +2,8 @@ package betfair
 
 import (
 	"fmt"
-	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
 	bfClient "github.com/statistico/statistico-betfair-go-client"
+	"github.com/statistico/statistico-price-finder/internal/app/grpc/proto"
 )
 
 func parseCompetitionMapping(id uint64) (string, error) {
@@ -40,19 +40,19 @@ func parseTeamMapping(team string) string {
 	return team
 }
 
-func parseCatalogue(cat []bfClient.MarketCatalogue, fix *statistico.Fixture) (*bfClient.MarketCatalogue, error) {
+func parseCatalogue(cat []bfClient.MarketCatalogue, fix *proto.Fixture) (*bfClient.MarketCatalogue, error) {
 	for _, c := range cat {
 		if fixtureMatchesEvent(fix, c.Event) {
 			return &c, nil
 		}
 	}
 
-	return nil, fmt.Errorf("unable to parse event from betfair market catalogues for fixture %d", fix.ID)
+	return nil, fmt.Errorf("unable to parse event from betfair market catalogues for fixture %d", fix.Id)
 }
 
-func fixtureMatchesEvent(fix *statistico.Fixture, event bfClient.Event) bool {
-	home := parseTeamMapping(fix.HomeTeam)
-	away := parseTeamMapping(fix.AwayTeam)
+func fixtureMatchesEvent(fix *proto.Fixture, event bfClient.Event) bool {
+	home := parseTeamMapping(fix.HomeTeam.Name)
+	away := parseTeamMapping(fix.AwayTeam.Name)
 
 	name := fmt.Sprintf("%s v %s", home, away)
 

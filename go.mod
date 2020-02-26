@@ -1,4 +1,4 @@
-module github.com/statistico/statistico-bet-finder
+module github.com/statistico/statistico-price-finder
 
 go 1.12
 

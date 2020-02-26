@@ -33,10 +33,6 @@ github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZN
 github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:xMI15A0UPsDsEKsMN9yxemIoYk6Tm2C1GtYGdfGttqA=
 github.com/sirupsen/logrus v1.4.2 h1:SPIRibHv4MatM3XXNO2BJeFLZwZ2LvZgfQ5+UNI2im4=
 github.com/sirupsen/logrus v1.4.2/go.mod h1:tLMulIdttU9McNUspp0xgXVQah82FyeX6MwdIuYE2rE=
-github.com/statistico/statistico-betfair-go-client v0.0.0-20200116164258-5c5d0061a5bb h1:sQrEWDaTznMqqsEoxijURQunAIYrQQesD/kgFD5yepA=
-github.com/statistico/statistico-betfair-go-client v0.0.0-20200116164258-5c5d0061a5bb/go.mod h1:PxFoHm36FOkMDZzpbQBL6/zvO9uYfvbahyrQ6kMbk2s=
-github.com/statistico/statistico-betfair-go-client v0.0.0-20200123182922-8dcec8565f7f h1:HH65bUaTyUaz3OGv3wR21mCCJie2XC1IaNf47Ag44go=
-github.com/statistico/statistico-betfair-go-client v0.0.0-20200123182922-8dcec8565f7f/go.mod h1:PxFoHm36FOkMDZzpbQBL6/zvO9uYfvbahyrQ6kMbk2s=
 github.com/statistico/statistico-betfair-go-client v0.0.0-20200123184743-a940a2b1adfa h1:cRdboK99Tz02cdAVammmp+pSDhd1ID+vE2WKi09mcco=
 github.com/statistico/statistico-betfair-go-client v0.0.0-20200123184743-a940a2b1adfa/go.mod h1:PxFoHm36FOkMDZzpbQBL6/zvO9uYfvbahyrQ6kMbk2s=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=

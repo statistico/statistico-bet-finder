@@ -3,9 +3,9 @@ package grpc_test
 import (
 	"context"
 	"errors"
-	grpc2 "github.com/statistico/statistico-bet-finder/internal/app/grpc"
-	"github.com/statistico/statistico-bet-finder/internal/app/grpc/proto"
-	"github.com/statistico/statistico-bet-finder/internal/app/mock"
+	grpc2 "github.com/statistico/statistico-price-finder/internal/app/grpc"
+	"github.com/statistico/statistico-price-finder/internal/app/grpc/proto"
+	"github.com/statistico/statistico-price-finder/internal/app/mock"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc"
 	"testing"

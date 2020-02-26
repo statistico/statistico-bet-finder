@@ -2,7 +2,7 @@ package grpc
 
 import (
 	"context"
-	"github.com/statistico/statistico-bet-finder/internal/app/grpc/proto"
+	"github.com/statistico/statistico-price-finder/internal/app/grpc/proto"
 )
 
 // FixtureClient is a wrapper around the Statistico Data service.

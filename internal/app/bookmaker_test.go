@@ -3,9 +3,9 @@ package app_test
 import (
 	"errors"
 	"github.com/sirupsen/logrus/hooks/test"
-	"github.com/statistico/statistico-bet-finder/internal/app"
-	"github.com/statistico/statistico-bet-finder/internal/app/mock"
-	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
+	"github.com/statistico/statistico-price-finder/internal/app"
+	"github.com/statistico/statistico-price-finder/internal/app/grpc/proto"
+	"github.com/statistico/statistico-price-finder/internal/app/mock"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -22,11 +22,11 @@ func TestBookMaker_CreateBook(t *testing.T) {
 		bookmaker := app.NewBookMaker(fixtureClient, builder, clock, logger)
 
 		query := app.BookQuery{
-			Markets:    []string{"OVER_UNDER_15", "OVER_UNDER_25"},
-			EventID:    uint64(1329),
+			Markets: []string{"OVER_UNDER_15", "OVER_UNDER_25"},
+			EventID: uint64(1329),
 		}
 
-		fixture := statistico.Fixture{ID: 1329}
+		fixture := proto.Fixture{Id: 1329}
 
 		fixtureClient.On("FixtureByID", uint64(1329)).Return(&fixture, nil)
 		builder.On("FixtureAndMarket", &fixture, "OVER_UNDER_15").Return(&app.Market{}, nil)
@@ -55,13 +55,13 @@ func TestBookMaker_CreateBook(t *testing.T) {
 		logger, _ := test.NewNullLogger()
 
 		query := app.BookQuery{
-			Markets:    []string{"OVER_UNDER_25"},
-			EventID:    uint64(1329),
+			Markets: []string{"OVER_UNDER_25"},
+			EventID: uint64(1329),
 		}
 
 		bookmaker := app.NewBookMaker(fixtureClient, builder, clock, logger)
 
-		fixtureClient.On("FixtureByID", uint64(1329)).Return(&statistico.Fixture{}, errors.New("fixture not found"))
+		fixtureClient.On("FixtureByID", uint64(1329)).Return(&proto.Fixture{}, errors.New("fixture not found"))
 		builder.AssertNotCalled(t, "FixtureAndMarket", uint64(1329), "OVER_UNDER_25")
 
 		_, err := bookmaker.CreateBook(&query)
@@ -85,11 +85,11 @@ func TestBookMaker_CreateBook(t *testing.T) {
 		bookmaker := app.NewBookMaker(fixtureClient, builder, clock, logger)
 
 		query := app.BookQuery{
-			Markets:    []string{"OVER_UNDER_15", "OVER_UNDER_25"},
-			EventID:    uint64(1329),
+			Markets: []string{"OVER_UNDER_15", "OVER_UNDER_25"},
+			EventID: uint64(1329),
 		}
 
-		fixture := statistico.Fixture{ID: 1329}
+		fixture := proto.Fixture{Id: 1329}
 
 		fixtureClient.On("FixtureByID", uint64(1329)).Return(&fixture, nil)
 		builder.On("FixtureAndMarket", &fixture, "OVER_UNDER_15").Return(&app.Market{}, nil)

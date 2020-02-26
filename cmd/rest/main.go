@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/julienschmidt/httprouter"
-	"github.com/statistico/statistico-bet-finder/internal/bootstrap"
+	"github.com/statistico/statistico-price-finder/internal/bootstrap"
 	"log"
 	"net/http"
 )

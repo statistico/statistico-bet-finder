@@ -1,11 +1,9 @@
 package bookmaker
 
-import (
-	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
-)
+import "github.com/statistico/statistico-price-finder/internal/app/grpc/proto"
 
 type MarketFactory interface {
-	FixtureAndMarket(fix statistico.Fixture, market string) (*Market, error)
+	FixtureAndMarket(fix *proto.Fixture, market string) (*Market, error)
 }
 
 type RunnerFactory interface {

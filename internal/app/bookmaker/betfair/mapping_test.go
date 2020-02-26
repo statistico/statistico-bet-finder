@@ -1,8 +1,8 @@
 package betfair
 
 import (
-	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
 	bfClient "github.com/statistico/statistico-betfair-go-client"
+	"github.com/statistico/statistico-price-finder/internal/app/grpc/proto"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -11,9 +11,12 @@ func Test_fixtureMatchesEvent(t *testing.T) {
 	t.Run("returns true if fixture matches event", func(t *testing.T) {
 		t.Helper()
 
-		fixture := statistico.Fixture{
-			HomeTeam: "West Ham United",
-			AwayTeam: "AFC Bournemouth",
+		home := proto.Team{Name: "West Ham United"}
+		away := proto.Team{Name: "AFC Bournemouth"}
+
+		fixture := proto.Fixture{
+			HomeTeam: &home,
+			AwayTeam: &away,
 		}
 
 		event := bfClient.Event{
@@ -26,9 +29,12 @@ func Test_fixtureMatchesEvent(t *testing.T) {
 	t.Run("returns false if fixture does not match event", func(t *testing.T) {
 		t.Helper()
 
-		fixture := statistico.Fixture{
-			HomeTeam: "West Ham United",
-			AwayTeam: "Chelsea",
+		home := proto.Team{Name: "West Ham United"}
+		away := proto.Team{Name: "Chelsea"}
+
+		fixture := proto.Fixture{
+			HomeTeam: &home,
+			AwayTeam: &away,
 		}
 
 		event := bfClient.Event{

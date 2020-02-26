@@ -3,7 +3,7 @@ package app
 import (
 	"github.com/jonboulle/clockwork"
 	"github.com/sirupsen/logrus"
-	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
+	"github.com/statistico/statistico-price-finder/internal/app/grpc"
 )
 
 type BookMaker interface {
@@ -11,13 +11,13 @@ type BookMaker interface {
 }
 
 type BookQuery struct {
-	EventID  	uint64
-	Markets    []string
+	EventID uint64
+	Markets []string
 }
 
 // BookMaker is responsible for creating a Book struct of bookmaker markets.
 type bookMaker struct {
-	fixtureClient statistico.FixtureClient
+	fixtureClient grpc.FixtureClient
 	builder       MarketBuilder
 	clock         clockwork.Clock
 	logger        *logrus.Logger
@@ -50,7 +50,7 @@ func (b bookMaker) CreateBook(q *BookQuery) (*Book, error) {
 	return &book, nil
 }
 
-func NewBookMaker(f statistico.FixtureClient, b MarketBuilder, c clockwork.Clock, l *logrus.Logger) BookMaker {
+func NewBookMaker(f grpc.FixtureClient, b MarketBuilder, c clockwork.Clock, l *logrus.Logger) BookMaker {
 	return &bookMaker{
 		fixtureClient: f,
 		builder:       b,

@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/statistico/statistico-bet-finder/internal/app"
+	"github.com/statistico/statistico-price-finder/internal/app"
 	"net/http"
 )
 

@@ -3,9 +3,9 @@ package betfair
 import (
 	"context"
 	"fmt"
-	"github.com/statistico/statistico-bet-finder/internal/app/bookmaker"
-	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
 	bfClient "github.com/statistico/statistico-betfair-go-client"
+	"github.com/statistico/statistico-price-finder/internal/app/bookmaker"
+	"github.com/statistico/statistico-price-finder/internal/app/grpc/proto"
 )
 
 const betfair = "Betfair"
@@ -17,20 +17,20 @@ type MarketFactory struct {
 }
 
 // FixtureAndBetType creates a BetFair bookmaker.Market struct for a specific Fixture and Market
-func (b MarketFactory) FixtureAndMarket(fix statistico.Fixture, market string) (*bookmaker.Market, error) {
+func (b MarketFactory) FixtureAndMarket(fix *proto.Fixture, market string) (*bookmaker.Market, error) {
 	request, err := buildMarketCatalogueRequest(fix, []string{market})
 
 	if err != nil {
 		return nil, err
 	}
 
-	catalogues, err := b.parseMarketCatalogue(request, fix.ID, market)
+	catalogues, err := b.parseMarketCatalogue(request, uint64(fix.Id), market)
 
 	if err != nil {
 		return nil, err
 	}
 
-	catalogue, err := parseCatalogue(catalogues, &fix)
+	catalogue, err := parseCatalogue(catalogues, fix)
 
 	if err != nil {
 		return nil, err

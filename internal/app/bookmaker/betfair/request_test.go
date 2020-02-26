@@ -1,25 +1,23 @@
 package betfair
 
 import (
-	"github.com/statistico/statistico-bet-finder/internal/app/statistico"
+	"github.com/statistico/statistico-price-finder/internal/app/grpc/proto"
 	"github.com/stretchr/testify/assert"
 	"testing"
-	"time"
 )
 
 func Test_buildMarketCatalogueRequest(t *testing.T) {
 	t.Run("returns new betfair market catalogue request", func(t *testing.T) {
-		fix := statistico.Fixture{
-			ID:            99,
-			CompetitionID: 8,
-			HomeTeam:      "West Ham United",
-			AwayTeam:      "Chelsea",
-			Date:          time.Time{},
+		fix := proto.Fixture{
+			Id:          99,
+			Competition: &proto.Competition{Id: 8},
+			HomeTeam:    &proto.Team{Name: "West Ham United"},
+			AwayTeam:    &proto.Team{Name: "Chelsea"},
 		}
 
 		types := []string{"OVER_UNDER_25"}
 
-		request, err := buildMarketCatalogueRequest(fix, types)
+		request, err := buildMarketCatalogueRequest(&fix, types)
 
 		if err != nil {
 			t.Fatalf("Error building request expected nil got %s", err)

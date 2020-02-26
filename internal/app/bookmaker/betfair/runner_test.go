@@ -1,8 +1,8 @@
 package betfair
 
 import (
-	"github.com/statistico/statistico-bet-finder/internal/app/bookmaker"
-	"github.com/statistico/statistico-bet-finder/internal/app/mock"
+	"github.com/statistico/statistico-price-finder/internal/app/bookmaker"
+	"github.com/statistico/statistico-price-finder/internal/app/mock"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

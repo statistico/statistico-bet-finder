@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/jonboulle/clockwork"
 	"github.com/sirupsen/logrus"
-	"github.com/statistico/statistico-bet-finder/internal/app/grpc/proto"
 	bfClient "github.com/statistico/statistico-betfair-go-client"
+	"github.com/statistico/statistico-price-finder/internal/app/grpc/proto"
 	"google.golang.org/grpc"
 	"net"
 	"net/http"
@@ -14,11 +14,11 @@ import (
 )
 
 type Container struct {
-	BetFairClient      *bfClient.Client
-	Clock              clockwork.Clock
-	Config             *Config
-	FixtureClient      proto.FixtureServiceClient
-	Logger             *logrus.Logger
+	BetFairClient *bfClient.Client
+	Clock         clockwork.Clock
+	Config        *Config
+	FixtureClient proto.FixtureServiceClient
+	Logger        *logrus.Logger
 }
 
 func BuildContainer(config *Config) *Container {
