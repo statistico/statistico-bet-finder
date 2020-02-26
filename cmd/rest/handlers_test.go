@@ -3,8 +3,7 @@ package main
 import (
 	"bytes"
 	"github.com/julienschmidt/httprouter"
-	"github.com/statistico/statistico-price-finder/internal/app"
-	bookmaker2 "github.com/statistico/statistico-price-finder/internal/app/bookmaker"
+	"github.com/statistico/statistico-price-finder/internal/app/bookmaker"
 	"github.com/statistico/statistico-price-finder/internal/app/mock"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
@@ -18,25 +17,29 @@ func TestBookHandler_CreateBook(t *testing.T) {
 	t.Run("returns 200 response containing book data", func(t *testing.T) {
 		t.Helper()
 
-		bookmaker := new(mock.Bookmaker)
-		bookHandler := newBookHandler(bookmaker)
+		bm := new(mock.Bookmaker)
+		bookHandler := newBookHandler(bm)
 
 		var body = `{"markets": ["OVER_UNDER_15", "OVER_UNDER_25"]}`
 
-		request, err := http.NewRequest("POST", "/api/v1/event/18279/book", ioutil.NopCloser(bytes.NewBufferString(body)))
+		request, err := http.NewRequest(
+			"POST",
+			"/api/v1/event/18279/book/bookmaker",
+			ioutil.NopCloser(bytes.NewBufferString(body)),
+		)
 
 		if err != nil {
 			t.Fatal(err)
 		}
 
-		query := bookmaker2.BookQuery{
+		query := bookmaker.BookQuery{
 			EventID:    18279,
 			Markets:    []string{"OVER_UNDER_15", "OVER_UNDER_25"},
 		}
 
-		book := app.Book{
+		book := bookmaker.Book{
 			EventID:    18279,
-			Markets: []*app.Market{
+			Markets: []*bookmaker.Market{
 				{
 					Name:       "OVER_UNDER_25",
 					Bookmakers: nil,
@@ -45,11 +48,11 @@ func TestBookHandler_CreateBook(t *testing.T) {
 			CreatedAt: time.Date(2019, 01, 14, 11, 25, 00, 00, time.UTC),
 		}
 
-		bookmaker.On("CreateBook", &query).Return(&book, nil)
+		bm.On("CreateBook", &query).Return(&book, nil)
 
 		response := httptest.NewRecorder()
 		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			bookHandler.PostBook(w, r, httprouter.Params{{Key: "id", Value: "18279"}})
+			bookHandler.BookmakerPostBook(w, r, httprouter.Params{{Key: "id", Value: "18279"}})
 		})
 		handler.ServeHTTP(response, request)
 
@@ -62,20 +65,24 @@ func TestBookHandler_CreateBook(t *testing.T) {
 	t.Run("returns 400 response if unable to parse request body", func(t *testing.T) {
 		t.Helper()
 
-		bookmaker := new(mock.Bookmaker)
-		bookHandler := newBookHandler(bookmaker)
+		bm := new(mock.Bookmaker)
+		bookHandler := newBookHandler(bm)
 
-		request, err := http.NewRequest("POST", "/api/v1/event/18279book", ioutil.NopCloser(bytes.NewBufferString(`[]`)))
+		request, err := http.NewRequest(
+			"POST",
+			"/api/v1/event/18279/book/bookmaker",
+			ioutil.NopCloser(bytes.NewBufferString(`[]`)),
+		)
 
 		if err != nil {
 			t.Fatal(err)
 		}
 
-		bookmaker.AssertNotCalled(t, "CreateBook")
+		bm.AssertNotCalled(t, "CreateBook")
 
 		response := httptest.NewRecorder()
 		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			bookHandler.PostBook(w, r, httprouter.Params{{Key: "id", Value: "18279"}})
+			bookHandler.BookmakerPostBook(w, r, httprouter.Params{{Key: "id", Value: "18279"}})
 		})
 
 		handler.ServeHTTP(response, request)
@@ -89,8 +96,8 @@ func TestBookHandler_CreateBook(t *testing.T) {
 	t.Run("returns 400 response if request body does not match expected schema", func(t *testing.T) {
 		t.Helper()
 
-		bookmaker := new(mock.Bookmaker)
-		bookHandler := newBookHandler(bookmaker)
+		bm := new(mock.Bookmaker)
+		bookHandler := newBookHandler(bm)
 
 		var body = `{"markets": [13986]}`
 
@@ -100,11 +107,11 @@ func TestBookHandler_CreateBook(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		bookmaker.AssertNotCalled(t, "CreateBook")
+		bm.AssertNotCalled(t, "CreateBook")
 
 		response := httptest.NewRecorder()
 		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			bookHandler.PostBook(w, r, httprouter.Params{{Key: "id", Value: "18279"}})
+			bookHandler.BookmakerPostBook(w, r, httprouter.Params{{Key: "id", Value: "18279"}})
 		})
 
 		handler.ServeHTTP(response, request)
