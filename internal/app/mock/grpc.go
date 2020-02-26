@@ -15,3 +15,12 @@ func (f FixtureServiceClient) FixtureByID(ctx context.Context, in *proto.Fixture
 	args := f.Called(ctx, in, opts)
 	return args.Get(0).(*proto.Fixture), args.Error(1)
 }
+
+type FixtureClient struct {
+	mock.Mock
+}
+
+func (f FixtureClient) FixtureByID(id uint64) (*proto.Fixture, error) {
+	args := f.Called(id)
+	return args.Get(0).(*proto.Fixture), args.Error(1)
+}
