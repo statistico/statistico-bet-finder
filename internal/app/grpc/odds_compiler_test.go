@@ -39,7 +39,7 @@ func TestOddsCompilerClient_EventAndMarket(t *testing.T) {
 
 		mockClient.On("GetEventMarket", context.Background(), &request, []grpc.CallOption(nil)).Return(&market, nil)
 
-		em, err := oddsClient.EventAndMarket(45019, "OVER_UNDER_25")
+		em, err := oddsClient.EventMarket(45019, "OVER_UNDER_25")
 
 		if err != nil {
 			t.Fatalf("Error calling fixture client expected nil got %s", err)
@@ -66,7 +66,7 @@ func TestOddsCompilerClient_EventAndMarket(t *testing.T) {
 
 		mockClient.On("GetEventMarket", context.Background(), &request, []grpc.CallOption(nil)).Return(&proto.EventMarket{}, errors.New("client error"))
 
-		em, err := oddsClient.EventAndMarket(45019, "OVER_UNDER_25")
+		em, err := oddsClient.EventMarket(45019, "OVER_UNDER_25")
 
 		if em != nil {
 			t.Fatalf("Error calling odds compiler expected nil got %s", err)

@@ -38,7 +38,7 @@ type OddsCompilerClient struct {
 	mock.Mock
 }
 
-func (o OddsCompilerClient) EventAndMarket(eventID uint64, market string) (*proto.EventMarket, error) {
+func (o OddsCompilerClient) EventMarket(eventID uint64, market string) (*proto.EventMarket, error) {
 	args := o.Called(eventID, market)
 	return args.Get(0).(*proto.EventMarket), args.Error(1)
 }

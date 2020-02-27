@@ -6,14 +6,16 @@ import (
 )
 
 type OddsCompilerClient interface {
-	EventAndMarket(eventID uint64, market string) (*proto.EventMarket, error)
+	EventMarket(eventID uint64, market string) (*proto.EventMarket, error)
 }
 
+// oddsCompilerClient is a wrapper around the Statistico Odds Compiler service.
 type oddsCompilerClient struct {
 	client proto.OddsCompilerServiceClient
 }
 
-func (o oddsCompilerClient) EventAndMarket(eventID uint64, market string) (*proto.EventMarket, error) {
+// EventMarket returns an EventMarket struct parsed from the Statistico Odds Compiler service.
+func (o oddsCompilerClient) EventMarket(eventID uint64, market string) (*proto.EventMarket, error) {
 	request := proto.EventRequest{
 		EventId:              eventID,
 		Market:               market,
