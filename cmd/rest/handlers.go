@@ -13,7 +13,7 @@ type bookHandler struct {
 	bookmaker bookmaker.BookMaker
 }
 
-func (b bookHandler) BookmakerPostBook(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func (b bookHandler) PostBookmakerBook(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	query, err := parseBookQuery(r, ps)
 
 	if err != nil {

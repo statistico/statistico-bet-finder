@@ -13,7 +13,7 @@ func main() {
 	handler := newBookHandler(container.BookMaker())
 
 	router := httprouter.New()
-	router.POST("/api/v1/event/:id/book", handler.BookmakerPostBook)
+	router.POST("/api/v1/event/:id/bookmaker-book", handler.BookmakerPostBook)
 
 	log.Fatal(http.ListenAndServe(":80", router))
 }

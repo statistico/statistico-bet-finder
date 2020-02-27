@@ -52,7 +52,7 @@ func TestBookHandler_CreateBook(t *testing.T) {
 
 		response := httptest.NewRecorder()
 		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			bookHandler.BookmakerPostBook(w, r, httprouter.Params{{Key: "id", Value: "18279"}})
+			bookHandler.PostBookmakerBook(w, r, httprouter.Params{{Key: "id", Value: "18279"}})
 		})
 		handler.ServeHTTP(response, request)
 
@@ -82,7 +82,7 @@ func TestBookHandler_CreateBook(t *testing.T) {
 
 		response := httptest.NewRecorder()
 		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			bookHandler.BookmakerPostBook(w, r, httprouter.Params{{Key: "id", Value: "18279"}})
+			bookHandler.PostBookmakerBook(w, r, httprouter.Params{{Key: "id", Value: "18279"}})
 		})
 
 		handler.ServeHTTP(response, request)
@@ -111,7 +111,7 @@ func TestBookHandler_CreateBook(t *testing.T) {
 
 		response := httptest.NewRecorder()
 		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			bookHandler.BookmakerPostBook(w, r, httprouter.Params{{Key: "id", Value: "18279"}})
+			bookHandler.PostBookmakerBook(w, r, httprouter.Params{{Key: "id", Value: "18279"}})
 		})
 
 		handler.ServeHTTP(response, request)
