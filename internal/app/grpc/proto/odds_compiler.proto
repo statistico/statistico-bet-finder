@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package proto;
+
+service OddsCompilerService {
+    // Returns market for a given event
+    rpc GetEventMarket(EventRequest) returns (EventMarket) {}
+}
+
+message EventRequest {
+    uint64 event_id = 1;
+    string market = 2;
+}
+
+message EventMarket {
+    uint64 event_id = 1;
+    string market = 2;
+    repeated Odds odds = 3;
+}
+
+message Odds {
+    float price = 1;
+    string selection = 2;
+}
