@@ -55,7 +55,7 @@ func TestFixtureClient_FixtureByID(t *testing.T) {
 		fixture, err := fixtureClient.FixtureByID(14562)
 
 		if fixture != nil {
-			t.Fatalf("Error calling odds compiler expected nil got %s", err)
+			t.Fatalf("Error calling fixture client expected nil got %s", err)
 		}
 
 		if err == nil {

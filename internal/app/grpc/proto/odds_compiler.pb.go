@@ -24,55 +24,55 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
-type OverUnderRequest struct {
-	FixtureId            uint64   `protobuf:"varint,1,opt,name=fixture_id,json=fixtureId,proto3" json:"fixture_id,omitempty"`
+type EventRequest struct {
+	EventId              uint64   `protobuf:"varint,1,opt,name=event_id,json=eventId,proto3" json:"event_id,omitempty"`
 	Market               string   `protobuf:"bytes,2,opt,name=market,proto3" json:"market,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *OverUnderRequest) Reset()         { *m = OverUnderRequest{} }
-func (m *OverUnderRequest) String() string { return proto.CompactTextString(m) }
-func (*OverUnderRequest) ProtoMessage()    {}
-func (*OverUnderRequest) Descriptor() ([]byte, []int) {
+func (m *EventRequest) Reset()         { *m = EventRequest{} }
+func (m *EventRequest) String() string { return proto.CompactTextString(m) }
+func (*EventRequest) ProtoMessage()    {}
+func (*EventRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_c89f6ecd9bce4745, []int{0}
 }
 
-func (m *OverUnderRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_OverUnderRequest.Unmarshal(m, b)
+func (m *EventRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EventRequest.Unmarshal(m, b)
 }
-func (m *OverUnderRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_OverUnderRequest.Marshal(b, m, deterministic)
+func (m *EventRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EventRequest.Marshal(b, m, deterministic)
 }
-func (m *OverUnderRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_OverUnderRequest.Merge(m, src)
+func (m *EventRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EventRequest.Merge(m, src)
 }
-func (m *OverUnderRequest) XXX_Size() int {
-	return xxx_messageInfo_OverUnderRequest.Size(m)
+func (m *EventRequest) XXX_Size() int {
+	return xxx_messageInfo_EventRequest.Size(m)
 }
-func (m *OverUnderRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_OverUnderRequest.DiscardUnknown(m)
+func (m *EventRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_EventRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_OverUnderRequest proto.InternalMessageInfo
+var xxx_messageInfo_EventRequest proto.InternalMessageInfo
 
-func (m *OverUnderRequest) GetFixtureId() uint64 {
+func (m *EventRequest) GetEventId() uint64 {
 	if m != nil {
-		return m.FixtureId
+		return m.EventId
 	}
 	return 0
 }
 
-func (m *OverUnderRequest) GetMarket() string {
+func (m *EventRequest) GetMarket() string {
 	if m != nil {
 		return m.Market
 	}
 	return ""
 }
 
-type OverUnderGoalsResponse struct {
-	FixtureId            uint64   `protobuf:"varint,1,opt,name=fixture_id,json=fixtureId,proto3" json:"fixture_id,omitempty"`
+type EventMarket struct {
+	EventId              uint64   `protobuf:"varint,1,opt,name=event_id,json=eventId,proto3" json:"event_id,omitempty"`
 	Market               string   `protobuf:"bytes,2,opt,name=market,proto3" json:"market,omitempty"`
 	Odds                 []*Odds  `protobuf:"bytes,3,rep,name=odds,proto3" json:"odds,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -80,46 +80,46 @@ type OverUnderGoalsResponse struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *OverUnderGoalsResponse) Reset()         { *m = OverUnderGoalsResponse{} }
-func (m *OverUnderGoalsResponse) String() string { return proto.CompactTextString(m) }
-func (*OverUnderGoalsResponse) ProtoMessage()    {}
-func (*OverUnderGoalsResponse) Descriptor() ([]byte, []int) {
+func (m *EventMarket) Reset()         { *m = EventMarket{} }
+func (m *EventMarket) String() string { return proto.CompactTextString(m) }
+func (*EventMarket) ProtoMessage()    {}
+func (*EventMarket) Descriptor() ([]byte, []int) {
 	return fileDescriptor_c89f6ecd9bce4745, []int{1}
 }
 
-func (m *OverUnderGoalsResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_OverUnderGoalsResponse.Unmarshal(m, b)
+func (m *EventMarket) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EventMarket.Unmarshal(m, b)
 }
-func (m *OverUnderGoalsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_OverUnderGoalsResponse.Marshal(b, m, deterministic)
+func (m *EventMarket) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EventMarket.Marshal(b, m, deterministic)
 }
-func (m *OverUnderGoalsResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_OverUnderGoalsResponse.Merge(m, src)
+func (m *EventMarket) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EventMarket.Merge(m, src)
 }
-func (m *OverUnderGoalsResponse) XXX_Size() int {
-	return xxx_messageInfo_OverUnderGoalsResponse.Size(m)
+func (m *EventMarket) XXX_Size() int {
+	return xxx_messageInfo_EventMarket.Size(m)
 }
-func (m *OverUnderGoalsResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_OverUnderGoalsResponse.DiscardUnknown(m)
+func (m *EventMarket) XXX_DiscardUnknown() {
+	xxx_messageInfo_EventMarket.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_OverUnderGoalsResponse proto.InternalMessageInfo
+var xxx_messageInfo_EventMarket proto.InternalMessageInfo
 
-func (m *OverUnderGoalsResponse) GetFixtureId() uint64 {
+func (m *EventMarket) GetEventId() uint64 {
 	if m != nil {
-		return m.FixtureId
+		return m.EventId
 	}
 	return 0
 }
 
-func (m *OverUnderGoalsResponse) GetMarket() string {
+func (m *EventMarket) GetMarket() string {
 	if m != nil {
 		return m.Market
 	}
 	return ""
 }
 
-func (m *OverUnderGoalsResponse) GetOdds() []*Odds {
+func (m *EventMarket) GetOdds() []*Odds {
 	if m != nil {
 		return m.Odds
 	}
@@ -174,8 +174,8 @@ func (m *Odds) GetSelection() string {
 }
 
 func init() {
-	proto.RegisterType((*OverUnderRequest)(nil), "proto.OverUnderRequest")
-	proto.RegisterType((*OverUnderGoalsResponse)(nil), "proto.OverUnderGoalsResponse")
+	proto.RegisterType((*EventRequest)(nil), "proto.EventRequest")
+	proto.RegisterType((*EventMarket)(nil), "proto.EventMarket")
 	proto.RegisterType((*Odds)(nil), "proto.Odds")
 }
 
@@ -184,24 +184,22 @@ func init() {
 }
 
 var fileDescriptor_c89f6ecd9bce4745 = []byte{
-	// 258 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x90, 0xc1, 0x4b, 0xc3, 0x30,
-	0x18, 0xc5, 0xed, 0xd6, 0x0d, 0xfa, 0xed, 0x22, 0x51, 0x66, 0x51, 0x87, 0xa5, 0xa7, 0x82, 0xb0,
-	0xc2, 0xbc, 0x79, 0x15, 0x36, 0x76, 0x1a, 0x44, 0xc4, 0xe3, 0xa8, 0xcd, 0xa7, 0x04, 0xbb, 0x24,
-	0x7e, 0xc9, 0x86, 0x7f, 0xbe, 0x34, 0x8d, 0xca, 0x7a, 0xdc, 0x29, 0xbc, 0xf7, 0xf8, 0x1e, 0xbf,
-	0x3c, 0xb8, 0x97, 0xca, 0x21, 0xa9, 0xaa, 0x29, 0x2b, 0x63, 0xca, 0x0f, 0x32, 0x75, 0x69, 0x48,
-	0x3b, 0x5d, 0x6a, 0x21, 0xec, 0xb6, 0xd6, 0x3b, 0x23, 0x1b, 0xa4, 0xb9, 0xf7, 0xd8, 0xc8, 0x3f,
-	0xf9, 0x1a, 0xce, 0x37, 0x07, 0xa4, 0x17, 0x25, 0x90, 0x38, 0x7e, 0xed, 0xd1, 0x3a, 0x36, 0x03,
-	0x78, 0x97, 0xdf, 0x6e, 0x4f, 0xb8, 0x95, 0x22, 0x8d, 0xb2, 0xa8, 0x88, 0x79, 0x12, 0x9c, 0xb5,
-	0x60, 0x53, 0x18, 0xef, 0x2a, 0xfa, 0x44, 0x97, 0x0e, 0xb2, 0xa8, 0x48, 0x78, 0x50, 0xb9, 0x81,
-	0xe9, 0x5f, 0xd5, 0x4a, 0x57, 0x8d, 0xe5, 0x68, 0x8d, 0x56, 0x16, 0x4f, 0x2c, 0x64, 0x77, 0x10,
-	0xb7, 0xe4, 0xe9, 0x30, 0x1b, 0x16, 0x93, 0xc5, 0xa4, 0x03, 0x9f, 0x6f, 0x84, 0xb0, 0xdc, 0x07,
-	0xf9, 0x23, 0xc4, 0xad, 0x62, 0x97, 0x30, 0x32, 0x24, 0x6b, 0xf4, 0xd5, 0x03, 0xde, 0x09, 0x76,
-	0x0b, 0x89, 0xc5, 0x06, 0x6b, 0x27, 0xb5, 0x0a, 0xcd, 0xff, 0xc6, 0x42, 0xc1, 0x45, 0x7b, 0xfb,
-	0x14, 0x56, 0x79, 0x46, 0x3a, 0xb4, 0x47, 0xaf, 0x70, 0xb3, 0x42, 0x77, 0xfc, 0x8f, 0xa5, 0xa6,
-	0x65, 0x07, 0xcb, 0xae, 0x7e, 0x21, 0x7a, 0x9b, 0x5d, 0xcf, 0xfa, 0xc1, 0xd1, 0x02, 0xf9, 0xd9,
-	0xdb, 0xd8, 0xe7, 0x0f, 0x3f, 0x01, 0x00, 0x00, 0xff, 0xff, 0x5c, 0xf6, 0x4b, 0x29, 0xa5, 0x01,
-	0x00, 0x00,
+	// 238 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x90, 0x41, 0x4b, 0xc3, 0x30,
+	0x14, 0xc7, 0xed, 0xd6, 0x4d, 0xf7, 0x2a, 0x1e, 0x32, 0x91, 0x2a, 0x82, 0xa5, 0xa7, 0x82, 0xb0,
+	0xc2, 0xbc, 0xe9, 0x49, 0x44, 0xc4, 0x83, 0x08, 0xf1, 0x03, 0x8c, 0x9a, 0x3c, 0x24, 0xd8, 0x25,
+	0x31, 0x89, 0xfd, 0xfc, 0x92, 0xd7, 0x80, 0x3d, 0xef, 0x14, 0x7e, 0xff, 0xe4, 0xfd, 0xf2, 0x4f,
+	0xe0, 0x56, 0xe9, 0x80, 0x4e, 0x77, 0x7d, 0xdb, 0x59, 0xdb, 0x7e, 0x39, 0x2b, 0x5a, 0xeb, 0x4c,
+	0x30, 0xad, 0x91, 0xd2, 0xef, 0x84, 0xd9, 0x5b, 0xd5, 0xa3, 0xdb, 0x50, 0xc6, 0x16, 0xb4, 0xd4,
+	0x8f, 0x70, 0xfa, 0x3c, 0xa0, 0x0e, 0x1c, 0x7f, 0x7e, 0xd1, 0x07, 0x76, 0x09, 0x27, 0x18, 0x79,
+	0xa7, 0x64, 0x99, 0x55, 0x59, 0x93, 0xf3, 0x63, 0xe2, 0x57, 0xc9, 0x2e, 0x60, 0xb9, 0xef, 0xdc,
+	0x37, 0x86, 0x72, 0x56, 0x65, 0xcd, 0x8a, 0x27, 0xaa, 0x3b, 0x28, 0x48, 0xf1, 0x46, 0x78, 0x80,
+	0x81, 0xdd, 0x40, 0x1e, 0x2b, 0x96, 0xf3, 0x6a, 0xde, 0x14, 0xdb, 0x62, 0x6c, 0xb8, 0x79, 0x97,
+	0xd2, 0x73, 0xda, 0xa8, 0xef, 0x21, 0x8f, 0xc4, 0xce, 0x61, 0x61, 0x9d, 0x12, 0x48, 0xe2, 0x19,
+	0x1f, 0x81, 0x5d, 0xc3, 0xca, 0x63, 0x8f, 0x22, 0x28, 0xa3, 0x93, 0xf9, 0x3f, 0xd8, 0x72, 0x58,
+	0xc7, 0xd9, 0xa7, 0xf4, 0xfc, 0x0f, 0x74, 0x43, 0x1c, 0x7a, 0x80, 0xb3, 0x17, 0x0c, 0xd3, 0xe2,
+	0xeb, 0x74, 0xef, 0xf4, 0x3f, 0xae, 0xd8, 0x34, 0x1c, 0x0f, 0xd6, 0x47, 0x9f, 0x4b, 0x0a, 0xef,
+	0xfe, 0x02, 0x00, 0x00, 0xff, 0xff, 0xef, 0xbd, 0xd7, 0x01, 0x72, 0x01, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -216,8 +214,8 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type OddsCompilerServiceClient interface {
-	// Returns a Over/Under goals odds for a given fixture
-	GetOverUnderGoalsForFixture(ctx context.Context, in *OverUnderRequest, opts ...grpc.CallOption) (*OverUnderGoalsResponse, error)
+	// Returns market for a given event
+	GetEventMarket(ctx context.Context, in *EventRequest, opts ...grpc.CallOption) (*EventMarket, error)
 }
 
 type oddsCompilerServiceClient struct {
@@ -228,9 +226,9 @@ func NewOddsCompilerServiceClient(cc *grpc.ClientConn) OddsCompilerServiceClient
 	return &oddsCompilerServiceClient{cc}
 }
 
-func (c *oddsCompilerServiceClient) GetOverUnderGoalsForFixture(ctx context.Context, in *OverUnderRequest, opts ...grpc.CallOption) (*OverUnderGoalsResponse, error) {
-	out := new(OverUnderGoalsResponse)
-	err := c.cc.Invoke(ctx, "/proto.OddsCompilerService/GetOverUnderGoalsForFixture", in, out, opts...)
+func (c *oddsCompilerServiceClient) GetEventMarket(ctx context.Context, in *EventRequest, opts ...grpc.CallOption) (*EventMarket, error) {
+	out := new(EventMarket)
+	err := c.cc.Invoke(ctx, "/proto.OddsCompilerService/GetEventMarket", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -239,36 +237,36 @@ func (c *oddsCompilerServiceClient) GetOverUnderGoalsForFixture(ctx context.Cont
 
 // OddsCompilerServiceServer is the server API for OddsCompilerService service.
 type OddsCompilerServiceServer interface {
-	// Returns a Over/Under goals odds for a given fixture
-	GetOverUnderGoalsForFixture(context.Context, *OverUnderRequest) (*OverUnderGoalsResponse, error)
+	// Returns market for a given event
+	GetEventMarket(context.Context, *EventRequest) (*EventMarket, error)
 }
 
 // UnimplementedOddsCompilerServiceServer can be embedded to have forward compatible implementations.
 type UnimplementedOddsCompilerServiceServer struct {
 }
 
-func (*UnimplementedOddsCompilerServiceServer) GetOverUnderGoalsForFixture(ctx context.Context, req *OverUnderRequest) (*OverUnderGoalsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetOverUnderGoalsForFixture not implemented")
+func (*UnimplementedOddsCompilerServiceServer) GetEventMarket(ctx context.Context, req *EventRequest) (*EventMarket, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetEventMarket not implemented")
 }
 
 func RegisterOddsCompilerServiceServer(s *grpc.Server, srv OddsCompilerServiceServer) {
 	s.RegisterService(&_OddsCompilerService_serviceDesc, srv)
 }
 
-func _OddsCompilerService_GetOverUnderGoalsForFixture_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OverUnderRequest)
+func _OddsCompilerService_GetEventMarket_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EventRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OddsCompilerServiceServer).GetOverUnderGoalsForFixture(ctx, in)
+		return srv.(OddsCompilerServiceServer).GetEventMarket(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/proto.OddsCompilerService/GetOverUnderGoalsForFixture",
+		FullMethod: "/proto.OddsCompilerService/GetEventMarket",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OddsCompilerServiceServer).GetOverUnderGoalsForFixture(ctx, req.(*OverUnderRequest))
+		return srv.(OddsCompilerServiceServer).GetEventMarket(ctx, req.(*EventRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -278,8 +276,8 @@ var _OddsCompilerService_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*OddsCompilerServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetOverUnderGoalsForFixture",
-			Handler:    _OddsCompilerService_GetOverUnderGoalsForFixture_Handler,
+			MethodName: "GetEventMarket",
+			Handler:    _OddsCompilerService_GetEventMarket_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
