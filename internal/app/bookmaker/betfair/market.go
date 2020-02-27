@@ -17,7 +17,7 @@ type MarketFactory struct {
 }
 
 // FixtureAndBetType creates a BetFair bookmaker.Market struct for a specific Fixture and Market
-func (b MarketFactory) FixtureAndMarket(fix *proto.Fixture, market string) (*bookmaker.Market, error) {
+func (b MarketFactory) FixtureAndMarket(fix *proto.Fixture, market string) (*bookmaker.SubMarket, error) {
 	request, err := buildMarketCatalogueRequest(fix, []string{market})
 
 	if err != nil {
@@ -36,7 +36,7 @@ func (b MarketFactory) FixtureAndMarket(fix *proto.Fixture, market string) (*boo
 		return nil, err
 	}
 
-	m := bookmaker.Market{
+	m := bookmaker.SubMarket{
 		ID:        catalogue.MarketID,
 		Bookmaker: betfair,
 		Runners:   nil,

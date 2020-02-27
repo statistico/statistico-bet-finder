@@ -5,7 +5,7 @@ info:
 servers:
   - url: https://price-finder.statistico.io/api/v1
 paths:
-  /event/{id}/book/bookmaker:
+  /event/{id}/bookmaker-book:
     post:
       tags:
         - Book
@@ -55,7 +55,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/StandardResponse'
 
-  /event/{id}/book/statistico:
+  /event/{id}/statistico-book:
     post:
       tags:
         - Book

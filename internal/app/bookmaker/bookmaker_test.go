@@ -1,16 +1,16 @@
-package app_test
+package bookmaker_test
 
 import (
 	"errors"
 	"github.com/sirupsen/logrus/hooks/test"
-	"github.com/statistico/statistico-price-finder/internal/app"
+	"github.com/statistico/statistico-price-finder/internal/app/bookmaker"
 	"github.com/statistico/statistico-price-finder/internal/app/grpc/proto"
 	"github.com/statistico/statistico-price-finder/internal/app/mock"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
-func TestBookMaker_CreateBook(t *testing.T) {
+func TestBookMaker_CreateBookmakerBook(t *testing.T) {
 	t.Run("returns a Book struct containing statistico and bookmaker markets", func(t *testing.T) {
 		t.Helper()
 
@@ -19,9 +19,9 @@ func TestBookMaker_CreateBook(t *testing.T) {
 		clock := mock.NewFixedClock()
 		logger, hook := test.NewNullLogger()
 
-		bookmaker := app.NewBookMaker(fixtureClient, builder, clock, logger)
+		bm := bookmaker.NewBookMaker(fixtureClient, builder, clock, logger)
 
-		query := app.BookQuery{
+		query := bookmaker.BookQuery{
 			Markets: []string{"OVER_UNDER_15", "OVER_UNDER_25"},
 			EventID: uint64(1329),
 		}
@@ -29,10 +29,10 @@ func TestBookMaker_CreateBook(t *testing.T) {
 		fixture := proto.Fixture{Id: 1329}
 
 		fixtureClient.On("FixtureByID", uint64(1329)).Return(&fixture, nil)
-		builder.On("FixtureAndMarket", &fixture, "OVER_UNDER_15").Return(&app.Market{}, nil)
-		builder.On("FixtureAndMarket", &fixture, "OVER_UNDER_25").Return(&app.Market{}, nil)
+		builder.On("FixtureAndMarket", &fixture, "OVER_UNDER_15").Return(&bookmaker.Market{}, nil)
+		builder.On("FixtureAndMarket", &fixture, "OVER_UNDER_25").Return(&bookmaker.Market{}, nil)
 
-		book, err := bookmaker.CreateBook(&query)
+		book, err := bm.CreateBook(&query)
 
 		if err != nil {
 			t.Fatalf("Expected nil got %s", err.Error())
@@ -54,17 +54,17 @@ func TestBookMaker_CreateBook(t *testing.T) {
 		clock := mock.NewFixedClock()
 		logger, _ := test.NewNullLogger()
 
-		query := app.BookQuery{
+		query := bookmaker.BookQuery{
 			Markets: []string{"OVER_UNDER_25"},
 			EventID: uint64(1329),
 		}
 
-		bookmaker := app.NewBookMaker(fixtureClient, builder, clock, logger)
+		bm := bookmaker.NewBookMaker(fixtureClient, builder, clock, logger)
 
 		fixtureClient.On("FixtureByID", uint64(1329)).Return(&proto.Fixture{}, errors.New("fixture not found"))
 		builder.AssertNotCalled(t, "FixtureAndMarket", uint64(1329), "OVER_UNDER_25")
 
-		_, err := bookmaker.CreateBook(&query)
+		_, err := bm.CreateBook(&query)
 
 		if err == nil {
 			t.Fatal("Expected error got nil")
@@ -82,9 +82,9 @@ func TestBookMaker_CreateBook(t *testing.T) {
 		clock := mock.NewFixedClock()
 		logger, hook := test.NewNullLogger()
 
-		bookmaker := app.NewBookMaker(fixtureClient, builder, clock, logger)
+		bm := bookmaker.NewBookMaker(fixtureClient, builder, clock, logger)
 
-		query := app.BookQuery{
+		query := bookmaker.BookQuery{
 			Markets: []string{"OVER_UNDER_15", "OVER_UNDER_25"},
 			EventID: uint64(1329),
 		}
@@ -92,10 +92,10 @@ func TestBookMaker_CreateBook(t *testing.T) {
 		fixture := proto.Fixture{Id: 1329}
 
 		fixtureClient.On("FixtureByID", uint64(1329)).Return(&fixture, nil)
-		builder.On("FixtureAndMarket", &fixture, "OVER_UNDER_15").Return(&app.Market{}, nil)
-		builder.On("FixtureAndMarket", &fixture, "OVER_UNDER_25").Return(&app.Market{}, errors.New("error occurred"))
+		builder.On("FixtureAndMarket", &fixture, "OVER_UNDER_15").Return(&bookmaker.Market{}, nil)
+		builder.On("FixtureAndMarket", &fixture, "OVER_UNDER_25").Return(&bookmaker.Market{}, errors.New("error occurred"))
 
-		book, err := bookmaker.CreateBook(&query)
+		book, err := bm.CreateBook(&query)
 
 		if err != nil {
 			t.Fatalf("Expected nil got %s", err.Error())
