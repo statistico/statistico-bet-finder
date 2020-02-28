@@ -18,8 +18,8 @@ type Container struct {
 	Clock              clockwork.Clock
 	Config             *Config
 	FixtureClient      proto.FixtureServiceClient
-	OddsCompilerClient proto.OddsCompilerServiceClient
 	Logger             *logrus.Logger
+	OddsCompilerClient proto.OddsCompilerServiceClient
 }
 
 func BuildContainer(config *Config) *Container {
@@ -30,8 +30,8 @@ func BuildContainer(config *Config) *Container {
 	c.BetFairClient = betFairClient(config)
 	c.Clock = clock()
 	c.FixtureClient = fixtureClient(config)
-	c.OddsCompilerClient = oddsCompilerClient(config)
 	c.Logger = logger()
+	c.OddsCompilerClient = oddsCompilerClient(config)
 
 	return &c
 }
