@@ -169,7 +169,7 @@ func TestBookHandler_PostStatisticoBook(t *testing.T) {
 			CreatedAt: time.Date(2019, 01, 14, 11, 25, 00, 00, time.UTC),
 		}
 
-		bm.On("CreateBook", &query).Return(&book, nil)
+		st.On("CreateBook", &query).Return(&book, nil)
 
 		response := httptest.NewRecorder()
 		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -200,7 +200,7 @@ func TestBookHandler_PostStatisticoBook(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		bm.AssertNotCalled(t, "CreateBook")
+		st.AssertNotCalled(t, "CreateBook")
 
 		response := httptest.NewRecorder()
 		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -234,7 +234,7 @@ func TestBookHandler_PostStatisticoBook(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		bm.AssertNotCalled(t, "CreateBook")
+		st.AssertNotCalled(t, "CreateBook")
 
 		response := httptest.NewRecorder()
 		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -284,7 +284,7 @@ func TestBookHandler_PostStatisticoBook(t *testing.T) {
 			CreatedAt: time.Date(2019, 01, 14, 11, 25, 00, 00, time.UTC),
 		}
 
-		bm.On("CreateBook", &query).Return(&book, errors.New("fixture not found"))
+		st.On("CreateBook", &query).Return(&book, errors.New("fixture not found"))
 
 		response := httptest.NewRecorder()
 		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
