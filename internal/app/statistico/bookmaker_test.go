@@ -3,6 +3,7 @@ package statistico_test
 import (
 	"errors"
 	"github.com/sirupsen/logrus/hooks/test"
+	"github.com/statistico/statistico-price-finder/internal/app"
 	"github.com/statistico/statistico-price-finder/internal/app/grpc/proto"
 	"github.com/statistico/statistico-price-finder/internal/app/mock"
 	"github.com/statistico/statistico-price-finder/internal/app/statistico"
@@ -21,7 +22,7 @@ func TestBookMaker_CreateBook(t *testing.T) {
 
 		bookmaker := statistico.NewBookMaker(fixtureClient, builder, clock, logger)
 
-		query := statistico.BookQuery{
+		query := app.BookQuery{
 			Markets: []string{"OVER_UNDER_15", "OVER_UNDER_25"},
 			EventID: uint64(1329),
 		}
@@ -56,7 +57,7 @@ func TestBookMaker_CreateBook(t *testing.T) {
 
 		bookmaker := statistico.NewBookMaker(fixtureClient, builder, clock, logger)
 
-		query := statistico.BookQuery{
+		query := app.BookQuery{
 			Markets: []string{"OVER_UNDER_15", "OVER_UNDER_25"},
 			EventID: uint64(1329),
 		}
@@ -84,7 +85,7 @@ func TestBookMaker_CreateBook(t *testing.T) {
 
 		bookmaker := statistico.NewBookMaker(fixtureClient, builder, clock, logger)
 
-		query := statistico.BookQuery{
+		query := app.BookQuery{
 			Markets: []string{"OVER_UNDER_15", "OVER_UNDER_25"},
 			EventID: uint64(1329),
 		}

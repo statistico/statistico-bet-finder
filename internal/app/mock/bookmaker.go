@@ -1,6 +1,7 @@
 package mock
 
 import (
+	"github.com/statistico/statistico-price-finder/internal/app"
 	"github.com/statistico/statistico-price-finder/internal/app/bookmaker"
 	"github.com/statistico/statistico-price-finder/internal/app/grpc/proto"
 	"github.com/stretchr/testify/mock"
@@ -29,7 +30,7 @@ type Bookmaker struct {
 	mock.Mock
 }
 
-func (b Bookmaker) CreateBook(q *bookmaker.BookQuery) (*bookmaker.Book, error) {
+func (b Bookmaker) CreateBook(q *app.BookQuery) (*bookmaker.Book, error) {
 	args := b.Called(q)
 	return args.Get(0).(*bookmaker.Book), args.Error(1)
 }

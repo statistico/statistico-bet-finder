@@ -8,12 +8,7 @@ import (
 )
 
 type BookMaker interface {
-	CreateBook(q *BookQuery) (*Book, error)
-}
-
-type BookQuery struct {
-	EventID uint64
-	Markets []string
+	CreateBook(q *app.BookQuery) (*Book, error)
 }
 
 // BookMaker is responsible for creating a Book struct of bookmaker markets.
@@ -25,7 +20,7 @@ type bookMaker struct {
 }
 
 // CreateBook creates a Book struct of Statistico and Bookmaker markets.
-func (b bookMaker) CreateBook(q *BookQuery) (*Book, error) {
+func (b bookMaker) CreateBook(q *app.BookQuery) (*Book, error) {
 	book := Book{
 		EventID:   q.EventID,
 		CreatedAt: b.clock.Now(),

@@ -4,13 +4,16 @@ import (
 	"encoding/json"
 	"github.com/julienschmidt/httprouter"
 	"github.com/sirupsen/logrus"
+	"github.com/statistico/statistico-price-finder/internal/app"
 	"github.com/statistico/statistico-price-finder/internal/app/bookmaker"
+	"github.com/statistico/statistico-price-finder/internal/app/statistico"
 	"net/http"
 	"strconv"
 )
 
 type bookHandler struct {
 	bookmaker bookmaker.BookMaker
+	statistico statistico.BookMaker
 }
 
 func (b bookHandler) PostBookmakerBook(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -33,7 +36,27 @@ func (b bookHandler) PostBookmakerBook(w http.ResponseWriter, r *http.Request, p
 	successResponse(w, http.StatusOK, response)
 }
 
-func parseBookQuery(r *http.Request, ps httprouter.Params) (*bookmaker.BookQuery, error) {
+func (b bookHandler) PostStatisticoBook(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	query, err := parseBookQuery(r, ps)
+
+	if err != nil {
+		failResponse(w, http.StatusBadRequest, err)
+		return
+	}
+
+	book, err := b.statistico.CreateBook(query)
+
+	if err != nil {
+		failResponse(w, http.StatusNotFound, err)
+		return
+	}
+
+	response := statisticoBookResponse{Book: book}
+
+	successResponse(w, http.StatusOK, response)
+}
+
+func parseBookQuery(r *http.Request, ps httprouter.Params) (*app.BookQuery, error) {
 	id, err := strconv.Atoi(ps.ByName("id"))
 
 	if err != nil {
@@ -51,7 +74,7 @@ func parseBookQuery(r *http.Request, ps httprouter.Params) (*bookmaker.BookQuery
 		return nil, errBadRequestBody
 	}
 
-	query := bookmaker.BookQuery{
+	query := app.BookQuery{
 		EventID:    uint64(id),
 		Markets:    body.Markets,
 	}
@@ -59,6 +82,6 @@ func parseBookQuery(r *http.Request, ps httprouter.Params) (*bookmaker.BookQuery
 	return &query, nil
 }
 
-func newBookHandler(b bookmaker.BookMaker) *bookHandler {
-	return &bookHandler{bookmaker: b}
+func newBookHandler(b bookmaker.BookMaker, s statistico.BookMaker) *bookHandler {
+	return &bookHandler{bookmaker:b, statistico:s}
 }
