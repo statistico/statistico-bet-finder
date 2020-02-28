@@ -19,16 +19,16 @@ func TestMarketBuilder_FixtureAndMarket(t *testing.T) {
 		fixture := proto.Fixture{Id: 45381}
 
 		response := proto.EventMarket{
-			EventId:              45381,
-			Market:               "OVER_UNDER_25",
-			Odds:                 []*proto.Odds{
+			EventId: 45381,
+			Market:  "OVER_UNDER_25",
+			Odds: []*proto.Odds{
 				{
 					Selection: "Over 2.5 Goals",
-					Price: 1.95,
+					Price:     1.95,
 				},
 				{
 					Selection: "Under 2.5 Goals",
-					Price: 2.06,
+					Price:     2.06,
 				},
 			},
 		}

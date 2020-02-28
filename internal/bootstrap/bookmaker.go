@@ -2,17 +2,16 @@ package bootstrap
 
 import (
 	"github.com/statistico/statistico-price-finder/internal/app/bookmaker"
-	"github.com/statistico/statistico-price-finder/internal/app/bookmaker/betfair"
 )
 
 func (c Container) BookMaker() bookmaker.BookMaker {
-	return bookmaker.NewBookMaker(c.GRPCFixtureClient(), c.MarketBuilder(), c.Clock, c.Logger)
+	return bookmaker.NewBookMaker(c.GRPCFixtureClient(), c.BookmakerMarketBuilder(), c.Clock, c.Logger)
 }
 
-func (c Container) BetFairRunnerFactory() bookmaker.RunnerFactory {
-	return betfair.NewRunnerFactory(c.BetFairClient)
-}
+func (c Container) BookmakerMarketBuilder() bookmaker.MarketBuilder {
+	bookmakers := []bookmaker.MarketFactory{
+		c.BetFairMarketFactory(),
+	}
 
-func (c Container) BetFairMarketFactory() bookmaker.MarketFactory {
-	return betfair.NewMarketFactory(c.BetFairClient, c.BetFairRunnerFactory())
+	return bookmaker.NewMarketBuilder(bookmakers, c.Logger)
 }

@@ -14,11 +14,12 @@ import (
 )
 
 type Container struct {
-	BetFairClient *bfClient.Client
-	Clock         clockwork.Clock
-	Config        *Config
-	FixtureClient proto.FixtureServiceClient
-	Logger        *logrus.Logger
+	BetFairClient      *bfClient.Client
+	Clock              clockwork.Clock
+	Config             *Config
+	FixtureClient      proto.FixtureServiceClient
+	Logger             *logrus.Logger
+	OddsCompilerClient proto.OddsCompilerServiceClient
 }
 
 func BuildContainer(config *Config) *Container {
@@ -30,6 +31,7 @@ func BuildContainer(config *Config) *Container {
 	c.Clock = clock()
 	c.FixtureClient = fixtureClient(config)
 	c.Logger = logger()
+	c.OddsCompilerClient = oddsCompilerClient(config)
 
 	return &c
 }
@@ -74,6 +76,18 @@ func fixtureClient(config *Config) proto.FixtureServiceClient {
 	}
 
 	return proto.NewFixtureServiceClient(conn)
+}
+
+func oddsCompilerClient(config *Config) proto.OddsCompilerServiceClient {
+	host := fmt.Sprintf("%s:%s", config.OddsCompilerService.Host, config.OddsCompilerService.Port)
+
+	conn, err := grpc.Dial(host, grpc.WithInsecure())
+
+	if err != nil {
+		panic(err)
+	}
+
+	return proto.NewOddsCompilerServiceClient(conn)
 }
 
 func logger() *logrus.Logger {
