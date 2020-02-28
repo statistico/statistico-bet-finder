@@ -17,8 +17,8 @@ type oddsCompilerClient struct {
 // EventMarket returns an EventMarket struct parsed from the Statistico Odds Compiler service.
 func (o oddsCompilerClient) EventMarket(eventID uint64, market string) (*proto.EventMarket, error) {
 	request := proto.EventRequest{
-		EventId:              eventID,
-		Market:               market,
+		EventId: eventID,
+		Market:  market,
 	}
 
 	response, err := o.client.GetEventMarket(context.Background(), &request)
@@ -31,5 +31,5 @@ func (o oddsCompilerClient) EventMarket(eventID uint64, market string) (*proto.E
 }
 
 func NewOddsCompilerClient(c proto.OddsCompilerServiceClient) OddsCompilerClient {
-	return &oddsCompilerClient{client:c}
+	return &oddsCompilerClient{client: c}
 }

@@ -14,7 +14,7 @@ type marketBuilder struct {
 }
 
 func (m marketBuilder) FixtureAndMarket(f *proto.Fixture, name string) (*Market, error) {
-	market := Market{Name:name}
+	market := Market{Name: name}
 
 	response, err := m.oddsClient.EventMarket(uint64(f.Id), name)
 

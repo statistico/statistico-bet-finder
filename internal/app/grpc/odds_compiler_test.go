@@ -18,20 +18,20 @@ func TestOddsCompilerClient_EventAndMarket(t *testing.T) {
 		mockClient := new(mock.OddsCompilerServiceClient)
 		oddsClient := grpc2.NewOddsCompilerClient(mockClient)
 		request := proto.EventRequest{
-			EventId:              45019,
-			Market:               "OVER_UNDER_25",
+			EventId: 45019,
+			Market:  "OVER_UNDER_25",
 		}
 
 		market := proto.EventMarket{
-			EventId:              45019,
-			Market:               "OVER_UNDER_25",
-			Odds:                 []*proto.Odds{
+			EventId: 45019,
+			Market:  "OVER_UNDER_25",
+			Odds: []*proto.Odds{
 				{
-					Price: 1.96,
+					Price:     1.96,
 					Selection: "Over 2.5 Goals",
 				},
 				{
-					Price: 2.54,
+					Price:     2.54,
 					Selection: "Under 2.5 Goals",
 				},
 			},
@@ -60,8 +60,8 @@ func TestOddsCompilerClient_EventAndMarket(t *testing.T) {
 		mockClient := new(mock.OddsCompilerServiceClient)
 		oddsClient := grpc2.NewOddsCompilerClient(mockClient)
 		request := proto.EventRequest{
-			EventId:              45019,
-			Market:               "OVER_UNDER_25",
+			EventId: 45019,
+			Market:  "OVER_UNDER_25",
 		}
 
 		mockClient.On("GetEventMarket", context.Background(), &request, []grpc.CallOption(nil)).Return(&proto.EventMarket{}, errors.New("client error"))
