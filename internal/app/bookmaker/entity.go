@@ -8,7 +8,6 @@ type Book struct {
 	CreatedAt time.Time `json:"createdAt"`
 }
 
-// Market is a struct for a given market name with hydrated bookmaker sub markets
 type Market struct {
 	Name       string       `json:"name"`
 	Bookmakers []*SubMarket `json:"bookmakers"`
