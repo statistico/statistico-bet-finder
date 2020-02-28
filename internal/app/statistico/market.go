@@ -1,7 +1,6 @@
 package statistico
 
 import (
-	"github.com/sirupsen/logrus"
 	"github.com/statistico/statistico-price-finder/internal/app/grpc"
 	"github.com/statistico/statistico-price-finder/internal/app/grpc/proto"
 )
@@ -12,7 +11,6 @@ type MarketBuilder interface {
 
 type marketBuilder struct {
 	oddsClient grpc.OddsCompilerClient
-	logger *logrus.Logger
 }
 
 func (m marketBuilder) FixtureAndMarket(f *proto.Fixture, name string) (*Market, error) {
@@ -36,6 +34,6 @@ func (m marketBuilder) FixtureAndMarket(f *proto.Fixture, name string) (*Market,
 	return &market, nil
 }
 
-func NewMarketBuilder(o grpc.OddsCompilerClient, log *logrus.Logger) MarketBuilder {
-	return &marketBuilder{oddsClient: o, logger: log}
+func NewMarketBuilder(o grpc.OddsCompilerClient) MarketBuilder {
+	return &marketBuilder{oddsClient: o}
 }
