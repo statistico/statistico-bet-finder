@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"github.com/statistico/statistico-price-finder/internal/app/bookmaker"
+	"github.com/statistico/statistico-price-finder/internal/app/statistico"
 	"net/http"
 )
 
@@ -63,4 +64,8 @@ func errorResponse(w http.ResponseWriter, status int, error error) {
 
 type bookmakerBookResponse struct {
 	Book *bookmaker.Book `json:"book"`
+}
+
+type statisticoBookResponse struct {
+	Book *statistico.Book `json:"book"`
 }

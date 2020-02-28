@@ -3,6 +3,7 @@ package bookmaker_test
 import (
 	"errors"
 	"github.com/sirupsen/logrus/hooks/test"
+	"github.com/statistico/statistico-price-finder/internal/app"
 	"github.com/statistico/statistico-price-finder/internal/app/bookmaker"
 	"github.com/statistico/statistico-price-finder/internal/app/grpc/proto"
 	"github.com/statistico/statistico-price-finder/internal/app/mock"
@@ -21,7 +22,7 @@ func TestBookMaker_CreateBookmakerBook(t *testing.T) {
 
 		bm := bookmaker.NewBookMaker(fixtureClient, builder, clock, logger)
 
-		query := bookmaker.BookQuery{
+		query := app.BookQuery{
 			Markets: []string{"OVER_UNDER_15", "OVER_UNDER_25"},
 			EventID: uint64(1329),
 		}
@@ -54,7 +55,7 @@ func TestBookMaker_CreateBookmakerBook(t *testing.T) {
 		clock := mock.NewFixedClock()
 		logger, _ := test.NewNullLogger()
 
-		query := bookmaker.BookQuery{
+		query := app.BookQuery{
 			Markets: []string{"OVER_UNDER_25"},
 			EventID: uint64(1329),
 		}
@@ -84,7 +85,7 @@ func TestBookMaker_CreateBookmakerBook(t *testing.T) {
 
 		bm := bookmaker.NewBookMaker(fixtureClient, builder, clock, logger)
 
-		query := bookmaker.BookQuery{
+		query := app.BookQuery{
 			Markets: []string{"OVER_UNDER_15", "OVER_UNDER_25"},
 			EventID: uint64(1329),
 		}
